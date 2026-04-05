@@ -16,4 +16,4 @@ RUN uv sync --frozen --no-dev
 COPY . .
 
 EXPOSE 8000 9000
-CMD ["uv", "run", "serve", "run", "serve_app:app"]
+CMD ["uv", "run", "python", "serve_app.py"]

@@ -39,3 +39,9 @@ class GLiNERGuardDeployment:
 
 
 app = GLiNERGuardDeployment.bind()
+
+if __name__ == "__main__":
+    serve.start(http_options={"host": "0.0.0.0", "port": 8000})
+    serve.run(app, route_prefix="/")
+    import signal
+    signal.pause()
