@@ -5,7 +5,7 @@
 > **Baseline:** LitServe + GLiNER-2 · PyTorch bf16 · 148.2 RPS, P50 570ms, P95 1500ms (A100 80G)
 > **Models:** `hivetrace/gliner-guard-uniencoder` (147M) + `hivetrace/gliner-guard-biencoder` (145M)
 >
-> **Status:** Phase 0 complete (2026-04-05). Phase 1 ready to start.
+> **Status:** Phase 0 + Phase 1 Day 3 complete (2026-04-05). Day 4 (Locust benchmarks) ready to start.
 > **Infra:** Docker Compose (profiles: litserve/ray-serve), Makefile automation, Jenkins CI (Kaniko → Harbor), GitOps (ArgoCD on K3s).
 > **Repo:** [adapstory/gliner-guard-serve](https://github.com/adapstory/gliner-guard-serve) (fork of bogdanminko)
 
@@ -178,8 +178,8 @@ gliner-guard-serve/
   - **Changed vs plan:** Using `COPY --from=ghcr.io/astral-sh/uv:latest` instead of apt install (cleaner, smaller image)
   - **Added:** `HF_HOME=/app/.cache/huggingface` env var for model cache
 - [x] Create `serve_app.py` — env-configurable: `MODEL_ID`, `MAX_ONGOING_REQUESTS`
-- [ ] Verify Ray Serve starts on dev GPU — **blocked: image not yet built in Jenkins**
-- [ ] Smoke test — **blocked: same**
+- [x] Verify Ray Serve starts on dev GPU — docker compose build on VM (RTX 5070 Ti)
+- [x] Smoke test — both uniencoder + biencoder produce correct PII/safety results
 
 **Additional infra (not in original plan):**
 - [x] `docker-compose.yml` — profiles `litserve`/`ray-serve` + `locust` service, GPU passthrough, `hf-cache` volume
@@ -246,8 +246,11 @@ class GLiNERGuardDeployment:
 app = GLiNERGuardDeployment.bind()
 ```
 
-- [ ] Deploy on dev GPU, verify both models load (swap `MODEL_ID`)
-- [ ] Verify functional correctness: same output as LitServe for 5 test cases
+- [x] Deploy on dev GPU, verify both models load (swap `MODEL_ID`) — DONE 2026-04-05
+- [x] Verify functional correctness: same output as LitServe for 5 test cases — DONE
+  - **Fixes applied:** Python <3.14 pin (torch/ray no cp314 wheels), .rayignore, serve.start() for 0.0.0.0 bind, shm_size+RAY_OBJECT_STORE_MEMORY for OOM, nvidia-container-toolkit installed on VM
+  - **Result:** Both uni+bi produce correct PII (person, address, phone) + safety classification
+  - **Note:** Ray Serve found `address: 123 Main St` that LitServe missed
 - [ ] Quick bench (`bench.py`) — sanity check on dev GPU
 
 #### Day 4 — Locust: Ray REST No-Batch (dev GPU, synthetic-medium)
@@ -691,9 +694,9 @@ Example: `results/ray-rest-B4-uni-synthetic-medium-run2.csv`
 | Day | Phase | Work | Key Output | Status |
 |-----|-------|------|-----------|--------|
 | 1 | Phase 0 | Environment, Docker, deps | Working container on dev GPU | **DONE** 2026-04-05 |
-| 2 | Phase 0 | Test data preparation (5 datasets) | All CSVs ready | **DONE** (3/5 synthetic, 2 scripted) |
-| 3 | Phase 1 | Ray Serve REST deployment (both models) | `serve_app.py` working | **NEXT** — build image in Jenkins first |
-| 4 | Phase 1 | Locust: REST no-batch (dev GPU, 3×2 runs) | Dev benchmarks | |
+| 2 | Phase 0 | Test data preparation (5 datasets) | All 5/5 CSVs ready | **DONE** 2026-04-05 |
+| 3 | Phase 1 | Ray Serve REST deployment (both models) | `serve_app.py` working | **DONE** 2026-04-05 (uni+bi verified) |
+| 4 | Phase 1 | Locust: REST no-batch (dev GPU, 3×2 runs) | Dev benchmarks | **NEXT** |
 | 5 | Phase 1 | Analysis, troubleshooting | `docs/ray-serve-rest-nobatch.md` | |
 | 6 | Phase 2 | Implement `@serve.batch` + env config | Batched deployment working | |
 | 7 | Phase 2 | Dev GPU: quick sweep B1–B4 (validate) | No OOMs, setup confirmed | |
