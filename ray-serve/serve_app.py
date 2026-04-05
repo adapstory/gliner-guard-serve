@@ -18,7 +18,6 @@ SAFETY_LABELS = ["safe", "unsafe"]
 @serve.deployment(
     num_replicas=1,
     max_ongoing_requests=int(os.environ.get("MAX_ONGOING_REQUESTS", "200")),
-    ray_actor_options={"num_gpus": 1},
 )
 class GLiNERGuardDeployment:
     def __init__(self):

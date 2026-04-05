@@ -43,6 +43,10 @@ services:
     ports:
       - "8000:8000"
       - "9000:9000"
+    shm_size: "2g"
+    environment:
+      - RAY_OBJECT_STORE_MEMORY=500000000
+      - RAY_SERVE_HTTP_HOST=0.0.0.0
     profiles: [ray-serve]
 
   locust:
