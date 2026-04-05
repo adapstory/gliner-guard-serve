@@ -197,12 +197,12 @@ gliner-guard-serve/
 - [x] Generate `prompts-short.csv` (500 rows, 20–80 words), `responses-short.csv`
 - [x] Generate `prompts-long.csv` (500 rows, 1000–2000 words), `responses-long.csv`
 - [x] Create `scripts/prepare_datasets.py` — download XSTest + AYA Russian from HuggingFace
-- [ ] Generate `xstest.csv` (450 rows) — **script ready, not yet run** (`make generate-data-external`)
-- [ ] Generate `aya-rus.csv` (500 rows) — **script ready, not yet run** (requires `datasets` library)
+- [x] Generate `xstest.csv` (450 rows) — generated via `make generate-data-external`
+- [x] Generate `aya-rus.csv` (717 rows) — generated (full Russian subset sample)
 - [x] Update `test-gliner.py` — now uses `DATASET` env var (e.g. `DATASET=prompts-short`)
 - [x] Create `scripts/collect_gpu_metrics.sh` — nvidia-smi CSV logger with duration control
 
-**Deliverable:** Synthetic data ready (3/5 datasets). External datasets scripted but not generated. Docker builds pending Jenkins. All automation (Makefile, docker-compose) in place.
+**Deliverable:** All 5/5 datasets ready. Docker builds pending Jenkins. All automation (Makefile, docker-compose) in place.
 
 ---
 
