@@ -5,7 +5,7 @@
 > **Baseline:** LitServe + GLiNER-2 · PyTorch bf16 · 148.2 RPS, P50 570ms, P95 1500ms (A100 80G)
 > **Models:** `hivetrace/gliner-guard-uniencoder` (147M) + `hivetrace/gliner-guard-biencoder` (145M)
 >
-> **Status:** Phase 0 + Phase 1 complete (2026-04-05). Phase 2 (dynamic batching) ready to start.
+> **Status:** Phase 0 + Phase 1 + Phase 2 Day 6-7 complete (2026-04-05). Phase 2 Days 8-12 (cloud VM full sweep) ready to start.
 > **Infra:** Docker Compose (profiles: litserve/ray-serve), Makefile automation, Jenkins CI (Kaniko → Harbor), GitOps (ArgoCD on K3s).
 > **Repo:** [adapstory/gliner-guard-serve](https://github.com/adapstory/gliner-guard-serve) (fork of bogdanminko)
 
@@ -295,57 +295,33 @@ For each model (uniencoder + biencoder):
 
 **Objective:** Full parameter sweep for both encoders. On dev GPU first (Days 6–7), then final runs on A100 (Days 8–11).
 
-#### Day 6 — Implement `@serve.batch`
+#### Day 6 — Implement `@serve.batch` (DONE 2026-04-05)
 
-```python
-@serve.deployment(
-    num_replicas=1,
-    max_ongoing_requests=200,
-    ray_actor_options={"num_gpus": 1},
-)
-class GLiNERGuardBatched:
-    def __init__(self):
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model = GLiNER2.from_pretrained(MODEL_ID)
-        self.model.to(self.device).to(torch.bfloat16).eval()
-        self.schema = (
-            self.model.create_schema()
-            .entities(entity_types=["person", "address", "email", "phone"], threshold=0.4)
-            .classification(task="safety", labels=["safe", "unsafe"])
-        )
+- [x] Implemented `@serve.batch` in `serve_app.py` via `_build_deployment()` factory
+  - `MAX_BATCH_SIZE=0` → `GLiNERGuardDeployment` (no-batch, backward compatible)
+  - `MAX_BATCH_SIZE>0` → `GLiNERGuardBatched` (uses `@serve.batch` + `batch_extract()`)
+  - `BATCH_WAIT_TIMEOUT` controls batch collection window
+- [x] Fixed `docker-compose.yml` — added `environment:` section with `${MAX_BATCH_SIZE:-0}` interpolation (shell env vars now override `.env` file)
+- [x] Verified batching: 10 concurrent requests → all return 200 at same timestamp (~200ms), class name `GLiNERGuardBatched`
+- [x] Verified no-batch: `MAX_BATCH_SIZE=0` → class name `GLiNERGuardDeployment`, single `extract()` calls
+- [x] Created `scripts/run-batch-benchmarks.sh` — automated sweep with configurable CONFIGS array
 
-    @serve.batch(max_batch_size=16, batch_wait_timeout_s=0.05)
-    async def handle_batch(self, texts: list[str]) -> list[dict]:
-        results = self.model.batch_extract(
-            texts=texts,
-            schemas=self.schema,
-            batch_size=len(texts),
-        )
-        return results
+#### Day 7 — Dev GPU: Quick Sweep (DONE 2026-04-05)
 
-    async def __call__(self, request):
-        body = await request.json()
-        return await self.handle_batch(body["text"])
-```
+Run 1 repeat per config, 20 users, 15 min per run on RTX 5070 Ti (1/8 time-sliced):
 
-- [ ] Verify batching: send 10 concurrent requests, confirm `batch_extract` called with batch
-- [ ] Add env-based config: `MAX_BATCH_SIZE`, `BATCH_WAIT_TIMEOUT`, `MAX_ONGOING_REQUESTS`
-- [ ] Smoke test on dev GPU
+| Config | max_batch_size | batch_wait_timeout_s | RPS | P50 (ms) | P95 (ms) | Errors |
+|--------|:-------------:|:-------------------:|----:|--------:|---------:|-------:|
+| no-batch | — | — | 4.8 | 4,124 | 5,780 | 0 |
+| B1 | 8 | 0.01 | 3.2 | 6,093 | 8,359 | 0 |
+| B2 | 16 | 0.05 | 2.7 | 7,373 | 14,645 | 0 |
+| B3 | 32 | 0.05 | 2.6 | 7,739 | 14,298 | 0 |
+| B4 | 64 | 0.10 | 2.6 | 7,609 | 13,994 | 0 |
 
-#### Day 7 — Dev GPU: Quick Sweep (validate matrix works)
-
-Run 1 repeat per config (not 3) — just to validate setup works and catch OOMs:
-
-| ID | `max_batch_size` | `batch_wait_timeout_s` |
-|----|-----------------|----------------------|
-| B1 | 8 | 0.01 |
-| B2 | 16 | 0.05 |
-| B3 | 32 | 0.05 |
-| B4 | 64 | 0.10 |
-
-- [ ] Run B1–B4 for uniencoder on dev GPU (4 × 15 min = 1h)
-- [ ] Verify no OOMs, results are parseable
-- [ ] Adjust batch sizes if dev GPU has less VRAM
+- [x] Run B1–B4 for uniencoder on dev GPU (4 × 15 min = 1h)
+- [x] Verified: 0 OOMs, 0 errors, all results parseable
+- [x] Finding: **batching is slower on 1/8 time-sliced GPU** — expected due to ~2GB effective VRAM and 12.5% compute. Batch parallelism can't help when compute is the bottleneck. Real test will be on full GPU with >50 users.
+- [x] Full analysis: `docs/ray-serve-dynamic-batching-dev.md`
 
 #### Days 8–10 — A100: Full Batch Sweep (both encoders)
 
