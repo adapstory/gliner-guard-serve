@@ -47,6 +47,10 @@ services:
     environment:
       - RAY_OBJECT_STORE_MEMORY=500000000
       - RAY_memory_monitor_refresh_ms=0
+      - MAX_BATCH_SIZE=${MAX_BATCH_SIZE:-0}
+      - BATCH_WAIT_TIMEOUT=${BATCH_WAIT_TIMEOUT:-0.05}
+      - MODEL_ID=${MODEL_ID:-hivetrace/gliner-guard-uniencoder}
+      - MAX_ONGOING_REQUESTS=${MAX_ONGOING_REQUESTS:-200}
     profiles: [ray-serve]
 
   locust:
