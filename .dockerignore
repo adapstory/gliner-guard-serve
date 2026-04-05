@@ -1,0 +1,17 @@
+.git
+.gitignore
+.env
+.DS_Store
+__pycache__
+*.pyc
+*.pyo
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+venv
+results/
+docs/
+.claude/
+*.md
+!README.md
