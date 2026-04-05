@@ -5,7 +5,7 @@
 > **Baseline:** LitServe + GLiNER-2 · PyTorch bf16 · 148.2 RPS, P50 570ms, P95 1500ms (A100 80G)
 > **Models:** `hivetrace/gliner-guard-uniencoder` (147M) + `hivetrace/gliner-guard-biencoder` (145M)
 >
-> **Status:** Phase 0 + Phase 1 Day 3 complete (2026-04-05). Day 4 (Locust benchmarks) ready to start.
+> **Status:** Phase 0 + Phase 1 Days 3-4 complete (2026-04-05). Day 5 (analysis) ready to start.
 > **Infra:** Docker Compose (profiles: litserve/ray-serve), Makefile automation, Jenkins CI (Kaniko → Harbor), GitOps (ArgoCD on K3s).
 > **Repo:** [adapstory/gliner-guard-serve](https://github.com/adapstory/gliner-guard-serve) (fork of bogdanminko)
 
@@ -256,10 +256,28 @@ app = GLiNERGuardDeployment.bind()
 #### Day 4 — Locust: Ray REST No-Batch (dev GPU, synthetic-medium)
 
 For each model (uniencoder + biencoder):
-- [ ] Run Locust × 3 repeats: `locust -f test-gliner.py -u 100 -r 1 --run-time 15m`
-- [ ] Collect GPU metrics in parallel: `./collect_gpu_metrics.sh gpu_metrics.csv 900`
-- [ ] Save: `results/ray-rest-nobatch-uni-{run1,run2,run3}.csv`
-- [ ] Save: `results/ray-rest-nobatch-bi-{run1,run2,run3}.csv`
+- [x] Run Locust × 3 repeats: `scripts/run-nobatch-benchmarks.sh` (20 users, 15m per run)
+- [x] Collect GPU metrics in parallel: `collect_gpu_metrics.sh` (automated by runner script)
+- [x] Save: `results/ray-rest-nobatch-uni-prompts-run{1,2,3}_stats.csv`
+- [x] Save: `results/ray-rest-nobatch-bi-prompts-run{1,2,3}_stats.csv`
+
+**Dev GPU Results (RTX 5070 Ti, 20 users, NOT for final comparison):**
+
+| Model | Run | RPS | P50 (ms) | P95 (ms) | Errors |
+|-------|-----|----:|--------:|---------:|-------:|
+| uni | 1 | 4.8 | 4139 | 6014 | 0 |
+| uni | 2 | 4.8 | 4130 | 5868 | 0 |
+| uni | 3 | 4.8 | 4102 | 5457 | 0 |
+| **uni avg** | | **4.8** | **4124** | **5780** | **0** |
+| bi | 1 | 4.9 | 4055 | 5413 | 0 |
+| bi | 2 | 4.8 | 4099 | 5834 | 0 |
+| bi | 3 | 4.9 | 4055 | 5542 | 0 |
+| **bi avg** | | **4.9** | **4070** | **5596** | **0** |
+
+**Notes:**
+- 100 users caused OOM (83% failure rate). Reduced to 20 users.
+- Dev GPU is 1/8 time-sliced RTX 5070 Ti — numbers are ~30x lower than A100 baseline.
+- BiEncoder slightly faster P50 (4070 vs 4124 ms) — marginal difference.
 
 #### Day 5 — Analysis
 
@@ -696,7 +714,7 @@ Example: `results/ray-rest-B4-uni-synthetic-medium-run2.csv`
 | 1 | Phase 0 | Environment, Docker, deps | Working container on dev GPU | **DONE** 2026-04-05 |
 | 2 | Phase 0 | Test data preparation (5 datasets) | All 5/5 CSVs ready | **DONE** 2026-04-05 |
 | 3 | Phase 1 | Ray Serve REST deployment (both models) | `serve_app.py` working | **DONE** 2026-04-05 (uni+bi verified) |
-| 4 | Phase 1 | Locust: REST no-batch (dev GPU, 3×2 runs) | Dev benchmarks | **NEXT** |
+| 4 | Phase 1 | Locust: REST no-batch (dev GPU, 3×2 runs) | Dev benchmarks | **DONE** 2026-04-05 |
 | 5 | Phase 1 | Analysis, troubleshooting | `docs/ray-serve-rest-nobatch.md` | |
 | 6 | Phase 2 | Implement `@serve.batch` + env config | Batched deployment working | |
 | 7 | Phase 2 | Dev GPU: quick sweep B1–B4 (validate) | No OOMs, setup confirmed | |

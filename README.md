@@ -29,5 +29,11 @@ Cгенерированы скриптом `scripts/generate_data.py`
 <!-- BENCH:START -->
 | benchmark | RPS | P50 (ms) | P95 (ms) |
 |-----------|----:|--------:|---------:|
-| litserve-baseline | 148.2 | 570 | 1500 |
+| litserve-baseline (A100 fp16) | 148.2 | 570 | 1500 |
+| ray-nobatch-uni-run1 (RTX 5070 Ti) | 4.8 | 4139 | 6014 |
+| ray-nobatch-uni-run2 (RTX 5070 Ti) | 4.8 | 4130 | 5868 |
+| ray-nobatch-uni-run3 (RTX 5070 Ti) | 4.8 | 4102 | 5457 |
+| ray-nobatch-bi-run1 (RTX 5070 Ti) | 4.9 | 4055 | 5413 |
+| ray-nobatch-bi-run2 (RTX 5070 Ti) | 4.8 | 4099 | 5834 |
+| ray-nobatch-bi-run3 (RTX 5070 Ti) | 4.9 | 4055 | 5542 |
 <!-- BENCH:END -->
