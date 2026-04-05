@@ -1,8 +1,8 @@
-# Session Report: Phase 0 Completion + Phase 1 Day 3
+# Session Report: Phase 0 + Phase 1 (Days 1–4)
 
 **Date:** 2026-04-05
-**Duration:** ~2 hours
-**Scope:** GLiNER Guard Serve — Ray Serve experiment infrastructure bootstrap and smoke test
+**Duration:** ~4 hours
+**Scope:** GLiNER Guard Serve — full Phase 0 closure + Phase 1 (deployment, smoke test, benchmarks)
 **VM:** 192.168.1.3 (K3s single-node, RTX 5070 Ti 16GB, 39GB RAM)
 
 ---
@@ -10,8 +10,9 @@
 ## Objectives
 
 1. Close remaining Phase 0 items (datasets, Docker images)
-2. Deploy Ray Serve on dev GPU and verify both models
+2. Deploy Ray Serve on dev GPU and verify both models (Day 3)
 3. Establish docker compose workflow on the VM
+4. Run Locust benchmarks: Ray REST no-batch, 3 repeats × 2 models (Day 4)
 
 ---
 
@@ -206,20 +207,82 @@ systemctl restart docker
 | `3f31e10` | fix: resolve Ray Serve OOM — limit object store, remove num_gpus |
 | `1b933ce` | fix: use serve.start() with explicit http_options host 0.0.0.0 |
 | `816032d` | docs: mark Phase 1 Day 3 complete — both models verified on dev GPU |
+| `332bd55` | feat: add no-batch benchmark runner + fix route to /predict |
+| `8346a24` | fix: benchmark runner resilience + reduce users to 20 for dev GPU |
+| `cb43fe7` | feat: Phase 1 Day 4 complete — Ray REST no-batch benchmarks (dev GPU) |
 
 ---
 
-## Next Steps (Day 4)
+## Phase 1 Day 4: Locust Benchmarks — Ray REST No-Batch
 
-1. **Quick bench** (`bench.py`) — sanity check RPS on dev GPU
-2. **Locust benchmarks:** Ray REST no-batch, 3 repeats x 2 models
-   - `make bench-ray-nobatch-uni RUN=1` (requires K3s workloads scaled down for RAM)
-   - Save results to `results/ray-rest-nobatch-{uni,bi}-run{1,2,3}.csv`
-3. **GPU metrics:** `scripts/collect_gpu_metrics.sh` in parallel with Locust
+### Setup
 
-### Known Constraints for Dev GPU Benchmarks
+- **Benchmark runner:** `scripts/run-nobatch-benchmarks.sh` — automated 3×2 suite
+- **Locust config:** 20 users, spawn rate 1/s, 15 min per run, dataset `prompts` (500 rows, ~2500 chars avg)
+- **GPU metrics:** `collect_gpu_metrics.sh` ran in parallel with each Locust test
+- **Warmup:** 50 curl requests before each run
+- **Protocol:** stop server between runs for clean state
 
-- **RAM pressure:** Must scale down ~4GB of K3s workloads before running Ray Serve
-- **GPU:** RTX 5070 Ti 16GB, 1/8 time-sliced — numbers NOT for final comparison (final = cloud VM with dedicated GPU)
-- **Locust:** Runs on same VM (not separate machine) — slight measurement noise
-- **Jenkins:** Needs retriggering with latest code for Harbor push (builds #55/#56 failed on old code)
+### Failed first attempt (100 users)
+
+First run with 100 concurrent users produced 83% failure rate (18,454 out of 22,120 requests failed):
+
+| Error | Count |
+|-------|------:|
+| `HTTPConnectionClosed('connection closed.')` | 16,566 |
+| `LocustBadStatusCode(code=404)` | 1,295 |
+| `LocustBadStatusCode(code=500)` | 593 |
+
+**Root cause:** Ray Serve workers killed by memory pressure (OOM). 100 concurrent users × ~4s latency = ~400 in-flight requests. Ray's memory monitor killed workers, causing connection resets. The 404 errors came from requests hitting the proxy while replicas were restarting.
+
+**Fix:** Reduced to 20 users + disabled `RAY_memory_monitor_refresh_ms=0` in docker-compose.
+
+### Results (20 users, 0 errors)
+
+| Model | Run | RPS | P50 (ms) | P95 (ms) | Total Reqs | Errors |
+|-------|-----|----:|--------:|---------:|-----------:|-------:|
+| Uniencoder | 1 | 4.8 | 4,139 | 6,014 | 4,292 | 0 |
+| Uniencoder | 2 | 4.8 | 4,130 | 5,868 | ~4,300 | 0 |
+| Uniencoder | 3 | 4.8 | 4,102 | 5,457 | ~4,300 | 0 |
+| **Uni avg** | | **4.8** | **4,124** | **5,780** | | **0** |
+| Biencoder | 1 | 4.9 | 4,055 | 5,413 | ~4,400 | 0 |
+| Biencoder | 2 | 4.8 | 4,099 | 5,834 | ~4,300 | 0 |
+| Biencoder | 3 | 4.9 | 4,055 | 5,542 | ~4,400 | 0 |
+| **Bi avg** | | **4.9** | **4,070** | **5,596** | | **0** |
+
+### Analysis
+
+1. **Stability:** Extremely consistent — RPS standard deviation < 0.1, zero errors across all 6 runs
+2. **Uni vs Bi:** Biencoder marginally faster (P50 4,070 vs 4,124 ms, +1.3%). Difference is within noise
+3. **Dev GPU vs A100 baseline:** ~30x slower (4.8 vs 148 RPS). Expected — RTX 5070 Ti is 1/8 time-sliced, much less compute than dedicated A100 80GB
+4. **P95 tail latency:** P95/P50 ratio ~1.4x, reasonable for no-batch single-request processing
+5. **P95 improving over runs:** Uni P95 dropped 6,014 → 5,868 → 5,457 ms across runs (HuggingFace model cache warming)
+
+### Artifacts
+
+| Type | Files |
+|------|-------|
+| Locust stats CSV | `results/ray-rest-nobatch-{uni,bi}-prompts-run{1,2,3}_stats.csv` |
+| Locust HTML reports | `results/ray-rest-nobatch-{uni,bi}-prompts-run{1,2,3}.html` |
+| GPU metrics | `results/gpu-ray-rest-nobatch-{uni,bi}-prompts-run{1,2,3}.csv` |
+| Runner script | `scripts/run-nobatch-benchmarks.sh` |
+| Runner log | `results/benchmark-run.log` (on VM only) |
+
+---
+
+## Known Constraints
+
+- **RAM pressure:** Must scale down ~4GB of K3s workloads (OpenSearch, Kafka Connect, Dify, Open-WebUI) before running Ray Serve. Restored after benchmarks.
+- **GPU:** RTX 5070 Ti 16GB, 1/8 time-sliced — dev GPU numbers NOT for final comparison (final = cloud VM with dedicated GPU)
+- **Locust:** Runs on same VM as server (not separate machine) — slight measurement noise from CPU contention
+- **Jenkins:** Needs retriggering with latest code for Harbor push (builds #55/#56 failed on old Python 3.14 code)
+- **100 users:** OOMs on dev setup. Cloud VM with more RAM should handle 100 users fine.
+
+---
+
+## Next Steps (Day 5)
+
+1. **Analysis document:** `docs/ray-serve-rest-nobatch.md` — compare uni vs bi, identify bottlenecks
+2. **GPU utilization analysis:** Parse `gpu-*.csv` files for utilization %, VRAM, power draw
+3. **Comparison with LitServe:** Cannot directly compare (different GPU). Note this in analysis.
+4. **Phase 2 prep:** Implement `@serve.batch` + env-based config for batch sweep
