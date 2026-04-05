@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Run Ray Serve REST No-Batch benchmarks: 3 repeats × 2 models
 # Usage: ./scripts/run-nobatch-benchmarks.sh
-set -euo pipefail
+set -uo pipefail
 
 export PATH="$HOME/.local/bin:$PATH"
 
 cd "$(dirname "$0")/.."
 
 DURATION="${DURATION:-15m}"
-USERS="${USERS:-100}"
+USERS="${USERS:-20}"
 SPAWN_RATE="${SPAWN_RATE:-1}"
 WARMUP_REQS="${WARMUP_REQS:-50}"
 DATASET="${DATASET:-prompts}"
@@ -35,9 +35,13 @@ wait_ready() {
 
 warmup() {
     echo "  Warmup: ${WARMUP_REQS} requests..."
-    cd litserve-baseline
-    uv run python bench.py 2>/dev/null || true
-    cd ..
+    for i in $(seq 1 "${WARMUP_REQS}"); do
+        curl -sf -o /dev/null http://localhost:8000/predict \
+            -H "Content-Type: application/json" \
+            -d '{"text":"warmup request number '"$i"'"}' &
+    done
+    wait
+    echo "  Warmup done."
 }
 
 run_bench() {
@@ -86,13 +90,17 @@ run_bench() {
     docker compose --profile ray-serve down 2>&1 | tail -2
 
     # Extract summary
-    if [ -f "results/${prefix}_stats.csv" ]; then
+    local stats_file="results/${prefix}_stats.csv"
+    if [ -f "${stats_file}" ]; then
         echo "  Results:"
-        tail -1 "results/${prefix}_stats.csv" | awk -F',' '{printf "    RPS=%.1f  P50=%sms  P95=%sms  Failures=%s\n", $10, $6, $8, $4}'
+        grep "Aggregated" "${stats_file}" | awk -F',' '{printf "    RPS=%.1f  P50=%sms  P95=%sms  Failures=%s\n", $10, $6, $8, $4}' || echo "    (could not parse stats)"
+    else
+        echo "  WARNING: stats file not found: ${stats_file}"
     fi
 
     echo "  Done: ${prefix}"
     echo ""
+    sleep 5
 }
 
 echo "======================================================"

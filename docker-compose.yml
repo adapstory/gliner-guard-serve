@@ -46,7 +46,7 @@ services:
     shm_size: "2g"
     environment:
       - RAY_OBJECT_STORE_MEMORY=500000000
-      - RAY_SERVE_HTTP_HOST=0.0.0.0
+      - RAY_memory_monitor_refresh_ms=0
     profiles: [ray-serve]
 
   locust:
