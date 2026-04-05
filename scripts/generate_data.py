@@ -1,14 +1,15 @@
 """Generate prompts.csv and responses.csv with synthetic text data.
 
-Each row contains realistic-looking noisy text averaging ~320 words,
-with a minimum of 128 and maximum of 512 words.
+Usage:
+    python generate_data.py                           # default: 500 rows, 128-512 words
+    python generate_data.py --min-words 20 --max-words 80 --suffix short
+    python generate_data.py --min-words 1000 --max-words 2000 --suffix long
 """
 
+import argparse
 import csv
 import random
 import string
-
-NUM_ROWS = 500
 
 TOPICS = [
     "machine learning model deployment",
@@ -87,10 +88,26 @@ FILLER_SENTENCES = [
 ]
 
 NOISE_WORDS = [
-    "essentially", "basically", "furthermore", "additionally", "moreover",
-    "specifically", "particularly", "generally", "typically", "usually",
-    "consequently", "therefore", "however", "nevertheless", "meanwhile",
-    "accordingly", "subsequently", "ultimately", "presumably", "arguably",
+    "essentially",
+    "basically",
+    "furthermore",
+    "additionally",
+    "moreover",
+    "specifically",
+    "particularly",
+    "generally",
+    "typically",
+    "usually",
+    "consequently",
+    "therefore",
+    "however",
+    "nevertheless",
+    "meanwhile",
+    "accordingly",
+    "subsequently",
+    "ultimately",
+    "presumably",
+    "arguably",
 ]
 
 
@@ -103,7 +120,7 @@ def add_noise(text: str) -> str:
             result.append(random.choice(NOISE_WORDS))
         if random.random() < 0.02 and len(w) > 3:
             i = random.randint(1, len(w) - 2)
-            w = w[:i] + w[i + 1] + w[i] + w[i + 2:]
+            w = w[:i] + w[i + 1] + w[i] + w[i + 2 :]
         if random.random() < 0.01:
             w = w + random.choice(string.ascii_lowercase)
         result.append(w)
@@ -133,19 +150,38 @@ def generate_text(min_words: int = 128, max_words: int = 512) -> str:
 
 
 def main():
-    with open("test-script/prompts.csv", "w", newline="") as f:
+    parser = argparse.ArgumentParser(description="Generate synthetic benchmark data")
+    parser.add_argument("--min-words", type=int, default=128)
+    parser.add_argument("--max-words", type=int, default=512)
+    parser.add_argument("--num-rows", type=int, default=500)
+    parser.add_argument(
+        "--suffix",
+        type=str,
+        default="",
+        help="File suffix, e.g. 'short' → prompts-short.csv",
+    )
+    args = parser.parse_args()
+
+    tag = f"-{args.suffix}" if args.suffix else ""
+
+    prompts_path = f"test-script/prompts{tag}.csv"
+    with open(prompts_path, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["user_msg"])
-        for _ in range(NUM_ROWS):
-            writer.writerow([generate_text()])
+        for _ in range(args.num_rows):
+            writer.writerow([generate_text(args.min_words, args.max_words)])
 
-    with open("test-script/responses.csv", "w", newline="") as f:
+    responses_path = f"test-script/responses{tag}.csv"
+    with open(responses_path, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["assistant_msg"])
-        for _ in range(NUM_ROWS):
-            writer.writerow([generate_text()])
+        for _ in range(args.num_rows):
+            writer.writerow([generate_text(args.min_words, args.max_words)])
 
-    print(f"Generated test-script/prompts.csv and test-script/responses.csv with {NUM_ROWS} rows each.")
+    print(
+        f"Generated {prompts_path} and {responses_path} "
+        f"with {args.num_rows} rows each ({args.min_words}-{args.max_words} words)."
+    )
 
 
 if __name__ == "__main__":
