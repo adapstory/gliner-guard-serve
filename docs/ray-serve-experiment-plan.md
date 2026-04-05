@@ -4,6 +4,24 @@
 > **Duration:** 20 days
 > **Baseline:** LitServe + GLiNER-2 · PyTorch bf16 · 148.2 RPS, P50 570ms, P95 1500ms (A100 80G)
 > **Models:** `hivetrace/gliner-guard-uniencoder` (147M) + `hivetrace/gliner-guard-biencoder` (145M)
+>
+> **Status:** Phase 0 complete (2026-04-05). Phase 1 ready to start.
+> **Infra:** Docker Compose (profiles: litserve/ray-serve), Makefile automation, Jenkins CI (Kaniko → Harbor), GitOps (ArgoCD on K3s).
+> **Repo:** [adapstory/gliner-guard-serve](https://github.com/adapstory/gliner-guard-serve) (fork of bogdanminko)
+
+### PO Decisions (2026-04-05)
+
+| # | Decision | Impact |
+|---|----------|--------|
+| 1 | Temporary experiment — tear down after results, move to cloud | No production monitoring/OTEL/structured logging needed |
+| 2 | Makefile targets for benchmark automation | `make bench-litserve-uni RUN=1`, `make bench-all-ray-batch-uni` |
+| 3 | Reuse Jenkins Kaniko pipeline (heavy profile) | Added to existing `app-build` pipeline, no separate Jenkinsfile |
+| 4 | 1/8 GPU time-sliced for smoke test, full GPU on cloud VM | Dev K3s = functional validation only, final numbers from cloud |
+| 5 | Docker Compose on cloud VM for full experiment runs | `--profile litserve` / `--profile ray-serve` + locust service |
+
+### Precision Fix
+
+Original baseline code used `torch.float16` (fp16), but plan stated bf16. Fixed `litserve-baseline/main.py` to `torch.bfloat16`. Baseline CSV (148.2 RPS) was collected with fp16 — needs re-run with bf16 for fair comparison. Research confirms negligible quality difference for 147M DeBERTa model at inference.
 
 ---
 
@@ -85,45 +103,65 @@ Experiments run in two phases on different hardware to validate portability.
 
 | Stage | GPU | VRAM | CPU | Role |
 |-------|-----|------|-----|------|
-| **Dev** (Days 1–7) | Available GPU (T4 / RTX 3090 / etc.) | varies | varies | Functional validation, initial batching sweep |
-| **Prod** (Days 8–18) | A100 80G PCIe | 80 GB | 14 vCPU | Final benchmarks (all results reported from this) |
-| **Locust client** | — | — | 16 vCPU (separate VM) | Load generator |
+| **Dev / Smoke test** | RTX 5070 Ti (1/8 time-sliced via K3s GPU operator) | ~2 GB effective | varies | Functional validation only — not for final benchmarks |
+| **Cloud VM** (Days 8–18) | Dedicated GPU (TBD — A100/H100/etc.) | full | TBD | Final benchmarks (all results reported from this) |
+| **Locust client** | Same VM (docker compose) or separate | — | 4+ vCPU | Load generator via `docker compose` locust service |
+
+> **Update (2026-04-05):** Original plan assumed A100 80G PCIe. Actual cloud VM hardware TBD — will be selected based on availability/budget. K3s dev cluster (192.168.1.3) has RTX 5070 Ti with 8× time-slicing, suitable only for smoke tests. Locust runs inside docker compose on the same VM (not a separate machine), simplifying setup at the cost of slight measurement noise.
 
 ---
 
 ## 5. Experiment Structure
 
 ```
-ray-serve/
-├── serve_app.py                    # Ray Serve deployment (REST)
-├── serve_app_grpc.py               # Ray Serve deployment (gRPC)
-├── proto/
-│   ├── gliner_guard.proto          # Protobuf service definition
-│   ├── gliner_guard_pb2.py         # Generated stubs
-│   └── gliner_guard_pb2_grpc.py    # Generated gRPC stubs
-├── config/
-│   ├── serve_config_rest.yaml      # Ray Serve config (REST)
-│   └── serve_config_grpc.yaml      # Ray Serve config (gRPC)
-├── Dockerfile                      # Reproducible environment
-├── docker-compose.yml              # Server + monitoring
-├── pyproject.toml                  # Dependencies
-└── README.md                       # Setup & results
-
-test-script/
-├── test-gliner.py                  # Locust REST (existing)
-├── test-gliner-grpc.py             # Locust gRPC (new)
-├── prompts.csv                     # synthetic-medium (existing)
-├── responses.csv                   # synthetic-medium (existing)
-├── prompts-short.csv               # synthetic-short (new)
-├── prompts-long.csv                # synthetic-long (new)
-├── xstest.csv                      # XSTest safety (new)
-└── aya-rus.csv                     # AYA Russian (new)
-
-scripts/
-├── generate_data.py                # Existing (parameterize min/max words)
-├── prepare_datasets.py             # HuggingFace dataset download + convert
-├── collect_gpu_metrics.sh          # nvidia-smi logging during benchmarks
-└── gen-benchmark-table.py          # Existing
+gliner-guard-serve/
+├── docker-compose.yml              # Profiles: litserve, ray-serve + locust (DONE)
+├── Dockerfile.locust               # Headless Locust runner for compose (DONE)
+├── Makefile                        # 22 targets: bench-*, docker-*, data gen (DONE)
+├── .dockerignore                   # Shared ignore for all images (DONE)
+├── .env.example                    # All config variables documented (DONE)
+│
+├── litserve-baseline/
+│   ├── main.py                     # LitServe server, bf16 (DONE, was fp16)
+│   ├── bench.py                    # Quick async benchmark (existing)
+│   ├── Dockerfile                  # CUDA 12.8 + uv (DONE)
+│   ├── pyproject.toml              # Python 3.13 (existing)
+│   └── uv.lock                     # Frozen deps (existing)
+│
+├── ray-serve/
+│   ├── serve_app.py                # Ray Serve deployment, REST (DONE)
+│   ├── serve_app_grpc.py           # Ray Serve gRPC (Phase 3 — TODO)
+│   ├── proto/                      # Protobuf definitions (Phase 3 — TODO)
+│   ├── Dockerfile                  # CUDA 12.8 + uv (DONE)
+│   ├── pyproject.toml              # Python 3.12, ray[serve], grpcio (DONE)
+│   └── uv.lock                     # Frozen deps, 117 packages (DONE)
+│
+├── test-script/
+│   ├── test-gliner.py              # Locust REST, DATASET env var (DONE)
+│   ├── test-gliner-grpc.py         # Locust gRPC (Phase 3 — TODO)
+│   ├── prompts.csv                 # synthetic-medium, 500 rows (existing)
+│   ├── responses.csv               # synthetic-medium, 500 rows (existing)
+│   ├── prompts-short.csv           # synthetic-short, 500 rows (DONE)
+│   ├── prompts-long.csv            # synthetic-long, 500 rows (DONE)
+│   ├── responses-short.csv         # paired (DONE)
+│   ├── responses-long.csv          # paired (DONE)
+│   ├── xstest.csv                  # XSTest safety (script ready, not generated)
+│   └── aya-rus.csv                 # AYA Russian (script ready, not generated)
+│
+├── scripts/
+│   ├── generate_data.py            # Parameterized: --min/max-words, --suffix (DONE)
+│   ├── prepare_datasets.py         # HuggingFace download: XSTest + AYA (DONE)
+│   ├── collect_gpu_metrics.sh      # nvidia-smi CSV logger (DONE)
+│   └── gen-benchmark-table.py      # Locust CSV → README table (existing)
+│
+├── results/
+│   ├── litserve-baseline.csv       # OLD: fp16 baseline, 148.2 RPS (needs re-run)
+│   └── litserve-baseline.html      # OLD: fp16 Locust report
+│
+└── docs/
+    ├── ray-serve-experiment-plan.md # This file
+    ├── litserve-baseline.md         # LitServe baseline docs
+    └── benchmark-infra-design.md    # Infrastructure design spec (DONE)
 ```
 
 ---
@@ -132,67 +170,39 @@ scripts/
 
 ### Phase 0: Environment & Data (Days 1–2)
 
-#### Day 1 — Environment Setup
+#### Day 1 — Environment Setup (DONE 2026-04-05)
 
-- [ ] Create `ray-serve/` directory, `pyproject.toml`
-- [ ] Dependencies:
+- [x] Create `ray-serve/` directory, `pyproject.toml` — `ray-serve/pyproject.toml` (117 packages resolved)
+- [x] Dependencies — as planned, `uv lock` generates `ray-serve/uv.lock`
+- [x] Create `Dockerfile` — both `litserve-baseline/Dockerfile` and `ray-serve/Dockerfile`
+  - **Changed vs plan:** Using `COPY --from=ghcr.io/astral-sh/uv:latest` instead of apt install (cleaner, smaller image)
+  - **Added:** `HF_HOME=/app/.cache/huggingface` env var for model cache
+- [x] Create `serve_app.py` — env-configurable: `MODEL_ID`, `MAX_ONGOING_REQUESTS`
+- [ ] Verify Ray Serve starts on dev GPU — **blocked: image not yet built in Jenkins**
+- [ ] Smoke test — **blocked: same**
 
-```toml
-[project]
-name = "gliner-guard-ray-serve"
-requires-python = ">=3.12"
-dependencies = [
-    "ray[serve]>=2.46",
-    "gliner2>=1.2.4",
-    "torch==2.8.0",
-    "transformers>=5.0.0",
-    "grpcio>=1.71",
-    "grpcio-tools>=1.71",
-    "protobuf>=5.29",
-    "pydantic>=2.0.0",
-]
-```
+**Additional infra (not in original plan):**
+- [x] `docker-compose.yml` — profiles `litserve`/`ray-serve` + `locust` service, GPU passthrough, `hf-cache` volume
+- [x] `Dockerfile.locust` — headless Locust runner for compose
+- [x] `.dockerignore` — exclude .git, results, docs, .env
+- [x] `.env.example` — all config variables documented
+- [x] `Makefile` — 22 targets: `bench-*` (per-config), `docker-*`, `generate-data-*`, `up-*`/`down`, `help`
+- [x] `litserve-baseline/main.py` — fixed `torch.float16` → `torch.bfloat16` (consistency with plan)
+- [x] Jenkins CI — added `gliner-guard-litserve` + `gliner-guard-ray-serve` to `app-build` pipeline (heavy profile, Kaniko → Harbor)
+- [x] GitOps — `runtimeClassName` support in universal-service chart, ArgoCD Application for litserve on K3s with GPU
 
-- [ ] Create `Dockerfile`:
+#### Day 2 — Test Data Preparation (DONE 2026-04-05)
 
-```dockerfile
-FROM nvidia/cuda:12.8.1-runtime-ubuntu24.04
+- [x] Parameterize `generate_data.py` for `--min-words` / `--max-words` / `--suffix` / `--num-rows`
+- [x] Generate `prompts-short.csv` (500 rows, 20–80 words), `responses-short.csv`
+- [x] Generate `prompts-long.csv` (500 rows, 1000–2000 words), `responses-long.csv`
+- [x] Create `scripts/prepare_datasets.py` — download XSTest + AYA Russian from HuggingFace
+- [ ] Generate `xstest.csv` (450 rows) — **script ready, not yet run** (`make generate-data-external`)
+- [ ] Generate `aya-rus.csv` (500 rows) — **script ready, not yet run** (requires `datasets` library)
+- [x] Update `test-gliner.py` — now uses `DATASET` env var (e.g. `DATASET=prompts-short`)
+- [x] Create `scripts/collect_gpu_metrics.sh` — nvidia-smi CSV logger with duration control
 
-RUN apt-get update && apt-get install -y python3.12 python3-pip curl && \
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-
-WORKDIR /app
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen
-
-COPY . .
-EXPOSE 8000 9000
-CMD ["uv", "run", "serve", "run", "serve_app:app", "--host", "0.0.0.0", "--port", "8000"]
-```
-
-- [ ] Verify Ray Serve starts on dev GPU: `serve run serve_app:app`
-- [ ] Smoke test: single `/predict` returns correct result for both models
-
-#### Day 2 — Test Data Preparation
-
-- [ ] Parameterize `generate_data.py` for `--min-words` / `--max-words`
-- [ ] Generate `prompts-short.csv` (20–80 words), `prompts-long.csv` (1000–2000 words)
-- [ ] Create `scripts/prepare_datasets.py` — download XSTest + AYA Russian
-- [ ] Generate `xstest.csv` (450 rows), `aya-rus.csv` (500 rows)
-- [ ] Update `test-gliner.py` to accept `--dataset` flag (prompts / prompts-short / prompts-long / xstest / aya-rus)
-- [ ] Create `scripts/collect_gpu_metrics.sh`:
-
-```bash
-#!/bin/bash
-# Usage: ./collect_gpu_metrics.sh <output_file> <duration_seconds>
-nvidia-smi --query-gpu=timestamp,utilization.gpu,utilization.memory,memory.used,memory.total,power.draw \
-  --format=csv,nounits -l 1 > "$1" &
-PID=$!
-sleep "$2"
-kill $PID
-```
-
-**Deliverable:** All test data ready, Docker builds, dev GPU validated.
+**Deliverable:** Synthetic data ready (3/5 datasets). External datasets scripted but not generated. Docker builds pending Jenkins. All automation (Makefile, docker-compose) in place.
 
 ---
 
@@ -678,28 +688,32 @@ Example: `results/ray-rest-B4-uni-synthetic-medium-run2.csv`
 
 ## 12. Calendar View
 
-| Day | Phase | Work | Key Output |
-|-----|-------|------|-----------|
-| 1 | Phase 0 | Environment, Docker, deps | Working container on dev GPU |
-| 2 | Phase 0 | Test data preparation (5 datasets) | All CSVs ready |
-| 3 | Phase 1 | Ray Serve REST deployment (both models) | `serve_app.py` working |
-| 4 | Phase 1 | Locust: REST no-batch (dev GPU, 3×2 runs) | Dev benchmarks |
-| 5 | Phase 1 | Analysis, troubleshooting | `docs/ray-serve-rest-nobatch.md` |
-| 6 | Phase 2 | Implement `@serve.batch` + env config | Batched deployment working |
-| 7 | Phase 2 | Dev GPU: quick sweep B1–B4 (validate) | No OOMs, setup confirmed |
-| 8 | Phase 2 | **A100**: Uniencoder B1–B6 (18 runs) | Raw results |
-| 9 | Phase 2 | **A100**: Uniencoder B7–B11 (15 runs) | Raw results |
-| 10 | Phase 2 | **A100**: Biencoder B1–B11 (33 runs) | Raw results |
-| 11 | Phase 2 | **A100**: Dataset sweep (24 runs) | Raw results |
-| 12 | Phase 2 | Batching analysis + plots | `docs/ray-serve-dynamic-batching.md`, **checkpoint** |
-| 13 | Phase 3 | Proto + gRPC deployment | `serve_app_grpc.py` working |
-| 14 | Phase 3 | gRPC Locust adapter | `test-gliner-grpc.py` validated |
-| 15 | Phase 3 | **A100**: REST vs gRPC R1–R8 (24 runs) | Raw results |
-| 16 | Phase 3 | **A100**: Cross-dataset R9–R12 (12 runs) | Raw results |
-| 17 | Phase 3 | Protocol analysis | `docs/ray-serve-rest-vs-grpc.md`, **checkpoint** |
-| 18 | Phase 4 | Re-run LitServe baselines on A100 (fair comp) | Apples-to-apples numbers |
-| 19 | Phase 4 | Final report | `docs/ray-serve-final-report.md` |
-| 20 | Phase 4 | PR + peer review | PR ready |
+| Day | Phase | Work | Key Output | Status |
+|-----|-------|------|-----------|--------|
+| 1 | Phase 0 | Environment, Docker, deps | Working container on dev GPU | **DONE** 2026-04-05 |
+| 2 | Phase 0 | Test data preparation (5 datasets) | All CSVs ready | **DONE** (3/5 synthetic, 2 scripted) |
+| 3 | Phase 1 | Ray Serve REST deployment (both models) | `serve_app.py` working | **NEXT** — build image in Jenkins first |
+| 4 | Phase 1 | Locust: REST no-batch (dev GPU, 3×2 runs) | Dev benchmarks | |
+| 5 | Phase 1 | Analysis, troubleshooting | `docs/ray-serve-rest-nobatch.md` | |
+| 6 | Phase 2 | Implement `@serve.batch` + env config | Batched deployment working | |
+| 7 | Phase 2 | Dev GPU: quick sweep B1–B4 (validate) | No OOMs, setup confirmed | |
+| 8 | Phase 2 | **Cloud VM**: Uniencoder B1–B6 (18 runs) | Raw results | |
+| 9 | Phase 2 | **Cloud VM**: Uniencoder B7–B11 (15 runs) | Raw results | |
+| 10 | Phase 2 | **Cloud VM**: Biencoder B1–B11 (33 runs) | Raw results | |
+| 11 | Phase 2 | **Cloud VM**: Dataset sweep (24 runs) | Raw results | |
+| 12 | Phase 2 | Batching analysis + plots | `docs/ray-serve-dynamic-batching.md`, **checkpoint** | |
+| 13 | Phase 3 | Proto + gRPC deployment | `serve_app_grpc.py` working | |
+| 14 | Phase 3 | gRPC Locust adapter | `test-gliner-grpc.py` validated | |
+| 15 | Phase 3 | **Cloud VM**: REST vs gRPC R1–R8 (24 runs) | Raw results | |
+| 16 | Phase 3 | **Cloud VM**: Cross-dataset R9–R12 (12 runs) | Raw results | |
+| 17 | Phase 3 | Protocol analysis | `docs/ray-serve-rest-vs-grpc.md`, **checkpoint** | |
+| 18 | Phase 4 | Re-run LitServe bf16 baseline on cloud VM | Apples-to-apples numbers | |
+| 19 | Phase 4 | Final report | `docs/ray-serve-final-report.md` | |
+| 20 | Phase 4 | PR + peer review | PR ready | |
+
+> **Note (2026-04-05):** "A100" replaced with "Cloud VM" — final hardware TBD.
+> Dev K3s (RTX 5070 Ti, 1/8 time-sliced) used for smoke tests only.
+> Benchmark automation via Makefile: `make bench-litserve-uni RUN=1`, `make bench-all-ray-batch-uni`.
 
 ---
 
