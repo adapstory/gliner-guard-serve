@@ -5,7 +5,7 @@
 > **Baseline:** LitServe + GLiNER-2 · PyTorch bf16 · 148.2 RPS, P50 570ms, P95 1500ms (A100 80G)
 > **Models:** `hivetrace/gliner-guard-uniencoder` (147M) + `hivetrace/gliner-guard-biencoder` (145M)
 >
-> **Status:** Phase 0 + Phase 1 Days 3-4 complete (2026-04-05). Day 5 (analysis) ready to start.
+> **Status:** Phase 0 + Phase 1 complete (2026-04-05). Phase 2 (dynamic batching) ready to start.
 > **Infra:** Docker Compose (profiles: litserve/ray-serve), Makefile automation, Jenkins CI (Kaniko → Harbor), GitOps (ArgoCD on K3s).
 > **Repo:** [adapstory/gliner-guard-serve](https://github.com/adapstory/gliner-guard-serve) (fork of bogdanminko)
 
@@ -279,15 +279,15 @@ For each model (uniencoder + biencoder):
 - Dev GPU is 1/8 time-sliced RTX 5070 Ti — numbers are ~30x lower than A100 baseline.
 - BiEncoder slightly faster P50 (4070 vs 4124 ms) — marginal difference.
 
-#### Day 5 — Analysis
+#### Day 5 — Analysis (DONE 2026-04-05)
 
-- [ ] Calculate mean ± std for RPS, P50, P95 across 3 runs per model
-- [ ] Compare uni vs bi on same hardware
-- [ ] Compare vs LitServe baseline (noting different GPU if dev != A100)
-- [ ] Identify bottlenecks: GPU util%, VRAM, serialization
-- [ ] Document: `docs/ray-serve-rest-nobatch.md`
+- [x] Calculate mean ± std for RPS, P50, P95 across 3 runs per model
+- [x] Compare uni vs bi on same hardware — no significant difference (+1.3% RPS, -1.6% P50)
+- [x] Compare vs LitServe baseline — invalid (different GPU), noted in analysis
+- [x] Identify bottlenecks: GPU compute (time-sliced) primary, no batching secondary, GPU metrics masked by time-slicing
+- [x] Document: `docs/ray-serve-rest-nobatch.md`
 
-**Deliverable:** Working deployment for both models + dev GPU benchmarks.
+**Deliverable:** Working deployment for both models + dev GPU benchmarks + analysis document.
 
 ---
 
@@ -715,7 +715,7 @@ Example: `results/ray-rest-B4-uni-synthetic-medium-run2.csv`
 | 2 | Phase 0 | Test data preparation (5 datasets) | All 5/5 CSVs ready | **DONE** 2026-04-05 |
 | 3 | Phase 1 | Ray Serve REST deployment (both models) | `serve_app.py` working | **DONE** 2026-04-05 (uni+bi verified) |
 | 4 | Phase 1 | Locust: REST no-batch (dev GPU, 3×2 runs) | Dev benchmarks | **DONE** 2026-04-05 |
-| 5 | Phase 1 | Analysis, troubleshooting | `docs/ray-serve-rest-nobatch.md` | |
+| 5 | Phase 1 | Analysis, troubleshooting | `docs/ray-serve-rest-nobatch.md` | **DONE** 2026-04-05 |
 | 6 | Phase 2 | Implement `@serve.batch` + env config | Batched deployment working | |
 | 7 | Phase 2 | Dev GPU: quick sweep B1–B4 (validate) | No OOMs, setup confirmed | |
 | 8 | Phase 2 | **Cloud VM**: Uniencoder B1–B6 (18 runs) | Raw results | |
