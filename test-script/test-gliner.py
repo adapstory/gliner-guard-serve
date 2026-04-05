@@ -7,11 +7,18 @@ from locust import FastHttpUser, constant_throughput, task
 load_dotenv()
 
 DATASET = os.getenv("DATASET", "prompts")
-PROMPTS_FILE = f"{DATASET}.csv" if DATASET != "prompts" else "prompts.csv"
-RESPONSES_FILE = "responses.csv"
+PROMPTS_FILE = f"{DATASET}.csv"
+# Match responses file to dataset (prompts-short → responses-short, etc.)
+RESPONSES_FILE = (
+    DATASET.replace("prompts", "responses") + ".csv"
+    if DATASET.startswith("prompts")
+    else None
+)
 
 prompts = pd.read_csv(PROMPTS_FILE)
-responses = pd.read_csv(RESPONSES_FILE) if os.path.exists(RESPONSES_FILE) else prompts
+_has_responses = RESPONSES_FILE and os.path.exists(RESPONSES_FILE)
+responses = pd.read_csv(RESPONSES_FILE) if _has_responses else prompts
+RESPONSE_COL = "assistant_msg" if _has_responses else "user_msg"
 
 ENTITY_TYPES = [
     "NAME",
@@ -37,7 +44,7 @@ class MLServiceUser(FastHttpUser):
     @task
     def predict_response(self):
         row = responses.sample(n=1).iloc[0]
-        response_text = row["assistant_msg"]
+        response_text = row[RESPONSE_COL]
         self.client.post(
             "/predict",
             json={
