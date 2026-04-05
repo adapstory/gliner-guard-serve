@@ -47,8 +47,8 @@ services:
 
   locust:
     build:
-      context: test-script
-      dockerfile: ../Dockerfile.locust
+      context: .
+      dockerfile: Dockerfile.locust
     image: gliner-guard-locust:dev
     volumes:
       - ./test-script:/app/data:ro
