@@ -16,10 +16,12 @@ RUN uv sync --frozen --no-dev
 
 COPY . .
 
-# Generate gRPC stubs from proto and install into site-packages
+# Generate gRPC stubs and fix imports for package-based import (proto.*)
 RUN uv run python -m grpc_tools.protoc \
     -I=proto --python_out=proto --grpc_python_out=proto \
     proto/gliner_guard.proto \
+    && sed -i 's/^import gliner_guard_pb2/from proto import gliner_guard_pb2/' \
+       proto/gliner_guard_pb2_grpc.py \
     && cp -r proto/ .venv/lib/python3.13/site-packages/proto/
 
 EXPOSE 8000 9000
