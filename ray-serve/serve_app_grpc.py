@@ -71,6 +71,13 @@ def _build_grpc_deployment():
             async def Predict(self, request) -> "PredictResponse":  # noqa: N802, F821
                 return await self._handle_batch(request)
 
+            async def __call__(self, request):
+                """REST fallback — used by health checks and REST clients."""
+                body = await request.json()
+                text = body["text"]
+                result = self.model.extract(text, self.schema)
+                return result
+
         return GLiNERGuardGrpcBatched
 
     @serve.deployment(
@@ -96,6 +103,13 @@ def _build_grpc_deployment():
         async def Predict(self, request) -> "PredictResponse":  # noqa: N802, F821
             result = self.model.extract(request.text, self.schema)
             return _to_response(result)
+
+        async def __call__(self, request):
+            """REST fallback — used by health checks and REST clients."""
+            body = await request.json()
+            text = body["text"]
+            result = self.model.extract(text, self.schema)
+            return result
 
     return GLiNERGuardGrpc
 
