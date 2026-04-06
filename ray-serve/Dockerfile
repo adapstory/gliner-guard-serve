@@ -15,5 +15,10 @@ RUN uv sync --frozen --no-dev
 
 COPY . .
 
+# Generate gRPC stubs from proto
+RUN uv run python -m grpc_tools.protoc \
+    -I=proto --python_out=proto --grpc_python_out=proto \
+    proto/gliner_guard.proto
+
 EXPOSE 8000 9000
 CMD ["uv", "run", "python", "serve_app.py"]

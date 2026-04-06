@@ -53,6 +53,26 @@ services:
       - MAX_ONGOING_REQUESTS=${MAX_ONGOING_REQUESTS:-200}
     profiles: [ray-serve]
 
+  ray-serve-grpc:
+    <<: *server
+    build:
+      context: ray-serve
+      dockerfile: Dockerfile
+    image: ${REGISTRY:-harbor.adapstory.com/adapstory}/gliner-guard-ray-serve:${TAG:-dev}
+    command: ["uv", "run", "python", "serve_app_grpc.py"]
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    shm_size: "2g"
+    environment:
+      - RAY_OBJECT_STORE_MEMORY=500000000
+      - RAY_memory_monitor_refresh_ms=0
+      - MAX_BATCH_SIZE=${MAX_BATCH_SIZE:-0}
+      - BATCH_WAIT_TIMEOUT=${BATCH_WAIT_TIMEOUT:-0.05}
+      - MODEL_ID=${MODEL_ID:-hivetrace/gliner-guard-uniencoder}
+      - MAX_ONGOING_REQUESTS=${MAX_ONGOING_REQUESTS:-200}
+    profiles: [ray-serve-grpc]
+
   locust:
     build:
       context: .
