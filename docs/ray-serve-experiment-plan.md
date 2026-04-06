@@ -5,7 +5,7 @@
 > **Baseline:** LitServe + GLiNER-2 · PyTorch bf16 · 148.2 RPS, P50 570ms, P95 1500ms (A100 80G)
 > **Models:** `hivetrace/gliner-guard-uniencoder` (147M) + `hivetrace/gliner-guard-biencoder` (145M)
 >
-> **Status:** Phase 0 + Phase 1 + Phase 2 Day 6-7 complete (2026-04-05). Phase 2 Days 8-12 (cloud VM full sweep) ready to start.
+> **Status:** Phase 0-1 done, Phase 2 Day 6-7 done, Phase 3 Day 13-14 done (2026-04-06). Cloud VM needed for: Phase 2 Days 8-12 (batch sweep) + Phase 3 Days 15-17 (gRPC benchmark).
 > **Infra:** Docker Compose (profiles: litserve/ray-serve), Makefile automation, Jenkins CI (Kaniko → Harbor), GitOps (ArgoCD on K3s).
 > **Repo:** [adapstory/gliner-guard-serve](https://github.com/adapstory/gliner-guard-serve) (fork of bogdanminko)
 
@@ -394,45 +394,19 @@ Use **best config from B1–B11** for each model. Run on all 5 datasets:
 
 ### Phase 3: REST vs gRPC (Days 13–17)
 
-#### Day 13 — Proto + gRPC Deployment
+#### Day 13 — Proto + gRPC Deployment (DONE 2026-04-06)
 
-```protobuf
-// proto/gliner_guard.proto
-syntax = "proto3";
-package gliner_guard;
+- [x] Proto: `ray-serve/proto/gliner_guard.proto` — `Predict` RPC, map entities + safety
+- [x] Stubs: generated during Docker build, flat imports, copied to site-packages
+- [x] `serve_app_grpc.py`: dual protocol (REST :8000 + gRPC :9000), batch toggle
+- [x] Docker Compose: `ray-serve-grpc` profile
+- [x] Smoke test: gRPC client → uniencoder → correct PII + safety response
+- [x] REST /predict health check works alongside gRPC
 
-service GLiNERGuardService {
-    rpc Predict (PredictRequest) returns (PredictResponse);
-}
-
-message PredictRequest {
-    string text = 1;
-}
-
-message Entity {
-    string type = 1;
-    string text = 2;
-    float confidence = 3;
-    int32 start = 4;
-    int32 end = 5;
-}
-
-message Classification {
-    string task = 1;
-    string label = 2;
-    float confidence = 3;
-}
-
-message PredictResponse {
-    repeated Entity entities = 1;
-    repeated Classification classifications = 2;
-}
-```
-
-- [ ] Generate stubs: `python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto proto/gliner_guard.proto`
-- [ ] Implement `serve_app_grpc.py` with `gRPCOptions(port=9000)`
-- [ ] Smoke test: gRPC client → both models → correct response
-- [ ] Verify REST still works alongside gRPC (dual port: 8000 + 9000)
+**Challenges resolved:**
+- Ray serialization: proto pb2 modules can't be pickled — lazy import in `_to_response()`
+- Proto import path: flat imports required (`gliner_guard_pb2`), not package-relative
+- REST health check: `__call__` method needed even on gRPC deployment
 
 #### Day 14 — gRPC Locust Adapter
 
@@ -487,10 +461,12 @@ class GrpcUser(User):
         self.channel.close()
 ```
 
-- [ ] Implement + test gRPC Locust user
-- [ ] Validate: 10 users × 1 min, metrics appear in Locust stats
-- [ ] Verify same data source as REST tests (prompts.csv)
-- [ ] Cross-check: gRPC response == REST response for same input
+- [x] Implemented `test-script/test-gliner-grpc.py` with `grpc.insecure_channel` + `GLiNERGuardServiceStub`
+- [x] Validated: 20 users × 5 min on dev GPU, 4.88 RPS, P50=200ms, 0 errors
+- [x] Same data source (prompts.csv) via `DATASET` env var
+- [x] Cross-check: gRPC response matches REST (same entities + safety)
+- [x] Created `scripts/run-grpc-benchmarks.sh` for automated REST vs gRPC sweep
+- [x] Analysis: `docs/ray-serve-grpc-dev.md`
 
 #### Days 15–16 — REST vs gRPC Benchmark (A100)
 
