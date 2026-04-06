@@ -16,13 +16,13 @@ RUN uv sync --frozen --no-dev
 
 COPY . .
 
-# Generate gRPC stubs and fix imports for package-based import (proto.*)
+# Generate gRPC stubs at root level (flat import: gliner_guard_pb2)
+# and copy into site-packages so Ray ProxyActor can import them
 RUN uv run python -m grpc_tools.protoc \
-    -I=proto --python_out=proto --grpc_python_out=proto \
+    -I=proto --python_out=. --grpc_python_out=. \
     proto/gliner_guard.proto \
-    && sed -i 's/^import gliner_guard_pb2/from proto import gliner_guard_pb2/' \
-       proto/gliner_guard_pb2_grpc.py \
-    && cp -r proto/ .venv/lib/python3.13/site-packages/proto/
+    && cp gliner_guard_pb2.py gliner_guard_pb2_grpc.py \
+       .venv/lib/python3.13/site-packages/
 
 EXPOSE 8000 9000
 CMD ["uv", "run", "python", "serve_app.py"]

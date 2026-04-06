@@ -20,7 +20,7 @@ SAFETY_LABELS = ["safe", "unsafe"]
 
 def _to_response(result):
     """Convert model result dict to PredictResponse proto."""
-    from proto import gliner_guard_pb2
+    import gliner_guard_pb2
 
     entities_map = {}
     for label, values in result.get("entities", {}).items():
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         grpc_options=gRPCOptions(
             port=9000,
             grpc_servicer_functions=[
-                "proto.gliner_guard_pb2_grpc.add_GLiNERGuardServiceServicer_to_server",
+                "gliner_guard_pb2_grpc.add_GLiNERGuardServiceServicer_to_server",
             ],
         ),
     )

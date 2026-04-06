@@ -9,10 +9,11 @@ import pandas as pd
 from dotenv import load_dotenv
 from locust import User, constant_throughput, events, task
 
-# Add ray-serve/proto to path so generated stubs are importable
+# Add ray-serve/ to path so generated stubs (flat) are importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "ray-serve"))
 
-from proto import gliner_guard_pb2, gliner_guard_pb2_grpc  # noqa: E402
+import gliner_guard_pb2  # noqa: E402
+import gliner_guard_pb2_grpc  # noqa: E402
 
 load_dotenv()
 

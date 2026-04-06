@@ -43,7 +43,7 @@ wait_ready_grpc() {
         if python3 -c "
 import grpc, sys
 sys.path.insert(0, 'ray-serve')
-from proto import gliner_guard_pb2, gliner_guard_pb2_grpc
+import gliner_guard_pb2, gliner_guard_pb2_grpc
 ch = grpc.insecure_channel('localhost:9000')
 stub = gliner_guard_pb2_grpc.GLiNERGuardServiceStub(ch)
 try:
@@ -76,7 +76,7 @@ warmup_grpc() {
     python3 -c "
 import grpc, sys
 sys.path.insert(0, 'ray-serve')
-from proto import gliner_guard_pb2, gliner_guard_pb2_grpc
+import gliner_guard_pb2, gliner_guard_pb2_grpc
 ch = grpc.insecure_channel('localhost:9000')
 stub = gliner_guard_pb2_grpc.GLiNERGuardServiceStub(ch)
 for i in range(${WARMUP_REQS}):
