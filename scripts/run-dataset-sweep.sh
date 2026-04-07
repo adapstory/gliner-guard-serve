@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# Run Ray Serve Dynamic Batching sweep: B1-B8 configs × N repeats
-# Usage: ./scripts/run-batch-benchmarks.sh                          (dev GPU: 1 repeat, 20 users)
-#   or:  REPEATS=3 USERS=100 ./scripts/run-batch-benchmarks.sh     (cloud VM: full sweep)
-#   or:  DURATION=2m USERS=10 ./scripts/run-batch-benchmarks.sh    (demo: verify scripts work)
+# Run dataset sweep with optimal batch config across all 5 datasets × 2 models (Day 11)
+# Usage: BATCH_ID=B4 MAX_BATCH_SIZE=16 BATCH_WAIT_TIMEOUT=0.05 ./scripts/run-dataset-sweep.sh
+#   or:  DURATION=2m USERS=10 REPEATS=1 ./scripts/run-dataset-sweep.sh   (demo mode)
 set -uo pipefail
 
 export PATH="$HOME/.local/bin:$PATH"
@@ -10,34 +9,39 @@ export PATH="$HOME/.local/bin:$PATH"
 cd "$(dirname "$0")/.."
 
 DURATION="${DURATION:-15m}"
-USERS="${USERS:-20}"
+USERS="${USERS:-100}"
 SPAWN_RATE="${SPAWN_RATE:-1}"
 WARMUP_REQS="${WARMUP_REQS:-50}"
-DATASET="${DATASET:-prompts}"
-REPEATS="${REPEATS:-1}"
-MODEL_ID="${MODEL_ID:-hivetrace/gliner-guard-uniencoder}"
-MODEL_SHORT="${MODEL_SHORT:-uni}"
+REPEATS="${REPEATS:-3}"
 
-# Batch configurations: "ID:max_batch_size:batch_wait_timeout"
-# B1-B8: systematic sweep (batch_size × timeout)
-# B9-B11: special configs (token-aware, max_ongoing_requests) — separate script
-CONFIGS=(
-    "B1:8:0.01"
-    "B2:8:0.05"
-    "B3:16:0.01"
-    "B4:16:0.05"
-    "B5:32:0.05"
-    "B6:32:0.10"
-    "B7:64:0.05"
-    "B8:64:0.10"
+# Optimal batch config (set from Phase 2 results)
+BATCH_ID="${BATCH_ID:-B4}"
+MAX_BATCH_SIZE="${MAX_BATCH_SIZE:-16}"
+BATCH_WAIT_TIMEOUT="${BATCH_WAIT_TIMEOUT:-0.05}"
+
+# Datasets to sweep (synthetic-medium already done in batch sweep)
+DATASETS=(
+    "prompts-short"
+    "prompts-long"
+    "xstest"
+    "aya-rus"
 )
 
-FAILED_CONFIGS=()
+# Models
+MODELS=(
+    "uni:hivetrace/gliner-guard-uniencoder"
+    "bi:hivetrace/gliner-guard-biencoder"
+)
+
+FAILED_MODELS=()
 
 mkdir -p results
 
+port_free() {
+    ! curl -sf -o /dev/null --connect-timeout 1 http://localhost:8000/ 2>/dev/null
+}
+
 container_alive() {
-    # Check if the ray-serve container is still running (not exited/crashed)
     local state
     state=$(docker compose --profile ray-serve ps --format '{{.State}}' ray-serve 2>/dev/null)
     [[ "${state}" == "running" ]]
@@ -52,7 +56,6 @@ wait_ready() {
             echo "  Server ready!"
             return 0
         fi
-        # Early exit: if container crashed, don't keep waiting
         if ! container_alive; then
             echo "  FATAL: container exited (model load failure?)"
             return 1
@@ -75,24 +78,25 @@ warmup() {
 }
 
 run_bench() {
-    local batch_id="$1"
-    local batch_size="$2"
-    local batch_timeout="$3"
+    local model_short="$1"
+    local model_id="$2"
+    local dataset="$3"
     local run_num="$4"
-    local prefix="ray-rest-${batch_id}-${MODEL_SHORT}-${DATASET}-run${run_num}"
+    local prefix="ray-rest-${BATCH_ID}-${model_short}-${dataset}-run${run_num}"
 
     echo ""
     echo "=========================================="
-    echo "  Benchmark: ${prefix}"
-    echo "  Model: ${MODEL_ID}"
-    echo "  Batch: size=${batch_size}, timeout=${batch_timeout}"
+    echo "  Dataset Sweep: ${prefix}"
+    echo "  Model: ${model_id}"
+    echo "  Batch: ${BATCH_ID} (size=${MAX_BATCH_SIZE}, timeout=${BATCH_WAIT_TIMEOUT})"
+    echo "  Dataset: ${dataset}"
     echo "  Run: ${run_num}/${REPEATS}"
     echo "=========================================="
 
-    # Start server with batch config
-    echo "  Starting Ray Serve (batch_size=${batch_size}, timeout=${batch_timeout})..."
-    MAX_BATCH_SIZE="${batch_size}" BATCH_WAIT_TIMEOUT="${batch_timeout}" \
-        MODEL_ID="${MODEL_ID}" \
+    # Start server
+    echo "  Starting Ray Serve..."
+    MAX_BATCH_SIZE="${MAX_BATCH_SIZE}" BATCH_WAIT_TIMEOUT="${BATCH_WAIT_TIMEOUT}" \
+        MODEL_ID="${model_id}" \
         docker compose --profile ray-serve up -d ray-serve 2>&1 | tail -2
     if ! wait_ready; then
         echo "  FATAL: server didn't start. Stopping container..."
@@ -101,34 +105,32 @@ run_bench() {
         return 1
     fi
 
-    # Warmup
     warmup
 
-    # GPU metrics in background
+    # GPU metrics
     local gpu_csv="results/gpu-${prefix}.csv"
     local duration_secs
     duration_secs=$(echo "${DURATION}" | sed 's/m//' | awk '{print $1*60}')
     bash scripts/collect_gpu_metrics.sh "${gpu_csv}" "${duration_secs}" &
     local gpu_pid=$!
 
-    # Run Locust
+    # Locust
     echo "  Running Locust: ${USERS} users, ${SPAWN_RATE}/s, ${DURATION}..."
     cd test-script
-    DATASET="${DATASET}" GLINER_HOST=http://localhost:8000 \
+    DATASET="${dataset}" GLINER_HOST=http://localhost:8000 \
         uv run locust -f test-gliner.py \
         --headless -u "${USERS}" -r "${SPAWN_RATE}" --run-time "${DURATION}" \
         --csv="../results/${prefix}" \
         --html="../results/${prefix}.html" 2>&1 | tail -20
     cd ..
 
-    # Wait for GPU metrics
     wait "${gpu_pid}" 2>/dev/null || true
 
     # Stop server
     echo "  Stopping server..."
     docker compose --profile ray-serve down 2>&1 | tail -2
 
-    # Extract summary
+    # Summary
     local stats_file="results/${prefix}_stats.csv"
     if [ -f "${stats_file}" ]; then
         echo "  Results:"
@@ -142,52 +144,59 @@ run_bench() {
     sleep 5
 }
 
-total_runs=$(( ${#CONFIGS[@]} * REPEATS ))
+total_runs=$(( ${#DATASETS[@]} * ${#MODELS[@]} * REPEATS ))
 echo "======================================================"
-echo "  Ray Serve Dynamic Batching Sweep"
-echo "  Model: ${MODEL_SHORT} (${MODEL_ID})"
-echo "  Configs: ${#CONFIGS[@]} (B1-B8)"
-echo "  Repeats: ${REPEATS} per config"
+echo "  Dataset Sweep (Day 11)"
+echo "  Batch config: ${BATCH_ID} (size=${MAX_BATCH_SIZE}, timeout=${BATCH_WAIT_TIMEOUT})"
+echo "  Datasets: ${#DATASETS[@]} (${DATASETS[*]})"
+echo "  Models: ${#MODELS[@]} (uni + bi)"
+echo "  Repeats: ${REPEATS} per combination"
 echo "  Total runs: ${total_runs}"
 echo "  Duration: ${DURATION} per run"
 echo "  Users: ${USERS}"
 echo "  Started: $(date '+%Y-%m-%d %H:%M:%S')"
 echo "======================================================"
 
-model_broken=false
+# Pre-flight: check port 8000 is free
+if ! port_free; then
+    echo "ERROR: port 8000 is already in use. Stop other services first:"
+    echo "  docker compose --profile ray-serve down"
+    echo "  docker compose --profile litserve down"
+    exit 1
+fi
 
-for config in "${CONFIGS[@]}"; do
-    IFS=':' read -r batch_id batch_size batch_timeout <<< "${config}"
-
-    if $model_broken; then
-        echo ""
-        echo ">>> SKIP: ${batch_id} — model failed to load, skipping remaining configs"
-        FAILED_CONFIGS+=("${batch_id}")
-        continue
-    fi
-
+for model_entry in "${MODELS[@]}"; do
+    IFS=':' read -r model_short model_id <<< "${model_entry}"
     echo ""
-    echo ">>> Config: ${batch_id} (batch_size=${batch_size}, timeout=${batch_timeout})"
-    echo ""
-    for run in $(seq 1 "${REPEATS}"); do
-        if ! run_bench "${batch_id}" "${batch_size}" "${batch_timeout}" "${run}"; then
-            FAILED_CONFIGS+=("${batch_id}")
-            # If first config fails, model itself is likely broken — skip the rest
-            if [[ "${#FAILED_CONFIGS[@]}" -ge 2 ]]; then
-                echo "  WARNING: 2+ configs failed — model appears broken, skipping remaining"
-                model_broken=true
-            fi
-            break  # skip remaining repeats for this config
+    echo ">>> Model: ${model_short} (${model_id})"
+
+    model_broken=false
+
+    for dataset in "${DATASETS[@]}"; do
+        if $model_broken; then
+            echo "  SKIP: ${dataset} — model ${model_short} failed to load"
+            continue
         fi
+
+        echo ""
+        echo ">>> Dataset: ${dataset}"
+        for run in $(seq 1 "${REPEATS}"); do
+            if ! run_bench "${model_short}" "${model_id}" "${dataset}" "${run}"; then
+                FAILED_MODELS+=("${model_short}")
+                echo "  WARNING: ${model_short} failed on ${dataset} — skipping remaining datasets for this model"
+                model_broken=true
+                break
+            fi
+        done
     done
 done
 
 echo ""
 echo "======================================================"
-if [[ ${#FAILED_CONFIGS[@]} -gt 0 ]]; then
-    echo "  Sweep finished with failures: ${FAILED_CONFIGS[*]}"
+if [[ ${#FAILED_MODELS[@]} -gt 0 ]]; then
+    echo "  Dataset sweep finished with failures: ${FAILED_MODELS[*]}"
 else
-    echo "  All benchmarks complete!"
+    echo "  Dataset sweep complete!"
 fi
 echo "  Finished: $(date '+%Y-%m-%d %H:%M:%S')"
 echo "  Results in: results/"
@@ -198,7 +207,7 @@ echo ""
 echo "Summary:"
 echo "| Benchmark | RPS | P50 (ms) | P95 (ms) | Failures |"
 echo "|-----------|----:|--------:|---------:|---------:|"
-for f in results/ray-rest-B*_stats.csv; do
+for f in results/ray-rest-${BATCH_ID}-*_stats.csv; do
     [ -f "$f" ] || continue
     name=$(basename "$f" _stats.csv)
     tail -1 "$f" | awk -F',' -v n="$name" '{printf "| %s | %.1f | %s | %s | %s |\n", n, $10, $6, $8, $4}'
