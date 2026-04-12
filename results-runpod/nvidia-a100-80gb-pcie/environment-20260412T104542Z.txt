@@ -1,0 +1,8 @@
+Date: 2026-04-12T10:45:42Z
+Hostname: 6661c7b46333
+GPU: NVIDIA A100 80GB PCIe
+GPU Driver: 550.127.05
+CUDA: 12.4
+Python: Python 3.11.10
+PyTorch: 2.4.1+cu124
+GLiNER2: 1.2.4

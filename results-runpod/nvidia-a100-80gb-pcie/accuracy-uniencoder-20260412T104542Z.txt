@@ -1,0 +1,60 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+You are using a model of type extractor to instantiate a model of type . This is not supported for all configurations of models and can yield errors.
+You are using a model of type extractor to instantiate a model of type . This is not supported for all configurations of models and can yield errors.
+You are using a model of type extractor to instantiate a model of type . This is not supported for all configurations of models and can yield errors.
+You are using a model of type extractor to instantiate a model of type . This is not supported for all configurations of models and can yield errors.
+Model    : hivetrace/gliner-guard-uniencoder
+Dataset  : /workspace/gliner-guard-experiment/GLiNER2/gliner2/eval/datasets/xstest_labeled.csv
+Batch    : 8
+
+Loaded 450 samples.
+
+[eval] Running variant 'safety_only' (2 labels)...
+============================================================
+🧠 Model Configuration
+============================================================
+Encoder model      : bogdanminko/mmBERT-small
+Counting layer     : count_lstm_v2
+Token pooling      : first
+============================================================
+[eval]   EvalResult(P=0.297, R=0.420, F1=0.348, Acc=0.300 | TP=84, FP=199, FN=116, TN=51)
+[eval] Running variant 'safety_pii' (10 labels)...
+============================================================
+🧠 Model Configuration
+============================================================
+Encoder model      : bogdanminko/mmBERT-small
+Counting layer     : count_lstm_v2
+Token pooling      : first
+============================================================
+[eval]   EvalResult(P=0.286, R=0.395, F1=0.332, Acc=0.293 | TP=79, FP=197, FN=121, TN=53)
+[eval] Running variant 'safety_pii_adversarial' (16 labels)...
+============================================================
+🧠 Model Configuration
+============================================================
+Encoder model      : bogdanminko/mmBERT-small
+Counting layer     : count_lstm_v2
+Token pooling      : first
+============================================================
+[eval]   EvalResult(P=0.302, R=0.415, F1=0.349, Acc=0.313 | TP=83, FP=192, FN=117, TN=58)
+[eval] Running variant 'full' (56 labels)...
+============================================================
+🧠 Model Configuration
+============================================================
+Encoder model      : bogdanminko/mmBERT-small
+Counting layer     : count_lstm_v2
+Token pooling      : first
+============================================================
+[eval]   EvalResult(P=0.328, R=0.490, F1=0.393, Acc=0.327 | TP=98, FP=201, FN=102, TN=49)
+
+=== Accuracy vs Label Count ===
+
++------------------------+-------+-------+-------+-------+----+-----+-----+----+-----------+
+| Schema                 | F1    | Prec  | Rec   | Acc   | TP | FP  | FN  | TN | Delta     |
++------------------------+-------+-------+-------+-------+----+-----+-----+----+-----------+
+| safety_only            | 0.348 | 0.297 | 0.420 | 0.300 | 84 | 199 | 116 | 51 |           |
+| safety_pii             | 0.332 | 0.286 | 0.395 | 0.293 | 79 | 197 | 121 | 53 | (-0.016)  |
+| safety_pii_adversarial | 0.349 | 0.302 | 0.415 | 0.313 | 83 | 192 | 117 | 58 | (++0.002) |
+| full                   | 0.393 | 0.328 | 0.490 | 0.327 | 98 | 201 | 102 | 49 | (++0.045) |
++------------------------+-------+-------+-------+-------+----+-----+-----+----+-----------+
+
+Total time: 403.3s

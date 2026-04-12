@@ -1,0 +1,73 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.10, pytest-9.0.3, pluggy-1.6.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /workspace/gliner-guard-experiment/GLiNER2
+configfile: pyproject.toml
+plugins: anyio-4.6.0
+collecting ... collected 56 items / 2 deselected / 54 selected
+
+tests/test_accuracy_evaluation.py::TestEvalResultComputesF1::test_eval_result_computes_f1 PASSED [  1%]
+tests/test_accuracy_evaluation.py::TestEvalResultComputesF1::test_eval_result_handles_zero_division PASSED [  3%]
+tests/test_accuracy_evaluation.py::TestEvalResultComputesF1::test_eval_result_all_wrong PASSED [  5%]
+tests/test_accuracy_evaluation.py::TestEvalResultComputesF1::test_eval_result_perfect PASSED [  7%]
+tests/test_api_client_error_handling.py::test_401_non_json_body_raises_authentication_error PASSED [  9%]
+tests/test_api_client_error_handling.py::test_500_non_json_body_raises_server_error PASSED [ 11%]
+tests/test_api_client_error_handling.py::test_200_non_json_body_raises_api_error PASSED [ 12%]
+tests/test_batching_correctness.py::TestEntityExtraction::test_single_entity_extraction PASSED [ 14%]
+tests/test_batching_correctness.py::TestEntityExtraction::test_batch_vs_single_entities PASSED [ 16%]
+tests/test_batching_correctness.py::TestEntityExtraction::test_batch_vs_single_entities_with_confidence PASSED [ 18%]
+tests/test_batching_correctness.py::TestEntityExtraction::test_batch_vs_single_entities_short PASSED [ 20%]
+tests/test_batching_correctness.py::TestEntityExtraction::test_batch_vs_single_entities_long PASSED [ 22%]
+tests/test_batching_correctness.py::TestEntityExtraction::test_batch_size_1 PASSED [ 24%]
+tests/test_batching_correctness.py::TestRelationExtraction::test_single_relation_extraction PASSED [ 25%]
+tests/test_batching_correctness.py::TestRelationExtraction::test_batch_vs_single_relations PASSED [ 27%]
+tests/test_batching_correctness.py::TestStructureExtraction::test_single_structure_extraction PASSED [ 29%]
+tests/test_batching_correctness.py::TestStructureExtraction::test_batch_vs_single_structures PASSED [ 31%]
+tests/test_batching_correctness.py::TestClassification::test_single_classification PASSED [ 33%]
+tests/test_batching_correctness.py::TestClassification::test_batch_vs_single_classification PASSED [ 35%]
+tests/test_batching_correctness.py::TestSpanRepInternals::test_compute_span_rep_deterministic PASSED [ 37%]
+tests/test_batching_correctness.py::TestSpanRepInternals::test_compute_span_rep_single_token PASSED [ 38%]
+tests/test_batching_correctness.py::TestSpanRepInternals::test_compute_span_rep_various_lengths PASSED [ 40%]
+tests/test_batching_correctness.py::TestSpanRepInternals::test_batched_vs_single_span_rep PASSED [ 42%]
+tests/test_batching_correctness.py::TestSpanRepInternals::test_batched_single_sample_bit_identical PASSED [ 44%]
+tests/test_batching_correctness.py::TestEmbeddingExtractionFastPath::test_fast_vs_loop_embedding_extraction PASSED [ 46%]
+tests/test_batching_correctness.py::TestEdgeCases::test_single_word_text PASSED [ 48%]
+tests/test_batching_correctness.py::TestEdgeCases::test_batch_size_1_entities PASSED [ 50%]
+tests/test_batching_correctness.py::TestEdgeCases::test_variable_length_batch PASSED [ 51%]
+tests/test_biencoder_loading.py::TestExtractorConfigBiEncoderFlag::test_extractor_config_has_bi_encoder_flag PASSED [ 53%]
+tests/test_biencoder_loading.py::TestExtractorConfigBiEncoderFlag::test_extractor_config_default_is_uniencoder PASSED [ 55%]
+tests/test_biencoder_loading.py::TestBiEncoderExtractorLayers::test_biencoder_extractor_has_extra_layers PASSED [ 57%]
+tests/test_biencoder_loading.py::TestBiEncoderExtractorLayers::test_uniencoder_extractor_lacks_biencoder_layers PASSED [ 59%]
+tests/test_biencoder_loading.py::TestBiEncoderExtractorLayers::test_biencoder_state_dict_keys PASSED [ 61%]
+tests/test_entity_extraction.py::test_entity_extraction PASSED           [ 62%]
+tests/test_entity_extraction.py::test_batch_entity_extraction PASSED     [ 64%]
+tests/test_relation_extraction.py::test_relation_extraction PASSED       [ 66%]
+tests/test_relation_extraction.py::test_batch_relation_extraction PASSED [ 68%]
+tests/test_schema_registry.py::TestRegisterClassificationTask::test_register_classification_task PASSED [ 70%]
+tests/test_schema_registry.py::TestRegisterEntities::test_register_entities PASSED [ 72%]
+tests/test_schema_registry.py::TestRegisterDuplicateClassificationMerges::test_register_duplicate_classification_merges PASSED [ 74%]
+tests/test_schema_registry.py::TestTotalLabelCount::test_total_label_count PASSED [ 75%]
+tests/test_schema_registry.py::TestSchemaCacheKeyStable::test_schema_cache_key_stable PASSED [ 77%]
+tests/test_schema_registry.py::TestSchemaCacheKeyChangesOnMutation::test_schema_cache_key_changes_on_mutation PASSED [ 79%]
+tests/test_schema_registry.py::TestWarnsWhenExceedingLabelBudget::test_warns_when_exceeding_label_budget PASSED [ 81%]
+tests/test_schema_registry.py::TestRegisterEntitiesFluent::test_register_entities_returns_self PASSED [ 83%]
+tests/test_schema_registry.py::TestRegisterEntitiesFluent::test_register_classification_returns_self PASSED [ 85%]
+tests/test_schema_registry.py::TestRegisterEntitiesDeduplication::test_no_duplicate_entities PASSED [ 87%]
+tests/test_schema_registry.py::TestSummary::test_summary_contains_counts PASSED [ 88%]
+tests/test_sequence_length_guard.py::test_warns_when_sequence_exceeds_max_position_embeddings PASSED [ 90%]
+tests/test_sequence_length_guard.py::test_short_text_no_warning PASSED   [ 92%]
+tests/test_sequence_length_guard.py::test_truncates_text_not_schema_when_auto_max_len PASSED [ 94%]
+tests/test_structure_extraction.py::test_structure_extraction PASSED     [ 96%]
+tests/test_structure_extraction.py::test_structure_with_single_values PASSED [ 98%]
+tests/test_structure_extraction.py::test_batch_structure_extraction PASSED [100%]
+
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:241
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:241
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========== 54 passed, 2 deselected, 2 warnings in 105.89s (0:01:45) ===========
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

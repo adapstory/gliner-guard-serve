@@ -1,0 +1,50 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+You are using a model of type extractor to instantiate a model of type . This is not supported for all configurations of models and can yield errors.
+=== BiEncoder Verification ===
+
+[1] Loading biencoder model...
+============================================================
+🧠 Model Configuration
+============================================================
+Encoder model      : bogdanminko/mmBERT-small
+Counting layer     : count_lstm_v2
+Token pooling      : first
+============================================================
+    FAILED: Error(s) in loading state_dict for GLiNER2:
+	Missing key(s) in state_dict: "bi_classifier.0.weight", "bi_classifier.0.bias", "bi_classifier.2.weight", "bi_classifier.2.bias". 
+	Unexpected key(s) in state_dict: "bi_classifier.out_mlp.0.bias", "bi_classifier.out_mlp.0.weight", "bi_classifier.out_mlp.3.bias", "bi_classifier.out_mlp.3.weight", "bi_classifier.proj_label.bias", "bi_classifier.proj_label.weight", "bi_classifier.proj_text.bias", "bi_classifier.proj_text.weight". 
+	size mismatch for span_rep.span_rep_layer.project_start.0.weight: copying a param with shape torch.Size([1024, 256]) from checkpoint, the shape in current model is torch.Size([1536, 384]).
+	size mismatch for span_rep.span_rep_layer.project_start.0.bias: copying a param with shape torch.Size([1024]) from checkpoint, the shape in current model is torch.Size([1536]).
+	size mismatch for span_rep.span_rep_layer.project_start.3.weight: copying a param with shape torch.Size([256, 1024]) from checkpoint, the shape in current model is torch.Size([384, 1536]).
+	size mismatch for span_rep.span_rep_layer.project_start.3.bias: copying a param with shape torch.Size([256]) from checkpoint, the shape in current model is torch.Size([384]).
+	size mismatch for span_rep.span_rep_layer.project_end.0.weight: copying a param with shape torch.Size([1024, 256]) from checkpoint, the shape in current model is torch.Size([1536, 384]).
+	size mismatch for span_rep.span_rep_layer.project_end.0.bias: copying a param with shape torch.Size([1024]) from checkpoint, the shape in current model is torch.Size([1536]).
+	size mismatch for span_rep.span_rep_layer.project_end.3.weight: copying a param with shape torch.Size([256, 1024]) from checkpoint, the shape in current model is torch.Size([384, 1536]).
+	size mismatch for span_rep.span_rep_layer.project_end.3.bias: copying a param with shape torch.Size([256]) from checkpoint, the shape in current model is torch.Size([384]).
+	size mismatch for span_rep.span_rep_layer.out_project.0.weight: copying a param with shape torch.Size([1024, 512]) from checkpoint, the shape in current model is torch.Size([1536, 768]).
+	size mismatch for span_rep.span_rep_layer.out_project.0.bias: copying a param with shape torch.Size([1024]) from checkpoint, the shape in current model is torch.Size([1536]).
+	size mismatch for span_rep.span_rep_layer.out_project.3.weight: copying a param with shape torch.Size([256, 1024]) from checkpoint, the shape in current model is torch.Size([384, 1536]).
+	size mismatch for span_rep.span_rep_layer.out_project.3.bias: copying a param with shape torch.Size([256]) from checkpoint, the shape in current model is torch.Size([384]).
+	size mismatch for classifier.0.weight: copying a param with shape torch.Size([512, 256]) from checkpoint, the shape in current model is torch.Size([768, 384]).
+	size mismatch for classifier.0.bias: copying a param with shape torch.Size([512]) from checkpoint, the shape in current model is torch.Size([768]).
+	size mismatch for classifier.2.weight: copying a param with shape torch.Size([1, 512]) from checkpoint, the shape in current model is torch.Size([1, 768]).
+	size mismatch for count_pred.0.weight: copying a param with shape torch.Size([512, 256]) from checkpoint, the shape in current model is torch.Size([768, 384]).
+	size mismatch for count_pred.0.bias: copying a param with shape torch.Size([512]) from checkpoint, the shape in current model is torch.Size([768]).
+	size mismatch for count_pred.2.weight: copying a param with shape torch.Size([20, 512]) from checkpoint, the shape in current model is torch.Size([20, 768]).
+	size mismatch for count_embed.pos_embedding.weight: copying a param with shape torch.Size([20, 256]) from checkpoint, the shape in current model is torch.Size([20, 384]).
+	size mismatch for count_embed.gru.weight_ih_l0: copying a param with shape torch.Size([768, 256]) from checkpoint, the shape in current model is torch.Size([1152, 384]).
+	size mismatch for count_embed.gru.weight_hh_l0: copying a param with shape torch.Size([768, 256]) from checkpoint, the shape in current model is torch.Size([1152, 384]).
+	size mismatch for count_embed.gru.bias_ih_l0: copying a param with shape torch.Size([768]) from checkpoint, the shape in current model is torch.Size([1152]).
+	size mismatch for count_embed.gru.bias_hh_l0: copying a param with shape torch.Size([768]) from checkpoint, the shape in current model is torch.Size([1152]).
+	size mismatch for count_embed.transformer.in_projector.weight: copying a param with shape torch.Size([128, 256]) from checkpoint, the shape in current model is torch.Size([128, 384]).
+	size mismatch for count_embed.transformer.out_projector.0.weight: copying a param with shape torch.Size([256, 384]) from checkpoint, the shape in current model is torch.Size([384, 512]).
+	size mismatch for count_embed.transformer.out_projector.0.bias: copying a param with shape torch.Size([256]) from checkpoint, the shape in current model is torch.Size([384]).
+	size mismatch for count_embed.transformer.out_projector.2.weight: copying a param with shape torch.Size([256, 256]) from checkpoint, the shape in current model is torch.Size([384, 384]).
+	size mismatch for count_embed.transformer.out_projector.2.bias: copying a param with shape torch.Size([256]) from checkpoint, the shape in current model is torch.Size([384]).
+	size mismatch for count_embed.transformer.out_projector.4.weight: copying a param with shape torch.Size([256, 256]) from checkpoint, the shape in current model is torch.Size([384, 384]).
+	size mismatch for count_embed.transformer.out_projector.4.bias: copying a param with shape torch.Size([256]) from checkpoint, the shape in current model is torch.Size([384]).
+	size mismatch for schema_proj.weight: copying a param with shape torch.Size([256, 384]) from checkpoint, the shape in current model is torch.Size([384, 384]).
+	size mismatch for schema_proj.bias: copying a param with shape torch.Size([256]) from checkpoint, the shape in current model is torch.Size([384]).
+	size mismatch for text_proj.weight: copying a param with shape torch.Size([256, 384]) from checkpoint, the shape in current model is torch.Size([384, 384]).
+	size mismatch for text_proj.bias: copying a param with shape torch.Size([256]) from checkpoint, the shape in current model is torch.Size([384]).
+    BiEncoder cannot be loaded. Excluded from experiment scope.

@@ -1,0 +1,26 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+You are using a model of type extractor to instantiate a model of type . This is not supported for all configurations of models and can yield errors.
+============================================================
+🧠 Model Configuration
+============================================================
+Encoder model      : bogdanminko/mmBERT-small
+Counting layer     : count_lstm_v2
+Token pooling      : first
+============================================================
+======================================================================
+  Batch Ablation: batch_size effect on throughput
+  GPU: NVIDIA A100 80GB PCIe
+  Schema: 16 labels (PII + safety + adversarial)
+  N_warmup=5, N_measure=20
+======================================================================
+
+  Batch Size    Mean (ms)  Median (ms)   Stdev (ms)    RPS equiv
+------------ ------------ ------------ ------------ ------------
+           1        21.57        21.56         0.18         46.4
+           8        55.87        55.85         0.26        143.2
+          16        95.37        94.82         1.36        167.8
+          32       182.84       178.81        11.44        175.0
+          64       336.00       335.15         3.97        190.5
+
+Note: RPS equiv = batch_size / mean_latency (theoretical max throughput)
+Actual serving RPS depends on request arrival rate and queuing.
