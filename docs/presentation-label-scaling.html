@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLiNER Guard — Label Scaling Experiment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-accent: #22D38C;
+  --color-main: #1B2735;
+  --color-neutral: #8B95A1;
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F5F7FA;
+  --color-text-primary: #1B2735;
+  --color-text-secondary: #4A5567;
+  --font-display: 'Golos Text', system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-display);
+  background: var(--color-main);
+  color: var(--color-text-primary);
+}
+
+.slide {
+  min-height: 100vh;
+  padding: 64px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--color-bg-primary);
+  border-bottom: 4px solid var(--color-bg-secondary);
+  position: relative;
+}
+
+.slide--dark {
+  background: var(--color-main);
+  color: #FFFFFF;
+}
+
+.slide--accent {
+  background: linear-gradient(135deg, var(--color-main) 0%, #243447 100%);
+  color: #FFFFFF;
+}
+
+.slide__number {
+  position: absolute;
+  top: 32px;
+  right: 48px;
+  font-size: 14px;
+  color: var(--color-neutral);
+  font-weight: 500;
+}
+
+.slide--dark .slide__number,
+.slide--accent .slide__number {
+  color: rgba(255,255,255,0.4);
+}
+
+h1 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  font-size: 20px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  max-width: 700px;
+}
+
+.slide--dark .subtitle,
+.slide--accent .subtitle {
+  color: rgba(255,255,255,0.7);
+}
+
+.accent { color: var(--color-accent); }
+
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(34,211,140,0.12);
+  color: var(--color-accent);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.slide--dark .tag {
+  background: rgba(34,211,140,0.2);
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 15px;
+}
+
+th {
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-neutral);
+  border-bottom: 2px solid var(--color-bg-secondary);
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-bg-secondary);
+}
+
+.slide--dark th { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.1); }
+.slide--dark td { border-color: rgba(255,255,255,0.08); }
+
+td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+td.highlight { color: var(--color-accent); font-weight: 700; }
+
+tr.winner td { background: rgba(34,211,140,0.06); }
+.slide--dark tr.winner td { background: rgba(34,211,140,0.1); }
+
+/* Metric cards */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.metric {
+  background: var(--color-bg-secondary);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.slide--dark .metric {
+  background: rgba(255,255,255,0.06);
+}
+
+.metric__value {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.metric__label {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.slide--dark .metric__label {
+  color: rgba(255,255,255,0.6);
+}
+
+.metric--accent .metric__value { color: var(--color-accent); }
+
+/* Bar charts (CSS-only) */
+.bar-chart { margin: 24px 0; }
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.bar-label {
+  width: 160px;
+  font-size: 14px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.bar-track {
+  flex: 1;
+  height: 32px;
+  background: var(--color-bg-secondary);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide--dark .bar-track {
+  background: rgba(255,255,255,0.06);
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-main);
+  transition: width 0.6s ease;
+}
+
+.bar-fill--dim {
+  background: rgba(34,211,140,0.3);
+  color: var(--color-text-primary);
+}
+
+.slide--dark .bar-fill--dim {
+  color: rgba(255,255,255,0.7);
+}
+
+.bar-value {
+  margin-left: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+  width: 80px;
+  text-align: right;
+}
+
+/* Two columns */
+.cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 24px;
+}
+
+/* Findings list */
+.finding {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+.finding__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.finding__icon--green { background: rgba(34,211,140,0.15); color: var(--color-accent); }
+.finding__icon--yellow { background: rgba(245,197,24,0.15); color: #D4A017; }
+.finding__icon--red { background: rgba(239,68,68,0.15); color: #EF4444; }
+
+.finding__text { font-size: 16px; line-height: 1.5; }
+.finding__text strong { font-weight: 600; }
+
+/* Footer */
+.footer {
+  position: absolute;
+  bottom: 32px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--color-neutral);
+}
+
+.slide--dark .footer { color: rgba(255,255,255,0.3); }
+
+/* Sequence diagram */
+.seq-diagram {
+  display: flex;
+  height: 48px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.seq-schema {
+  background: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-main);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.seq-text {
+  background: var(--color-bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.slide--dark .seq-text {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+}
+
+@media (max-width: 768px) {
+  .slide { padding: 32px 24px; }
+  h1 { font-size: 32px; }
+  h2 { font-size: 24px; }
+  .cols { grid-template-columns: 1fr; gap: 24px; }
+  .metrics { grid-template-columns: 1fr 1fr; }
+}
+
+@media print {
+  .slide { page-break-after: always; min-height: auto; padding: 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<section class="slide slide--accent">
+  <span class="slide__number">01</span>
+  <div class="tag">Diploma Experiment</div>
+  <h1>GLiNER Guard:<br>Label Scaling for<br>Content Moderation</h1>
+  <p class="subtitle">
+    Как масштабирование таксономии лейблов (6 → 56) влияет на качество и производительность
+    safety-классификации в uni-encoder архитектуре
+  </p>
+  <div class="footer">
+    <span>Stepan Bokarev · Adapstory Platform</span>
+    <span>April 2026 · NVIDIA A100 80GB PCIe</span>
+  </div>
+</section>
+
+<!-- Slide 2: Research Questions -->
+<section class="slide">
+  <span class="slide__number">02</span>
+  <div class="tag">Research Questions</div>
+  <h2>Вопросы исследования</h2>
+
+  <div style="margin-top: 24px;">
+    <div class="finding">
+      <div class="finding__icon finding__icon--green">Q1</div>
+      <div class="finding__text">
+        <strong>Деградирует ли F1 safety-классификации</strong> при добавлении
+        PII-сущностей, adversarial- и harmful-лейблов к схеме?
+      </div>
+    </div>
+    <div class="finding">
+      <div class="finding__icon finding__icon--green">Q2</div>
+      <div class="finding__text">
+        <strong>Какой overhead по latency</strong> вносят 56 лейблов
+        по сравнению с минимальной схемой из 6?
+      </div>
+    </div>
+    <div class="finding">
+      <div class="finding__icon finding__icon--green">Q3</div>
+      <div class="finding__text">
+        <strong>Какой batch_size оптимален</strong> для A100 при serving
+        с расширенной таксономией?
+      </div>
+    </div>
+    <div class="finding">
+      <div class="finding__icon finding__icon--green">Q4</div>
+      <div class="finding__text">
+        <strong>Какую долю последовательности занимает schema</strong> при 56 лейблах
+        и какой потенциальный выигрыш даст bi-encoder кэширование?
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>GLiNER Guard · Label Scaling Experiment</span>
+    <span>Model: hivetrace/gliner-guard-uniencoder (147M params)</span>
+  </div>
+</section>
+
+<!-- Slide 3: Experiment Setup -->
+<section class="slide slide--dark">
+  <span class="slide__number">03</span>
+  <div class="tag">Setup</div>
+  <h2>Конфигурация эксперимента</h2>
+
+  <div class="cols">
+    <div>
+      <h3>Hardware</h3>
+      <table>
+        <tr><td>GPU</td><td class="num">NVIDIA A100 80GB PCIe</td></tr>
+        <tr><td>CUDA</td><td class="num">12.4</td></tr>
+        <tr><td>PyTorch</td><td class="num">2.4.1</td></tr>
+        <tr><td>Precision</td><td class="num">bfloat16</td></tr>
+        <tr><td>Platform</td><td class="num">RunPod Cloud</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Model & Data</h3>
+      <table>
+        <tr><td>Model</td><td class="num">gliner-guard-uniencoder</td></tr>
+        <tr><td>Encoder</td><td class="num">mmBERT-small (147M)</td></tr>
+        <tr><td>Dataset</td><td class="num">XSTest (450 samples)</td></tr>
+        <tr><td>Warmup</td><td class="num">5 iterations</td></tr>
+        <tr><td>Measured</td><td class="num">20 iterations</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 32px;">Schema variants</h3>
+  <table>
+    <thead>
+      <tr><th>Variant</th><th>Labels</th><th>Composition</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>safety_only</td><td class="num">2</td><td>safe, unsafe</td></tr>
+      <tr><td>safety + PII</td><td class="num">10</td><td>+ person, company, email, phone, city, country, street, DOB</td></tr>
+      <tr><td>+ adversarial</td><td class="num">16</td><td>+ instruction_override, jailbreak_persona, data_exfiltration, ...</td></tr>
+      <tr class="winner"><td>full</td><td class="num highlight">56</td><td>+ harmful (11), intent (6), tone (5)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <span>GLiNER Guard · Label Scaling Experiment</span>
+    <span></span>
+  </div>
+</section>
+
+<!-- Slide 4: Accuracy Results -->
+<section class="slide">
+  <span class="slide__number">04</span>
+  <div class="tag">Q1 · Accuracy</div>
+  <h2>F1 <span class="accent">не деградирует</span> с ростом лейблов</h2>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric__value">0.348</div>
+      <div class="metric__label">F1 baseline (2 labels)</div>
+    </div>
+    <div class="metric metric--accent">
+      <div class="metric__value">0.393</div>
+      <div class="metric__label">F1 full schema (56 labels)</div>
+    </div>
+    <div class="metric metric--accent">
+      <div class="metric__value">+0.045</div>
+      <div class="metric__label">F1 improvement (ΔF1)</div>
+    </div>
+    <div class="metric">
+      <div class="metric__value">+17%</div>
+      <div class="metric__label">Recall improvement (0.420 → 0.490)</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Schema</th><th>Labels</th><th>F1</th><th>Precision</th><th>Recall</th><th>ΔF1</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>safety_only</td><td class="num">2</td><td class="num">0.348</td><td class="num">0.297</td><td class="num">0.420</td><td class="num">—</td></tr>
+      <tr><td>safety + PII</td><td class="num">10</td><td class="num">0.332</td><td class="num">0.286</td><td class="num">0.395</td><td class="num">-0.016</td></tr>
+      <tr><td>+ adversarial</td><td class="num">16</td><td class="num">0.349</td><td class="num">0.302</td><td class="num">0.415</td><td class="num">+0.002</td></tr>
+      <tr class="winner"><td><strong>full</strong></td><td class="num highlight">56</td><td class="num highlight">0.393</td><td class="num">0.328</td><td class="num highlight">0.490</td><td class="num highlight">+0.045</td></tr>
+    </tbody>
+  </table>
+
+  <div class="finding" style="margin-top: 16px;">
+    <div class="finding__icon finding__icon--green">✓</div>
+    <div class="finding__text">
+      Multi-task schema даёт <strong>вспомогательный сигнал</strong> для safety-классификации.
+      Adversarial и harmful лейблы помогают модели лучше дифференцировать safe/unsafe.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Dataset: XSTest (250 safe + 200 unsafe)</span>
+    <span>A100 80GB · hivetrace/gliner-guard-uniencoder</span>
+  </div>
+</section>
+
+<!-- Slide 5: Latency -->
+<section class="slide slide--dark">
+  <span class="slide__number">05</span>
+  <div class="tag">Q2 · Latency</div>
+  <h2>Latency overhead: <span class="accent">+20%</span> при 56 лейблах</h2>
+
+  <div class="cols">
+    <div>
+      <h3>Short text (~20 words)</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <span class="bar-label">6 labels</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 79%;">18.5 ms</div>
+          </div>
+          <span class="bar-value">1.00x</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">26 labels</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 91%;">21.4 ms</div>
+          </div>
+          <span class="bar-value">1.16x</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">56 labels</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 95%;">22.2 ms</div>
+          </div>
+          <span class="bar-value">1.20x</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3>Medium text (~80 words)</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <span class="bar-label">6 labels</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 85%;">20.6 ms</div>
+          </div>
+          <span class="bar-value">1.00x</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">26 labels</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 93%;">22.4 ms</div>
+          </div>
+          <span class="bar-value">1.09x</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">56 labels</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 97%;">23.3 ms</div>
+          </div>
+          <span class="bar-value">1.13x</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="finding" style="margin-top: 24px;">
+    <div class="finding__icon finding__icon--green">✓</div>
+    <div class="finding__text">
+      Overhead <strong>субтлинейный</strong>: 9.3x больше лейблов даёт лишь 1.13–1.20x больше latency.
+      Абсолютный overhead — <strong>+3.7 ms</strong> (short) и <strong>+2.7 ms</strong> (medium). Приемлемо для serving.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>20 measured iterations, 5 warmup, bfloat16</span>
+    <span>A100 80GB PCIe</span>
+  </div>
+</section>
+
+<!-- Slide 6: Sequence Composition -->
+<section class="slide">
+  <span class="slide__number">06</span>
+  <div class="tag">Q4 · Sequence Analysis</div>
+  <h2>При 56 лейблах <span class="accent">71%</span> токенов — schema</h2>
+
+  <p class="subtitle" style="margin-bottom: 32px;">
+    В uni-encoder архитектуре schema tokens и text tokens кодируются вместе.
+    С ростом лейблов schema начинает доминировать в последовательности.
+  </p>
+
+  <h3>6 labels — schema 46%</h3>
+  <div class="seq-diagram">
+    <div class="seq-schema" style="width: 46%;">Schema: 64 tokens</div>
+    <div class="seq-text" style="width: 54%;">Text: 75 tokens</div>
+  </div>
+
+  <h3>26 labels — schema 66%</h3>
+  <div class="seq-diagram">
+    <div class="seq-schema" style="width: 66%;">Schema: 148 tokens</div>
+    <div class="seq-text" style="width: 34%;">Text: 75 tokens</div>
+  </div>
+
+  <h3>56 labels — schema 71%</h3>
+  <div class="seq-diagram">
+    <div class="seq-schema" style="width: 71%;">Schema: 185 tokens</div>
+    <div class="seq-text" style="width: 29%;">Text: 75 tokens</div>
+  </div>
+
+  <div class="finding" style="margin-top: 24px;">
+    <div class="finding__icon finding__icon--yellow">→</div>
+    <div class="finding__text">
+      <strong>Bi-encoder opportunity:</strong> при кэшировании 185 schema-токенов
+      per-request sequence сокращается до ~75 токенов.
+      Теоретический speedup: <strong>~2.2x</strong> (attention O(n²)).
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Medium text: 62 words, 399 chars</span>
+    <span>DeBERTa max_position_embeddings = 512</span>
+  </div>
+</section>
+
+<!-- Slide 7: Batch Ablation -->
+<section class="slide slide--dark">
+  <span class="slide__number">07</span>
+  <div class="tag">Q3 · Batching</div>
+  <h2>Batch=64 даёт <span class="accent">190.5 RPS</span> на A100</h2>
+
+  <div class="bar-chart" style="margin-top: 32px;">
+    <div class="bar-row">
+      <span class="bar-label" style="color: rgba(255,255,255,0.7);">batch=1</span>
+      <div class="bar-track">
+        <div class="bar-fill bar-fill--dim" style="width: 24%;">46.4</div>
+      </div>
+      <span class="bar-value" style="color: rgba(255,255,255,0.7);">46.4 RPS</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label" style="color: rgba(255,255,255,0.7);">batch=8</span>
+      <div class="bar-track">
+        <div class="bar-fill bar-fill--dim" style="width: 75%;">143.2</div>
+      </div>
+      <span class="bar-value" style="color: rgba(255,255,255,0.7);">143.2 RPS</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label" style="color: rgba(255,255,255,0.7);">batch=16</span>
+      <div class="bar-track">
+        <div class="bar-fill bar-fill--dim" style="width: 88%;">167.8</div>
+      </div>
+      <span class="bar-value" style="color: rgba(255,255,255,0.7);">167.8 RPS</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label" style="color: rgba(255,255,255,0.7);">batch=32</span>
+      <div class="bar-track">
+        <div class="bar-fill bar-fill--dim" style="width: 92%;">175.0</div>
+      </div>
+      <span class="bar-value" style="color: rgba(255,255,255,0.7);">175.0 RPS</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label" style="color: #FFFFFF; font-weight: 600;">batch=64</span>
+      <div class="bar-track">
+        <div class="bar-fill" style="width: 100%;">190.5 RPS</div>
+      </div>
+      <span class="bar-value" style="color: var(--color-accent); font-weight: 700;">190.5 RPS</span>
+    </div>
+  </div>
+
+  <div class="cols" style="margin-top: 32px;">
+    <div>
+      <table>
+        <thead><tr><th>Batch</th><th>Latency</th><th>RPS</th><th>Efficiency</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="num">21.6 ms</td><td class="num">46.4</td><td class="num">1.0x</td></tr>
+          <tr><td>8</td><td class="num">55.9 ms</td><td class="num">143.2</td><td class="num">3.1x</td></tr>
+          <tr><td>16</td><td class="num">95.4 ms</td><td class="num">167.8</td><td class="num">3.6x</td></tr>
+          <tr><td>32</td><td class="num">182.8 ms</td><td class="num">175.0</td><td class="num">3.8x</td></tr>
+          <tr class="winner"><td><strong>64</strong></td><td class="num">336.0 ms</td><td class="num highlight">190.5</td><td class="num highlight">4.1x</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">✓</div>
+        <div class="finding__text">
+          <strong>Interactive serving:</strong> batch 16–32 (P50 < 100ms)
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">✓</div>
+        <div class="finding__text">
+          <strong>Bulk processing:</strong> batch 64 (max throughput)
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--yellow">→</div>
+        <div class="finding__text">
+          Diminishing returns: 8→16 = +17%, 32→64 = +9%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Schema: 16 labels (PII + safety + adversarial)</span>
+    <span>A100 80GB PCIe · 20 measures, 5 warmup</span>
+  </div>
+</section>
+
+<!-- Slide 8: Schema Caching -->
+<section class="slide">
+  <span class="slide__number">08</span>
+  <div class="tag">Optimization</div>
+  <h2>Schema caching: <span class="accent">+3.1%</span> бесплатно</h2>
+
+  <div class="cols">
+    <div>
+      <h3>End-to-End (56 labels)</h3>
+      <table>
+        <thead><tr><th>Text</th><th>No cache</th><th>Cached</th><th>Speedup</th><th>p-value</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Short</td>
+            <td class="num">22.18 ms</td>
+            <td class="num">21.51 ms</td>
+            <td class="num highlight">+3.0%</td>
+            <td class="num">0.027 *</td>
+          </tr>
+          <tr>
+            <td>Medium</td>
+            <td class="num">23.24 ms</td>
+            <td class="num">22.53 ms</td>
+            <td class="num highlight">+3.1%</td>
+            <td class="num">0.001 **</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>Что кэшируем</h3>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">1</div>
+        <div class="finding__text">
+          Schema dict (build once at init)
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">2</div>
+        <div class="finding__text">
+          Collator instance (reuse across requests)
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--yellow">3</div>
+        <div class="finding__text">
+          Label embeddings (bi-encoder, future work)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="finding" style="margin-top: 24px;">
+    <div class="finding__icon finding__icon--green">✓</div>
+    <div class="finding__text">
+      Реализовано через <strong>SchemaRegistry</strong> — динамическое управление лейблами
+      с автоматическим кэшированием и budget enforcement (max_labels).
+      Plugin-first: каждый плагин регистрирует свои лейблы при старте.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Welch's t-test, α = 0.05</span>
+    <span>* p < 0.05, ** p < 0.01</span>
+  </div>
+</section>
+
+<!-- Slide 9: Cross-GPU -->
+<section class="slide slide--dark">
+  <span class="slide__number">09</span>
+  <div class="tag">Validation</div>
+  <h2>Кросс-GPU валидация: RTX 4090 vs A100</h2>
+
+  <table style="margin-top: 32px;">
+    <thead>
+      <tr><th>Metric</th><th>RTX 4090 (24GB)</th><th>A100 80GB</th><th>Ratio</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>6 labels, short</td><td class="num">13.0 ms</td><td class="num">18.5 ms</td><td class="num">0.70x</td></tr>
+      <tr><td>56 labels, short</td><td class="num">15.7 ms</td><td class="num">22.2 ms</td><td class="num">0.71x</td></tr>
+      <tr><td>56 labels, medium</td><td class="num">16.5 ms</td><td class="num">23.3 ms</td><td class="num">0.71x</td></tr>
+      <tr><td>Label overhead (short)</td><td class="num">1.21x</td><td class="num">1.20x</td><td class="num highlight">≈ same</td></tr>
+      <tr><td>Accuracy (F1, 56 labels)</td><td class="num">0.393</td><td class="num">0.393</td><td class="num highlight">identical</td></tr>
+    </tbody>
+  </table>
+
+  <div class="finding" style="margin-top: 24px;">
+    <div class="finding__icon finding__icon--green">✓</div>
+    <div class="finding__text">
+      <strong>Label overhead ratio стабилен</strong> (1.20–1.21x) на разном железе.
+      RTX 4090 быстрее по абсолютной latency (выше clock speed),
+      но относительный эффект label scaling — <strong>воспроизводим</strong>.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>RTX 4090: RunPod, $0.59/hr · A100: RunPod, $1.64/hr</span>
+    <span>Accuracy deterministic — identical results expected</span>
+  </div>
+</section>
+
+<!-- Slide 10: Conclusions -->
+<section class="slide">
+  <span class="slide__number">10</span>
+  <div class="tag">Conclusions</div>
+  <h2>Выводы и рекомендации</h2>
+
+  <div class="cols">
+    <div>
+      <h3>Подтверждённые гипотезы</h3>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">H9</div>
+        <div class="finding__text">
+          56 лейблов <strong>не деградируют</strong> safety F1 (+0.045)
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">H8</div>
+        <div class="finding__text">
+          Больше лейблов → больше latency (<strong>+20% max</strong>)
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">H5</div>
+        <div class="finding__text">
+          Оптимальный batch: <strong>16–32</strong> (interactive), <strong>64</strong> (bulk)
+        </div>
+      </div>
+
+      <h3 style="margin-top: 24px;">Ограничения</h3>
+      <div class="finding">
+        <div class="finding__icon finding__icon--red">!</div>
+        <div class="finding__text">
+          BiEncoder: upstream arch mismatch, excluded
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--yellow">!</div>
+        <div class="finding__text">
+          XSTest labels: auto-split, requires manual review
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3>Production рекомендации</h3>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">1</div>
+        <div class="finding__text">
+          <strong>Использовать full schema (56 labels)</strong> — нет penalty по quality
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">2</div>
+        <div class="finding__text">
+          <strong>SchemaRegistry</strong> — plugin-first, dynamic label management
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">3</div>
+        <div class="finding__text">
+          <strong>Sequence guard</strong> — auto-truncate при >512 tokens
+        </div>
+      </div>
+      <div class="finding">
+        <div class="finding__icon finding__icon--yellow">4</div>
+        <div class="finding__text">
+          <strong>Bi-encoder caching</strong> — future work, ~2.2x potential
+        </div>
+      </div>
+
+      <h3 style="margin-top: 24px;">Артефакты</h3>
+      <div class="finding">
+        <div class="finding__icon finding__icon--green">→</div>
+        <div class="finding__text">
+          github.com/Stepan5024/gliner-guard-experiment
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>GLiNER Guard · Label Scaling Experiment · April 2026</span>
+    <span>Stepan Bokarev · Adapstory Platform</span>
+  </div>
+</section>
+
+</body>
+</html>
