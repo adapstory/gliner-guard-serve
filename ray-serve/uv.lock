@@ -430,7 +430,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "gliner2", specifier = ">=1.2.4" },
+    { name = "gliner2", git = "https://github.com/bogdanminko/GLiNER2.git?rev=feature%2Fbi-encoder" },
     { name = "grpcio", specifier = ">=1.71" },
     { name = "grpcio-tools", specifier = ">=1.71" },
     { name = "protobuf", specifier = ">=5.29" },
@@ -442,15 +442,11 @@ requires-dist = [
 
 [[package]]
 name = "gliner2"
-version = "1.2.5"
-source = { registry = "https://pypi.org/simple" }
+version = "1.2.4"
+source = { git = "https://github.com/bogdanminko/GLiNER2.git?rev=feature%2Fbi-encoder#c7828c5aaa79d7c29e584a3d6bb215e9b472a499" }
 dependencies = [
     { name = "gliner" },
     { name = "pydantic" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/d7/fa/4ebb824902d4f266771e535cafc7ebc5a0bb000b01d14cfca907fb8d4c9b/gliner2-1.2.5.tar.gz", hash = "sha256:f2a70bc4131f6c81fdee16505ab32ffd906b570cacc3b60e5fc94ee53ac31d18", size = 113675, upload-time = "2026-03-27T11:01:55.812Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b2/8e/29f8efb4683ba11d5ae31ef7eaa576626e12ceb0822506fa10a595c6370f/gliner2-1.2.5-py3-none-any.whl", hash = "sha256:19b3cfec6a4c89a60f8f0e6ab836aa99c05f8782e9c31766642843138064c74e", size = 91787, upload-time = "2026-03-27T11:01:52.96Z" },
 ]
 
 [[package]]

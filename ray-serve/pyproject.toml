@@ -5,7 +5,7 @@ description = "GLiNER Guard inference via Ray Serve"
 requires-python = ">=3.12, <3.14"
 dependencies = [
     "ray[serve]>=2.46",
-    "gliner2>=1.2.4",
+    "gliner2 @ git+https://github.com/bogdanminko/GLiNER2.git@feature/bi-encoder",
     "torch==2.8.0",
     "transformers>=5.0.0",
     "grpcio>=1.71",
