@@ -5,7 +5,11 @@ import torch
 from ray import serve
 
 from gliner2 import GLiNER2
-from gliner2.inference.schema_registry import SchemaRegistry
+
+try:
+    from gliner2.inference.schema_registry import SchemaRegistry
+except ModuleNotFoundError:
+    SchemaRegistry = None
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -19,6 +23,9 @@ NUM_REPLICAS = int(os.environ.get("NUM_REPLICAS", "1"))
 NUM_GPUS_PER_REPLICA = float(os.environ.get("NUM_GPUS_PER_REPLICA", "1"))
 NUM_CPUS_PER_REPLICA = float(os.environ.get("NUM_CPUS_PER_REPLICA", "1"))
 SCHEMA_MODE = os.environ.get("SCHEMA_MODE", "minimal")  # minimal | full
+
+PII_LABELS = ["person", "address", "email", "phone"]
+SAFETY_LABELS = ["safe", "unsafe"]
 
 
 def _deployment_options() -> dict:
@@ -71,6 +78,23 @@ def _create_registry() -> SchemaRegistry:
     return registry
 
 
+def _build_schema(model):
+    if SchemaRegistry is None:
+        if SCHEMA_MODE != "minimal":
+            logger.warning(
+                "SchemaRegistry is unavailable in installed gliner2; falling back to minimal schema"
+            )
+        schema = (
+            model.create_schema()
+            .entities(entity_types=PII_LABELS, threshold=0.4)
+            .classification(task="safety", labels=SAFETY_LABELS)
+        )
+        return schema, "create_schema(minimal)"
+
+    registry = _create_registry()
+    return registry.build_schema(model), registry.summary()
+
+
 def _build_deployment():
     """Build the appropriate deployment class based on MAX_BATCH_SIZE."""
 
@@ -84,8 +108,7 @@ def _build_deployment():
                 self.device = "cuda" if torch.cuda.is_available() else "cpu"
                 self.model = GLiNER2.from_pretrained(MODEL_ID)
                 self.model.to(self.device).to(torch.bfloat16).eval()
-                registry = _create_registry()
-                self.schema = registry.build_schema(self.model)
+                self.schema, registry_summary = _build_schema(self.model)
                 logger.info(
                     (
                         "model=%s device=%s schema=%s batch_size=%d timeout=%.3f "
@@ -102,7 +125,7 @@ def _build_deployment():
                     NUM_GPUS_PER_REPLICA,
                     NUM_CPUS_PER_REPLICA,
                     MAX_ONGOING_REQUESTS,
-                    registry.summary(),
+                    registry_summary,
                 )
 
             @serve.batch(
@@ -133,8 +156,7 @@ def _build_deployment():
             self.device = "cuda" if torch.cuda.is_available() else "cpu"
             self.model = GLiNER2.from_pretrained(MODEL_ID)
             self.model.to(self.device).to(torch.bfloat16).eval()
-            registry = _create_registry()
-            self.schema = registry.build_schema(self.model)
+            self.schema, registry_summary = _build_schema(self.model)
             logger.info(
                 (
                     "model=%s device=%s schema=%s replicas=%d gpu_per_replica=%.3f "
@@ -147,7 +169,7 @@ def _build_deployment():
                 NUM_GPUS_PER_REPLICA,
                 NUM_CPUS_PER_REPLICA,
                 MAX_ONGOING_REQUESTS,
-                registry.summary(),
+                registry_summary,
             )
 
         async def __call__(self, request):

@@ -89,8 +89,14 @@ ENV_FILE=.env.ray-a100-4w.example \
 
 The bare-metal runner starts `ray-serve/serve_app.py` and
 `ray-serve/serve_app_grpc.py` directly with uv, tears Ray down between runs, and
-writes each benchmark into an isolated timestamped directory under
-`results-runpod/a100-baremetal-*`.
+writes each benchmark into an isolated timestamped directory. On Runpod, the
+default result path is `/workspace/gliner-guard-results/a100-baremetal-*`; on
+local machines it is `results-runpod/a100-baremetal-*`.
+
+If the Runpod `/workspace` volume returns `Stale file handle` while installing
+Python wheels, keep the checked-out code and `.venv` on the root disk, for
+example `/root/gliner-guard-serve`, while leaving `HF_HOME` and `RESULT_DIR`
+under `/workspace`.
 
 Expected Ray-only full run count:
 

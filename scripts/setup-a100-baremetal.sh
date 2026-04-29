@@ -7,6 +7,7 @@
 set -Eeuo pipefail
 
 export PATH="$HOME/.local/bin:$PATH"
+export UV_LINK_MODE="${UV_LINK_MODE:-copy}"
 
 cd "$(dirname "$0")/.."
 

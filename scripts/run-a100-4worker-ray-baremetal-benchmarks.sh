@@ -9,6 +9,7 @@ set -Eeuo pipefail
 shopt -s nullglob
 
 export PATH="$HOME/.local/bin:$PATH"
+export UV_LINK_MODE="${UV_LINK_MODE:-copy}"
 
 cd "$(dirname "$0")/.."
 REPO_DIR="$(pwd)"
@@ -46,10 +47,15 @@ READY_TIMEOUT_SECONDS="${READY_TIMEOUT_SECONDS:-1800}"
 BETWEEN_RUN_SLEEP_SECONDS="${BETWEEN_RUN_SLEEP_SECONDS:-5}"
 RAY_OBJECT_STORE_MEMORY="${RAY_OBJECT_STORE_MEMORY:-2000000000}"
 RAY_memory_monitor_refresh_ms="${RAY_memory_monitor_refresh_ms:-0}"
+RAY_WORK_DIR="${RAY_WORK_DIR:-/tmp/gliner-guard-ray-workdir}"
 HF_HOME="${HF_HOME:-/workspace/hf-cache}"
 HF_HUB_CACHE="${HF_HUB_CACHE:-${HF_HOME}/hub}"
 TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE:-${HF_HOME}/transformers}"
-RESULT_DIR="${RESULT_DIR:-results-runpod/a100-baremetal-$(date -u +%Y%m%dT%H%M%SZ)}"
+DEFAULT_RESULT_DIR="results-runpod/a100-baremetal-$(date -u +%Y%m%dT%H%M%SZ)"
+if [[ -d /workspace ]]; then
+    DEFAULT_RESULT_DIR="/workspace/gliner-guard-results/a100-baremetal-$(date -u +%Y%m%dT%H%M%SZ)"
+fi
+RESULT_DIR="${RESULT_DIR:-${DEFAULT_RESULT_DIR}}"
 
 if [[ "${RESULT_DIR}" != /* ]]; then
     RESULT_DIR="${REPO_DIR}/${RESULT_DIR}"
@@ -106,6 +112,9 @@ stop_server() {
         cd "${REPO_DIR}/ray-serve"
         UV_PYTHON="${UV_PYTHON}" uv run ray stop --force >/dev/null 2>&1 || true
     )
+    if [[ -x "${REPO_DIR}/ray-serve/.venv/bin/ray" ]]; then
+        "${REPO_DIR}/ray-serve/.venv/bin/ray" stop --force >/dev/null 2>&1 || true
+    fi
     pkill -f "python .*serve_app.py" >/dev/null 2>&1 || true
     pkill -f "python .*serve_app_grpc.py" >/dev/null 2>&1 || true
     sleep "${BETWEEN_RUN_SLEEP_SECONDS}"
@@ -140,6 +149,7 @@ record_environment() {
         echo "dataset=${DATASET}"
         echo "warmup_reqs=${WARMUP_REQS}"
         echo "ray_object_store_memory=${RAY_OBJECT_STORE_MEMORY}"
+        echo "ray_work_dir=${RAY_WORK_DIR}"
         echo ""
         echo "uv:"
         uv --version || true
@@ -278,8 +288,9 @@ start_server() {
     stop_server
 
     echo "  Starting Ray Serve ${protocol} server..."
+    mkdir -p "${RAY_WORK_DIR}"
     (
-        cd "${REPO_DIR}/ray-serve"
+        cd "${RAY_WORK_DIR}"
         export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"
         export UV_PYTHON
         export MODEL_ID
@@ -296,7 +307,7 @@ start_server() {
         export TRANSFORMERS_CACHE
         export MAX_BATCH_SIZE="${batch_size}"
         export BATCH_WAIT_TIMEOUT="${timeout}"
-        exec uv run python "${app}"
+        exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}"
     ) > "${server_log}" 2>&1 &
     SERVER_PID=$!
     echo "${SERVER_PID}" > "${RESULT_DIR}/logs/${prefix}-server.pid"
@@ -436,6 +447,10 @@ generate_plots() {
 
 if ! command -v uv >/dev/null 2>&1; then
     echo "uv is not installed. Run scripts/setup-a100-baremetal.sh first." >&2
+    exit 1
+fi
+if [[ ! -x "${REPO_DIR}/ray-serve/.venv/bin/python" ]]; then
+    echo "Ray Serve venv is missing. Run scripts/setup-a100-baremetal.sh first." >&2
     exit 1
 fi
 
