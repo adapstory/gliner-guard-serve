@@ -1,0 +1,729 @@
+2026-04-29 12:06:52,720	WARNING utils.py:458 -- Detecting docker specified CPUs. In previous versions of Ray, CPU detection in containers was incorrect. Please ensure that Ray has enough CPUs allocated. As a temporary workaround to revert to the prior behavior, set `RAY_USE_MULTIPROCESSING_CPU_COUNT=1` as an env var before starting Ray. Set the env var: `RAY_DISABLE_DOCKER_CPU_WARNING=1` to mute this warning.
+2026-04-29 12:06:52,720	WARNING utils.py:470 -- Ray currently does not support initializing Ray with fractional cpus. Your num_cpus will be truncated from 13.6 to 13.
+2026-04-29 12:06:54,221	INFO worker.py:2004 -- Started a local Ray instance. View the dashboard at [1m[32mhttp://127.0.0.1:8265 [39m[22m
+/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/_private/worker.py:2052: FutureWarning: Tip: In future versions of Ray, Ray will no longer override accelerator visible devices env var if num_gpus=0 or num_gpus=None (default). To enable this behavior and turn off this error message, set RAY_ACCEL_ENV_VAR_OVERRIDE_ON_ZERO=0
+  warnings.warn(
+[36m(ProxyActor pid=33032)[0m INFO 2026-04-29 12:06:55,593 proxy 172.24.0.2 -- Proxy starting on node 0465f23b74459e0d1ca4adb8d2bf5e104153942fddcf172fc1304548 (HTTP port: 8000, gRPC port: 9000).
+INFO 2026-04-29 12:06:55,673 serve 31959 -- Started Serve in namespace "serve".
+INFO 2026-04-29 12:06:55,681 serve 31959 -- Connecting to existing Serve app in namespace "serve". New http options will not be applied.
+WARNING 2026-04-29 12:06:55,681 serve 31959 -- The new client HTTP config differs from the existing one in the following fields: ['host']. The new HTTP config is ignored.
+[36m(ServeController pid=33037)[0m INFO 2026-04-29 12:06:55,717 controller 33037 -- Deploying new version of Deployment(name='GLiNERGuardGrpcBatched', app='default') (initial target replicas: 4).
+[36m(ProxyActor pid=33032)[0m INFO 2026-04-29 12:06:55,658 proxy 172.24.0.2 -- Got updated endpoints: {}.
+[36m(ProxyActor pid=33032)[0m INFO 2026-04-29 12:06:55,723 proxy 172.24.0.2 -- Got updated endpoints: {Deployment(name='GLiNERGuardGrpcBatched', app='default'): EndpointInfo(route='/predict', app_is_cross_language=False, route_patterns=None)}.
+[36m(ProxyActor pid=33032)[0m INFO 2026-04-29 12:06:55,733 proxy 172.24.0.2 -- Started <ray.serve._private.router.SharedRouterLongPollClient object at 0x7d76f8d2dfd0>.
+[36m(ServeController pid=33037)[0m INFO 2026-04-29 12:06:55,824 controller 33037 -- Adding 4 replicas to Deployment(name='GLiNERGuardGrpcBatched', app='default').
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-17' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('413b391e-89d0-4f48-964b-12c5af61b1d3')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 413b391e-89d0-4f48-964b-12c5af61b1d3 was cancelled.
+INFO 2026-04-29 12:07:09,842 serve 31959 -- Application 'default' is ready at http://0.0.0.0:8000/predict.
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:07:09,949 default_GLiNERGuardGrpcBatched y5gmz75y f909b32b-1e63-4a32-9b37-ef35ac961f96 -- CALL default OK 327.1ms
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.[32m [repeated 3x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)[0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:07:14,953 default_GLiNERGuardGrpcBatched 844c1qwx e4373306-8359-4a9f-a212-83f217f73ad5 -- CALL default OK 96.7ms[32m [repeated 38x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:07:20,097 default_GLiNERGuardGrpcBatched 844c1qwx 61d4c3c2-20a4-4a45-9036-b68f270c9474 -- CALL default OK 107.9ms[32m [repeated 38x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:07:25,156 default_GLiNERGuardGrpcBatched y5gmz75y 1eb12358-44ef-4ab5-9c0e-a8d1812029a2 -- CALL default OK 124.7ms[32m [repeated 138x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:07:30,301 default_GLiNERGuardGrpcBatched y5gmz75y 595ab41f-d25f-4450-9520-71dda23b7867 -- CALL default OK 430.0ms[32m [repeated 241x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:07:35,485 default_GLiNERGuardGrpcBatched y5gmz75y f5b1ef2f-b493-4847-ab8f-6840a8e14858 -- CALL default OK 172.6ms[32m [repeated 359x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:07:40,559 default_GLiNERGuardGrpcBatched 844c1qwx 89a1ed95-8427-4681-9a6b-4bd912a4d3b4 -- CALL default OK 130.0ms[32m [repeated 464x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:07:45,567 default_GLiNERGuardGrpcBatched 844c1qwx 6be9aa3f-ef06-4ac9-bfaf-b011725bc46b -- CALL default OK 176.7ms[32m [repeated 529x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:07:50,578 default_GLiNERGuardGrpcBatched c2qls2cx d8bfb0be-2cfd-4be5-8014-4136122fa7f7 -- CALL default OK 120.1ms[32m [repeated 577x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m INFO 2026-04-29 12:07:55,643 default_GLiNERGuardGrpcBatched ve7fxnqe f4d30d2d-8664-4f04-976b-5ded5a20d05f -- CALL default OK 99.8ms[32m [repeated 603x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:00,755 default_GLiNERGuardGrpcBatched 844c1qwx 0bdc97c4-abbe-44db-9852-3628c70c62e3 -- CALL default OK 195.0ms[32m [repeated 598x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:05,838 default_GLiNERGuardGrpcBatched 844c1qwx d426081d-4d04-41d7-96f6-92f7165697ed -- CALL default OK 271.6ms[32m [repeated 616x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:10,957 default_GLiNERGuardGrpcBatched 844c1qwx 09e94285-dea8-40b8-b8c7-eae571bb91bd -- CALL default OK 223.0ms[32m [repeated 677x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:15,948 default_GLiNERGuardGrpcBatched 844c1qwx 273fb3ce-f79c-4b1a-a88f-8e565040fa84 -- CALL default OK 273.0ms[32m [repeated 681x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:21,053 default_GLiNERGuardGrpcBatched 844c1qwx 955233b1-37be-4a6d-898b-efe00280742b -- CALL default OK 198.4ms[32m [repeated 675x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:26,218 default_GLiNERGuardGrpcBatched 844c1qwx 30639b1a-78d8-49ce-bbdc-94d844b4f77f -- CALL default OK 362.0ms[32m [repeated 703x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:08:31,358 default_GLiNERGuardGrpcBatched y5gmz75y 75d1ff1a-fc99-4348-a806-a2047fd5e610 -- CALL default OK 350.4ms[32m [repeated 716x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:36,540 default_GLiNERGuardGrpcBatched 844c1qwx 5d0d9bde-f328-422f-bc2f-c0ebe83928c4 -- CALL default OK 331.7ms[32m [repeated 709x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:41,561 default_GLiNERGuardGrpcBatched 844c1qwx 9823e10e-88a2-4eb0-8529-245ef7ef767b -- CALL default OK 394.0ms[32m [repeated 751x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:46,595 default_GLiNERGuardGrpcBatched 844c1qwx c0eafe9e-930f-4cdb-a505-84823694ec1e -- CALL default OK 486.9ms[32m [repeated 796x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:08:51,682 default_GLiNERGuardGrpcBatched 844c1qwx ad52e1eb-460f-4cfb-af92-ce3942360ea9 -- CALL default OK 519.1ms[32m [repeated 759x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m INFO 2026-04-29 12:08:56,764 default_GLiNERGuardGrpcBatched ve7fxnqe c6e26a17-a4db-4670-9e15-b0047ed0b3ce -- CALL default OK 426.3ms[32m [repeated 825x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:09:01,772 default_GLiNERGuardGrpcBatched 844c1qwx 6fa30884-cb6a-4f90-b35f-15e3ce594eab -- CALL default OK 587.5ms[32m [repeated 816x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:09:06,791 default_GLiNERGuardGrpcBatched 844c1qwx abf561f5-af62-45fd-a6db-e6bbf1ad567c -- CALL default OK 414.2ms[32m [repeated 796x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m INFO 2026-04-29 12:09:11,876 default_GLiNERGuardGrpcBatched ve7fxnqe 3a9d4a11-36bf-4092-8b62-73a75561f940 -- CALL default OK 465.8ms[32m [repeated 768x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:09:16,915 default_GLiNERGuardGrpcBatched 844c1qwx 0caecd6e-77c6-49c2-a53e-d71a57f15c86 -- CALL default OK 304.9ms[32m [repeated 849x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:09:22,073 default_GLiNERGuardGrpcBatched c2qls2cx 57d37eb3-58d6-421f-b690-ed02a144df0d -- CALL default OK 311.4ms[32m [repeated 847x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:09:27,177 default_GLiNERGuardGrpcBatched 844c1qwx 10b54614-9b1e-4089-9e3f-5e992a48dfa0 -- CALL default OK 384.8ms[32m [repeated 868x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:09:32,123 default_GLiNERGuardGrpcBatched 844c1qwx a0fe1197-4e76-4805-89de-85ce68687654 -- CALL default OK 538.9ms[32m [repeated 810x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:09:37,203 default_GLiNERGuardGrpcBatched 844c1qwx 444594c4-79c7-49e5-ae3c-61fd76d701ce -- CALL default OK 444.7ms[32m [repeated 770x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:09:42,206 default_GLiNERGuardGrpcBatched y5gmz75y a5b45231-123f-4e9b-a8a1-9d2c445dcfcf -- CALL default OK 382.5ms[32m [repeated 892x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:09:47,358 default_GLiNERGuardGrpcBatched 844c1qwx f7c2821b-e210-4f26-a2ca-0af8506983bc -- CALL default OK 400.6ms[32m [repeated 745x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:09:52,379 default_GLiNERGuardGrpcBatched 844c1qwx 2869dc0a-364d-40bf-b201-79428f1031c9 -- CALL default OK 543.5ms[32m [repeated 796x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:09:57,430 default_GLiNERGuardGrpcBatched y5gmz75y 1a830b78-ddf8-4e4c-bddb-28ff90d60fb6 -- CALL default OK 447.9ms[32m [repeated 811x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:10:02,701 default_GLiNERGuardGrpcBatched 844c1qwx befdf9b1-9b08-4063-84f9-000073d0b599 -- CALL default OK 298.0ms[32m [repeated 858x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:10:07,839 default_GLiNERGuardGrpcBatched 844c1qwx f46caae1-243a-409d-82b3-08a9e66152c2 -- CALL default OK 360.2ms[32m [repeated 853x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:10:13,020 default_GLiNERGuardGrpcBatched 844c1qwx fdc37fd2-cc5a-4490-bc15-1ca96624a1f0 -- CALL default OK 310.2ms[32m [repeated 826x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:10:18,086 default_GLiNERGuardGrpcBatched y5gmz75y 213697c7-822e-4689-9613-708d494038c8 -- CALL default OK 606.3ms[32m [repeated 870x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:10:23,147 default_GLiNERGuardGrpcBatched 844c1qwx 9eb61c64-1bde-4651-9cc9-eab91399fb7d -- CALL default OK 500.2ms[32m [repeated 783x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:10:28,360 default_GLiNERGuardGrpcBatched c2qls2cx 2c845fed-8333-4cd0-94e1-4e2777ddd582 -- CALL default OK 565.1ms[32m [repeated 833x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:10:33,372 default_GLiNERGuardGrpcBatched 844c1qwx 99c929d4-660e-4ff3-aadc-47b5bed91374 -- CALL default OK 359.5ms[32m [repeated 784x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m INFO 2026-04-29 12:10:38,366 default_GLiNERGuardGrpcBatched ve7fxnqe 50de2687-f0ce-443d-a1ad-ccd1c33fa8d5 -- CALL default OK 636.9ms[32m [repeated 853x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:10:43,413 default_GLiNERGuardGrpcBatched 844c1qwx 38d8a6e5-94c2-425e-b689-9a17bf081dad -- CALL default OK 229.9ms[32m [repeated 847x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:10:48,463 default_GLiNERGuardGrpcBatched 844c1qwx 51aec0d1-e758-4242-a3c2-91a0bca78777 -- CALL default OK 620.2ms[32m [repeated 811x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:10:53,458 default_GLiNERGuardGrpcBatched 844c1qwx 86da53a5-52f2-4435-b499-f31a4e25462f -- CALL default OK 542.4ms[32m [repeated 841x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:10:58,529 default_GLiNERGuardGrpcBatched 844c1qwx c5549e95-86d6-4d9e-9473-0e43429aaa13 -- CALL default OK 778.3ms[32m [repeated 829x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:11:03,502 default_GLiNERGuardGrpcBatched c2qls2cx 9a08b950-9cf7-472c-b5d7-4de1dbb0c9dc -- CALL default OK 607.2ms[32m [repeated 856x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:11:08,592 default_GLiNERGuardGrpcBatched y5gmz75y d5e8374f-b2b3-45b4-b3ea-eca6927a0a61 -- CALL default OK 476.4ms[32m [repeated 855x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:11:13,639 default_GLiNERGuardGrpcBatched 844c1qwx 4f88e96d-8302-4ea9-88df-e5070ba7bf9d -- CALL default OK 565.3ms[32m [repeated 792x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:11:18,720 default_GLiNERGuardGrpcBatched c2qls2cx 158522b1-14a9-4cf8-a022-5914d3736982 -- CALL default OK 544.6ms[32m [repeated 774x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:11:23,745 default_GLiNERGuardGrpcBatched 844c1qwx 950ba4b7-09bf-4c37-ae92-093289dca55c -- CALL default OK 406.0ms[32m [repeated 815x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:11:28,730 default_GLiNERGuardGrpcBatched c2qls2cx 0f06b8d1-a6c7-4875-891e-e66395a4a0d8 -- CALL default OK 710.9ms[32m [repeated 813x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:11:33,757 default_GLiNERGuardGrpcBatched y5gmz75y a21a2856-f34f-4df9-be9c-c032e4fc08ea -- CALL default OK 439.8ms[32m [repeated 836x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:11:38,743 default_GLiNERGuardGrpcBatched 844c1qwx 1bb0291a-b59b-4031-9a9a-332fe5716bbf -- CALL default OK 445.9ms[32m [repeated 821x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m INFO 2026-04-29 12:11:43,849 default_GLiNERGuardGrpcBatched ve7fxnqe f107877a-6c69-40c9-900b-90492d240dc0 -- CALL default OK 488.0ms[32m [repeated 828x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:11:48,866 default_GLiNERGuardGrpcBatched 844c1qwx e101a77c-a5cf-471f-a735-54ba7eb1b9e7 -- CALL default OK 431.1ms[32m [repeated 843x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:11:53,927 default_GLiNERGuardGrpcBatched y5gmz75y 49abb74c-8183-43fe-82f2-6d8c55981c9c -- CALL default OK 628.7ms[32m [repeated 817x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:11:58,954 default_GLiNERGuardGrpcBatched 844c1qwx 235f2b4d-c6b2-4627-8bd3-8eff6e96f9ea -- CALL default OK 543.4ms[32m [repeated 839x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:12:04,151 default_GLiNERGuardGrpcBatched 844c1qwx 296ca938-5278-432a-a3a9-8ca25e07c173 -- CALL default OK 477.8ms[32m [repeated 819x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:12:09,205 default_GLiNERGuardGrpcBatched c2qls2cx 03975ebb-fed6-491a-ad8b-2d4daf4ea498 -- CALL default OK 494.3ms[32m [repeated 838x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:12:14,219 default_GLiNERGuardGrpcBatched 844c1qwx a7cb938e-3a23-4113-b2ce-163050177774 -- CALL default OK 602.6ms[32m [repeated 808x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:12:19,284 default_GLiNERGuardGrpcBatched 844c1qwx c8aeff17-d139-4deb-93a3-fb6b43ac3045 -- CALL default OK 342.9ms[32m [repeated 837x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:12:24,355 default_GLiNERGuardGrpcBatched y5gmz75y 2cde7419-21a9-402d-bebb-9761aa4e4539 -- CALL default OK 534.1ms[32m [repeated 819x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:12:29,378 default_GLiNERGuardGrpcBatched 844c1qwx 6ad34535-75fd-44c5-b8a0-bc04dcda7ecf -- CALL default OK 500.2ms[32m [repeated 840x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:12:34,357 default_GLiNERGuardGrpcBatched 844c1qwx 3f7a84bb-8781-43ea-9299-7d96456f76e5 -- CALL default OK 479.4ms[32m [repeated 817x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:12:39,470 default_GLiNERGuardGrpcBatched y5gmz75y 4bedc1b8-046c-4d6a-8021-3e8fe6ec9ea5 -- CALL default OK 380.7ms[32m [repeated 744x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:12:44,463 default_GLiNERGuardGrpcBatched 844c1qwx 6e286003-01b7-4e1a-b7e4-c25ad2db8e5b -- CALL default OK 714.7ms[32m [repeated 779x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m INFO 2026-04-29 12:12:49,629 default_GLiNERGuardGrpcBatched ve7fxnqe 0794fe4f-98c6-4189-91f6-7b84542f083f -- CALL default OK 483.7ms[32m [repeated 669x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:12:54,648 default_GLiNERGuardGrpcBatched 844c1qwx 9291c84d-8d4e-48b2-b7c7-3bf0b13d4a74 -- CALL default OK 614.9ms[32m [repeated 846x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:12:59,658 default_GLiNERGuardGrpcBatched 844c1qwx 45a5368c-4830-4334-9d70-e3f6e269ec43 -- CALL default OK 307.2ms[32m [repeated 837x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m INFO 2026-04-29 12:13:04,585 default_GLiNERGuardGrpcBatched ve7fxnqe ce95f87e-9620-4d3b-b6fa-8fa1ae2552f7 -- CALL default OK 446.1ms[32m [repeated 793x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:13:09,716 default_GLiNERGuardGrpcBatched 844c1qwx fd1f74f0-ebb2-4fef-8b56-f7784c8e306b -- CALL default OK 484.4ms[32m [repeated 782x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:13:14,753 default_GLiNERGuardGrpcBatched 844c1qwx 77347238-6a78-472e-b82c-8c310b922bf2 -- CALL default OK 239.4ms[32m [repeated 841x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:13:19,834 default_GLiNERGuardGrpcBatched 844c1qwx 70884a45-95b5-4ec2-935f-b1c5ead282bf -- CALL default OK 354.9ms[32m [repeated 863x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:13:24,890 default_GLiNERGuardGrpcBatched c2qls2cx feff1c18-73d1-4df8-a609-d578fef42e89 -- CALL default OK 367.6ms[32m [repeated 772x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:13:29,924 default_GLiNERGuardGrpcBatched 844c1qwx 0a6537dc-915f-4b74-afe6-76492fda504f -- CALL default OK 362.4ms[32m [repeated 860x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:13:34,888 default_GLiNERGuardGrpcBatched 844c1qwx dc88112f-416f-4250-90dd-21fbe41465b9 -- CALL default OK 566.4ms[32m [repeated 840x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:13:39,990 default_GLiNERGuardGrpcBatched 844c1qwx c7ba6d73-d75a-45fa-bac8-d760fe4b07ae -- CALL default OK 502.9ms[32m [repeated 877x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:13:45,127 default_GLiNERGuardGrpcBatched 844c1qwx 92e47288-3915-4c54-9d11-a998d83fd4b5 -- CALL default OK 430.3ms[32m [repeated 869x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:13:50,159 default_GLiNERGuardGrpcBatched y5gmz75y 59e7b4c0-0f86-42e6-b2b4-1d95e8964468 -- CALL default OK 319.4ms[32m [repeated 751x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:13:55,165 default_GLiNERGuardGrpcBatched y5gmz75y 58c4d9ba-5f1d-4394-8018-042b42f0598b -- CALL default OK 507.1ms[32m [repeated 759x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:14:00,160 default_GLiNERGuardGrpcBatched 844c1qwx dd3f1fe4-3902-4ac1-a768-d9046530b10c -- CALL default OK 635.5ms[32m [repeated 803x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:14:05,230 default_GLiNERGuardGrpcBatched c2qls2cx 78b6bd08-b2c3-4d7f-a3b3-e29ce7d45294 -- CALL default OK 507.4ms[32m [repeated 801x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:14:10,287 default_GLiNERGuardGrpcBatched 844c1qwx 93f82e1f-386a-4af9-964f-27d911e9a34b -- CALL default OK 567.5ms[32m [repeated 802x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:14:15,322 default_GLiNERGuardGrpcBatched 844c1qwx a764aec4-69b0-43fd-bb48-75484cebfa23 -- CALL default OK 612.7ms[32m [repeated 794x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:14:20,298 default_GLiNERGuardGrpcBatched 844c1qwx a2758626-5445-4af6-a605-8a03231d28ea -- CALL default OK 397.7ms[32m [repeated 794x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:14:25,428 default_GLiNERGuardGrpcBatched 844c1qwx 79a1dcec-94e4-49e0-958c-914402f5aa4b -- CALL default OK 498.8ms[32m [repeated 848x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:14:30,677 default_GLiNERGuardGrpcBatched 844c1qwx 347f90f3-975e-4b63-b43a-0e8641ecb09f -- CALL default OK 513.4ms[32m [repeated 852x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:14:35,681 default_GLiNERGuardGrpcBatched 844c1qwx 7dde498d-1228-491d-a985-bdcd407d4d9f -- CALL default OK 255.0ms[32m [repeated 815x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:14:40,669 default_GLiNERGuardGrpcBatched 844c1qwx 0c9b8e6d-ee3b-45b4-9cf6-2c3bf1fa857e -- CALL default OK 747.6ms[32m [repeated 809x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:14:45,655 default_GLiNERGuardGrpcBatched 844c1qwx f8ce385f-018a-4dd5-a9d1-af7b5b5140b5 -- CALL default OK 570.5ms[32m [repeated 814x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:14:50,691 default_GLiNERGuardGrpcBatched y5gmz75y 3b4ec061-12ac-4849-845a-0d1b92efa911 -- CALL default OK 313.8ms[32m [repeated 812x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:14:55,680 default_GLiNERGuardGrpcBatched y5gmz75y dabc27bd-5819-46ca-86fb-fab7af127215 -- CALL default OK 634.1ms[32m [repeated 836x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:15:00,741 default_GLiNERGuardGrpcBatched c2qls2cx 378e9ec4-3eff-4ec0-a132-0afe49275ceb -- CALL default OK 275.2ms[32m [repeated 812x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:15:05,712 default_GLiNERGuardGrpcBatched 844c1qwx be57def8-5ecb-4107-a02f-3cb625093032 -- CALL default OK 521.9ms[32m [repeated 813x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:15:10,689 default_GLiNERGuardGrpcBatched y5gmz75y 18f97aa0-3a35-4c17-8cfd-7a2c03bd0ab3 -- CALL default OK 723.4ms[32m [repeated 799x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:15:15,756 default_GLiNERGuardGrpcBatched 844c1qwx 70081048-705d-4706-ab3b-4805082757cf -- CALL default OK 544.3ms[32m [repeated 752x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:15:20,839 default_GLiNERGuardGrpcBatched 844c1qwx 4c7e05bd-880c-477f-8c84-56801d1c1784 -- CALL default OK 404.8ms[32m [repeated 867x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:15:25,928 default_GLiNERGuardGrpcBatched 844c1qwx f7917cad-6665-47a0-8474-def722e7dfdf -- CALL default OK 622.6ms[32m [repeated 853x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:15:31,107 default_GLiNERGuardGrpcBatched y5gmz75y 46592103-69b7-4e01-b103-55b2d8d1e45b -- CALL default OK 404.0ms[32m [repeated 796x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:15:36,153 default_GLiNERGuardGrpcBatched 844c1qwx 99082110-6445-4efc-82b4-608571149de2 -- CALL default OK 593.5ms[32m [repeated 765x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:15:41,212 default_GLiNERGuardGrpcBatched c2qls2cx 5dcc467a-9571-403c-a6cd-3ad35a5a5a59 -- CALL default OK 656.1ms[32m [repeated 774x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:15:46,164 default_GLiNERGuardGrpcBatched y5gmz75y eb39dbe3-c411-456a-9ca5-8e4ff2ec71cb -- CALL default OK 143.3ms[32m [repeated 829x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:15:51,209 default_GLiNERGuardGrpcBatched 844c1qwx 6e20ed12-ec70-4db2-90bb-74cdf70e0ada -- CALL default OK 449.2ms[32m [repeated 849x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:15:56,202 default_GLiNERGuardGrpcBatched 844c1qwx fa06f45c-f663-40dc-90eb-59619a233873 -- CALL default OK 402.9ms[32m [repeated 738x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:16:01,278 default_GLiNERGuardGrpcBatched c2qls2cx e7a6c842-628e-4621-880f-3ba67eed0de4 -- CALL default OK 453.3ms[32m [repeated 871x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:16:06,419 default_GLiNERGuardGrpcBatched 844c1qwx ae7dd08b-444e-4268-a733-60301984ec75 -- CALL default OK 545.8ms[32m [repeated 804x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:16:11,454 default_GLiNERGuardGrpcBatched y5gmz75y 7150fb9b-90ef-48d8-9b72-c1a757692f76 -- CALL default OK 644.8ms[32m [repeated 861x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:16:16,544 default_GLiNERGuardGrpcBatched 844c1qwx bc3e52a7-3408-4dfc-a619-5988e9d10927 -- CALL default OK 467.2ms[32m [repeated 868x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:16:21,534 default_GLiNERGuardGrpcBatched 844c1qwx bc119712-8752-4c37-a591-f745b6352c13 -- CALL default OK 459.9ms[32m [repeated 833x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:16:26,574 default_GLiNERGuardGrpcBatched 844c1qwx 6ffbd88a-a832-48fe-8237-a0eaa674e4af -- CALL default OK 571.9ms[32m [repeated 779x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:16:31,549 default_GLiNERGuardGrpcBatched 844c1qwx f0c021dd-cd2d-4bd1-8ae2-dde377e76adb -- CALL default OK 597.1ms[32m [repeated 801x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:16:36,655 default_GLiNERGuardGrpcBatched c2qls2cx 630431a1-cc7e-40d9-acb3-99af9dbb7c50 -- CALL default OK 756.3ms[32m [repeated 875x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:16:41,589 default_GLiNERGuardGrpcBatched y5gmz75y 9112b398-023d-4c17-8183-ce43e6cc7e80 -- CALL default OK 606.1ms[32m [repeated 852x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:16:46,722 default_GLiNERGuardGrpcBatched 844c1qwx d0b59fab-206a-422c-9a92-51b2d3a97f70 -- CALL default OK 627.8ms[32m [repeated 876x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:16:51,776 default_GLiNERGuardGrpcBatched y5gmz75y d95b0a58-1ca9-4c75-b446-aeaf6a0bb865 -- CALL default OK 399.7ms[32m [repeated 837x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:16:56,744 default_GLiNERGuardGrpcBatched y5gmz75y 6bc94ca3-7d2a-4d03-acae-6fee63f7b3a4 -- CALL default OK 149.7ms[32m [repeated 838x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:17:01,816 default_GLiNERGuardGrpcBatched y5gmz75y 8eaed1eb-bf37-4720-b1b7-aa080861b25a -- CALL default OK 211.8ms[32m [repeated 840x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:17:06,748 default_GLiNERGuardGrpcBatched y5gmz75y 5c0c64c1-d8d8-45a9-88e4-fe31ecaa451c -- CALL default OK 681.0ms[32m [repeated 844x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:17:11,854 default_GLiNERGuardGrpcBatched 844c1qwx 47d60720-5075-405e-8b9f-843d42f08571 -- CALL default OK 467.2ms[32m [repeated 860x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:17:16,988 default_GLiNERGuardGrpcBatched 844c1qwx 98ed554e-15ab-461b-b1a8-5435bba232c4 -- CALL default OK 360.2ms[32m [repeated 814x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:17:21,972 default_GLiNERGuardGrpcBatched y5gmz75y e20ec1d1-8fe8-4f38-82be-fe962a49a6be -- CALL default OK 446.6ms[32m [repeated 813x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:17:27,008 default_GLiNERGuardGrpcBatched 844c1qwx 0a6b3891-d0a8-4377-8fef-b22908699c42 -- CALL default OK 549.3ms[32m [repeated 752x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:17:31,994 default_GLiNERGuardGrpcBatched y5gmz75y 5199d20d-e58b-4b7f-b2cd-90cf4823e10f -- CALL default OK 244.5ms[32m [repeated 777x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:17:37,084 default_GLiNERGuardGrpcBatched 844c1qwx b1754b72-e8f0-49a7-9b11-c9f1ee9f95cd -- CALL default OK 474.9ms[32m [repeated 865x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:17:42,089 default_GLiNERGuardGrpcBatched 844c1qwx 2ff27445-2bee-4e5f-b31e-def68be4c298 -- CALL default OK 683.6ms[32m [repeated 767x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:17:47,094 default_GLiNERGuardGrpcBatched 844c1qwx 919a9850-fa7a-4ccd-81c9-8f7b22776379 -- CALL default OK 474.3ms[32m [repeated 760x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:17:52,114 default_GLiNERGuardGrpcBatched 844c1qwx e0976017-87b4-4256-8d69-c926995ffc8b -- CALL default OK 577.3ms[32m [repeated 780x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:17:57,312 default_GLiNERGuardGrpcBatched 844c1qwx 58efe3af-e847-44b5-9f00-0c199d61bd73 -- CALL default OK 428.3ms[32m [repeated 840x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:18:02,298 default_GLiNERGuardGrpcBatched c2qls2cx c3dda46e-ba5a-422a-b266-6f2e8fe18fac -- CALL default OK 589.6ms[32m [repeated 785x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:18:07,351 default_GLiNERGuardGrpcBatched c2qls2cx 0d514234-6a0a-4362-b73e-d1bdb038f292 -- CALL default OK 486.9ms[32m [repeated 766x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:18:12,359 default_GLiNERGuardGrpcBatched 844c1qwx c46a049a-bd80-43f1-bd8e-41aaf6732e7c -- CALL default OK 584.2ms[32m [repeated 772x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:18:17,344 default_GLiNERGuardGrpcBatched y5gmz75y 3ff2b38f-7fce-4bee-9be4-c1f427e8a8c0 -- CALL default OK 418.4ms[32m [repeated 765x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:18:22,403 default_GLiNERGuardGrpcBatched 844c1qwx 814ea891-5891-4fb8-bd9d-792483eee887 -- CALL default OK 644.1ms[32m [repeated 787x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:18:27,427 default_GLiNERGuardGrpcBatched y5gmz75y a15b65a8-a135-40d7-a6da-9047fd149207 -- CALL default OK 629.7ms[32m [repeated 840x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:18:32,464 default_GLiNERGuardGrpcBatched 844c1qwx 031638f2-17ce-464a-ae37-f4f104c9c639 -- CALL default OK 280.4ms[32m [repeated 743x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:18:37,444 default_GLiNERGuardGrpcBatched 844c1qwx 7910d83a-7bf9-46c1-b23b-bb127f3e3cff -- CALL default OK 526.0ms[32m [repeated 791x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:18:42,509 default_GLiNERGuardGrpcBatched 844c1qwx 31ac7c57-d788-41a1-a67f-f1fcc3f39e92 -- CALL default OK 481.5ms[32m [repeated 809x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:18:47,445 default_GLiNERGuardGrpcBatched y5gmz75y 3fa883c4-f5c5-439e-a89c-9d0eb90358be -- CALL default OK 109.0ms[32m [repeated 832x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:18:52,565 default_GLiNERGuardGrpcBatched 844c1qwx 3711f254-4a61-423e-8ecb-e4e32dc0c23e -- CALL default OK 555.3ms[32m [repeated 819x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:18:57,606 default_GLiNERGuardGrpcBatched c2qls2cx 8d815bb9-8738-4e8e-af5c-72d9a0afde35 -- CALL default OK 529.3ms[32m [repeated 822x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:19:02,652 default_GLiNERGuardGrpcBatched 844c1qwx e921c343-bfa0-4ed5-bf32-3daee220cf5e -- CALL default OK 444.5ms[32m [repeated 856x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:19:07,724 default_GLiNERGuardGrpcBatched c2qls2cx 988ee211-57a8-4baa-b875-cdc60f1065f3 -- CALL default OK 494.7ms[32m [repeated 759x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:19:12,738 default_GLiNERGuardGrpcBatched y5gmz75y 97af9f47-dd6c-41af-aae8-b9cb200bbfdf -- CALL default OK 571.0ms[32m [repeated 778x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:19:17,728 default_GLiNERGuardGrpcBatched 844c1qwx ca02a5dd-91ee-4461-9d3d-f11d8a90ad19 -- CALL default OK 457.5ms[32m [repeated 662x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:19:22,916 default_GLiNERGuardGrpcBatched 844c1qwx f51a96c8-c22e-4203-a626-48c756e1072a -- CALL default OK 534.7ms[32m [repeated 739x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:19:27,945 default_GLiNERGuardGrpcBatched 844c1qwx 5b749993-c631-4cbb-90e0-a4b9cc0bb486 -- CALL default OK 191.8ms[32m [repeated 732x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:19:33,195 default_GLiNERGuardGrpcBatched y5gmz75y 58a27cb8-ae30-4224-87b1-786163ffa999 -- CALL default OK 580.3ms[32m [repeated 785x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:19:38,133 default_GLiNERGuardGrpcBatched 844c1qwx aa0aa412-8d67-47ca-a62a-70aed77f22e7 -- CALL default OK 542.2ms[32m [repeated 799x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:19:43,153 default_GLiNERGuardGrpcBatched 844c1qwx 94c4e911-08b7-4467-9298-9609a94be6de -- CALL default OK 500.3ms[32m [repeated 825x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:19:48,179 default_GLiNERGuardGrpcBatched c2qls2cx 70fa4267-3766-4871-8592-f4f25da483be -- CALL default OK 566.8ms[32m [repeated 816x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:19:53,318 default_GLiNERGuardGrpcBatched c2qls2cx 1fcac8c0-e0f4-4d4c-ba32-cd3a0c077588 -- CALL default OK 473.0ms[32m [repeated 786x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:19:58,496 default_GLiNERGuardGrpcBatched 844c1qwx f318cb3a-023c-42d7-bcec-bbaf8e27826a -- CALL default OK 675.5ms[32m [repeated 840x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:20:03,522 default_GLiNERGuardGrpcBatched y5gmz75y 2dbe946d-c36e-460d-9555-eaf20b388e12 -- CALL default OK 483.7ms[32m [repeated 814x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:20:08,659 default_GLiNERGuardGrpcBatched 844c1qwx b14c30e8-e53b-4288-848e-e1b2ffa54dbb -- CALL default OK 370.3ms[32m [repeated 850x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:20:13,644 default_GLiNERGuardGrpcBatched y5gmz75y 761d64e6-389e-4950-8975-3078cd524ec6 -- CALL default OK 459.6ms[32m [repeated 804x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:20:18,797 default_GLiNERGuardGrpcBatched y5gmz75y a59f3fdf-657f-42e1-9999-ad4396c9b745 -- CALL default OK 730.0ms[32m [repeated 864x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:20:23,821 default_GLiNERGuardGrpcBatched 844c1qwx 818d47eb-6537-449f-a61b-aaf925cb44bc -- CALL default OK 120.0ms[32m [repeated 850x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:20:29,003 default_GLiNERGuardGrpcBatched 844c1qwx 7648be96-3c64-41e3-b5b9-142ec0ed5111 -- CALL default OK 610.1ms[32m [repeated 828x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:20:33,987 default_GLiNERGuardGrpcBatched y5gmz75y 33dc06e0-df6b-49a5-85bf-01f759ec419d -- CALL default OK 596.4ms[32m [repeated 848x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:20:39,046 default_GLiNERGuardGrpcBatched 844c1qwx 4e9fbf81-fb51-4f55-9e46-bccb34df2970 -- CALL default OK 447.6ms[32m [repeated 837x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:20:44,049 default_GLiNERGuardGrpcBatched y5gmz75y 03dde157-23f0-4023-a8cd-cd42c2889c87 -- CALL default OK 183.7ms[32m [repeated 841x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:20:49,309 default_GLiNERGuardGrpcBatched y5gmz75y 5bf3e320-9198-4789-87ac-393d2a02ac6c -- CALL default OK 172.7ms[32m [repeated 876x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:20:54,318 default_GLiNERGuardGrpcBatched c2qls2cx 74488fd1-b2ec-4541-93e1-1afd591aa60d -- CALL default OK 705.1ms[32m [repeated 820x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:20:59,477 default_GLiNERGuardGrpcBatched 844c1qwx 5651dd62-8281-42b7-a7dd-ecadcf69c9af -- CALL default OK 557.8ms[32m [repeated 800x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:21:04,444 default_GLiNERGuardGrpcBatched 844c1qwx f28fb645-e542-4b03-8804-b31616932029 -- CALL default OK 519.1ms[32m [repeated 810x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:21:09,503 default_GLiNERGuardGrpcBatched c2qls2cx a621a810-ec14-4af0-bc54-d834613c5ba0 -- CALL default OK 629.8ms[32m [repeated 796x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:21:14,512 default_GLiNERGuardGrpcBatched 844c1qwx a144cdb6-8d1d-4607-aac4-4820a35df947 -- CALL default OK 602.8ms[32m [repeated 802x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:21:19,511 default_GLiNERGuardGrpcBatched 844c1qwx 63935157-1b2a-4339-8373-888f0d7caf8d -- CALL default OK 307.3ms[32m [repeated 842x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:21:24,462 default_GLiNERGuardGrpcBatched 844c1qwx b00254cf-e0fe-4d9a-af6c-4d79fe33c066 -- CALL default OK 673.8ms[32m [repeated 826x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:21:29,481 default_GLiNERGuardGrpcBatched 844c1qwx 4cd63446-d278-4a9b-ba2f-a934832ee792 -- CALL default OK 351.7ms[32m [repeated 818x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:21:34,539 default_GLiNERGuardGrpcBatched y5gmz75y 6cc21b8e-eb29-43ac-b825-c61e60573f53 -- CALL default OK 568.7ms[32m [repeated 788x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:21:39,545 default_GLiNERGuardGrpcBatched 844c1qwx 010426b0-10fb-4e19-aa08-2701efb38cec -- CALL default OK 646.7ms[32m [repeated 785x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:21:44,550 default_GLiNERGuardGrpcBatched 844c1qwx 3a08f41e-e72b-42bb-8a07-7ff061e246a2 -- CALL default OK 512.9ms[32m [repeated 790x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:21:49,561 default_GLiNERGuardGrpcBatched 844c1qwx 8561bb9c-ddf7-4f50-8bd0-233a9a4f7972 -- CALL default OK 214.2ms[32m [repeated 773x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:21:54,591 default_GLiNERGuardGrpcBatched y5gmz75y 94faef0b-b8fd-4048-b9ed-d32cafb8781f -- CALL default OK 336.2ms[32m [repeated 853x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:21:59,577 default_GLiNERGuardGrpcBatched c2qls2cx 818d6e93-78da-45a6-b488-6bf8eadf0b2e -- CALL default OK 552.7ms[32m [repeated 773x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:22:04,703 default_GLiNERGuardGrpcBatched 844c1qwx 2af88f94-a4d6-4575-904d-067b7c6444ae -- CALL default OK 380.9ms[32m [repeated 837x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:22:09,712 default_GLiNERGuardGrpcBatched 844c1qwx d685ed75-b7f2-417b-a9ff-ce4f00ed7405 -- CALL default OK 526.4ms[32m [repeated 797x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m INFO 2026-04-29 12:22:14,804 default_GLiNERGuardGrpcBatched y5gmz75y 45625da0-aa95-4d99-9913-fe8f426514f3 -- CALL default OK 465.4ms[32m [repeated 846x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33033)[0m INFO 2026-04-29 12:22:16,617 default_GLiNERGuardGrpcBatched 844c1qwx 7d48b841-1e1c-45ca-9a78-74e71f820061 -- CALL default CANCELLED 451.1ms
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982077' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('0070d3bf-3e2d-464f-a32a-c72e5bbefe55')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 0070d3bf-3e2d-464f-a32a-c72e5bbefe55 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982252' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('7d48b841-1e1c-45ca-9a78-74e71f820061')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 7d48b841-1e1c-45ca-9a78-74e71f820061 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982552' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('98302840-3db3-4e98-bb9b-2a4b7a829c68')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 98302840-3db3-4e98-bb9b-2a4b7a829c68 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982370' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('54d1bf38-621f-4f06-8bc2-da685a21f6ad')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 54d1bf38-621f-4f06-8bc2-da685a21f6ad was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982376' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('12a54577-0ff7-49e5-8f18-31d2b5dc448f')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 12a54577-0ff7-49e5-8f18-31d2b5dc448f was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982564' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('6ebdab05-ab14-40a3-ba8d-88f15f59b9fa')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 6ebdab05-ab14-40a3-ba8d-88f15f59b9fa was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-981934' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('2faed74d-a333-430a-9b87-881907945ae8')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 2faed74d-a333-430a-9b87-881907945ae8 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982303' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('be458613-e2f0-408f-96d9-0dd89c44de9b')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request be458613-e2f0-408f-96d9-0dd89c44de9b was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-981943' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('1fbbcc70-96d9-49d6-8565-58d4eaa939f0')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 1fbbcc70-96d9-49d6-8565-58d4eaa939f0 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-981991' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('b9111ef8-995f-4b90-8b55-c4a84b178321')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request b9111ef8-995f-4b90-8b55-c4a84b178321 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982489' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('7a92672d-8d0d-4b1c-bf2f-3700b1a12a40')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 7a92672d-8d0d-4b1c-bf2f-3700b1a12a40 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982025' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('bd289f4a-ab0f-445a-8a1f-8e4a4bbccc7d')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request bd289f4a-ab0f-445a-8a1f-8e4a4bbccc7d was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982469' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('7c5c5d18-5acb-4eef-aefe-5248e2931d10')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 7c5c5d18-5acb-4eef-aefe-5248e2931d10 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982086' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('71e88f64-763d-462d-8870-e06ba41b9c14')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 71e88f64-763d-462d-8870-e06ba41b9c14 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982293' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('50640b0b-212d-401e-90cd-227202a494ce')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 50640b0b-212d-401e-90cd-227202a494ce was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982227' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('f6df3a66-f7b5-4b9c-be34-a2915076e8d2')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request f6df3a66-f7b5-4b9c-be34-a2915076e8d2 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982309' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('e08f5f18-198d-4f43-90e6-368d19904387')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request e08f5f18-198d-4f43-90e6-368d19904387 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982246' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('b0ad4587-fca9-4958-8d48-1cb0f7eb312f')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request b0ad4587-fca9-4958-8d48-1cb0f7eb312f was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982557' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('e4f5dcbb-5250-4c41-9450-0373cf4ed3f0')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request e4f5dcbb-5250-4c41-9450-0373cf4ed3f0 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982317' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('62ea2e12-ce6d-46c7-92a8-6838d3721960')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 62ea2e12-ce6d-46c7-92a8-6838d3721960 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982331' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('49766b28-f138-4eb8-8bb7-e5fe3b3c7d0e')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 49766b28-f138-4eb8-8bb7-e5fe3b3c7d0e was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982548' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('5a0919c9-ee00-4576-87bc-69ad2ebae3fd')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 5a0919c9-ee00-4576-87bc-69ad2ebae3fd was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982571' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('bdb71cb1-cee4-489f-bd02-1481ff222a74')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request bdb71cb1-cee4-489f-bd02-1481ff222a74 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982360' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('37f5de13-2f72-4d0a-a88c-61383bdd7a62')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 37f5de13-2f72-4d0a-a88c-61383bdd7a62 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982353' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('d8974cba-7b06-42e9-8163-49b1f7ab0bf2')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request d8974cba-7b06-42e9-8163-49b1f7ab0bf2 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982267' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('34a8c1e0-d1f1-4162-b165-bfa7229fb0fa')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 34a8c1e0-d1f1-4162-b165-bfa7229fb0fa was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982569' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('90c03aed-f974-404c-b972-8ee68815da0a')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 90c03aed-f974-404c-b972-8ee68815da0a was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982453' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('7384bc11-a25e-439f-b542-0f3a549653d0')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 7384bc11-a25e-439f-b542-0f3a549653d0 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982321' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('5b07ad9f-fc32-42df-bb8d-c9ee7f5d9646')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 5b07ad9f-fc32-42df-bb8d-c9ee7f5d9646 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982537' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('617b412a-5333-4aaf-b448-92026e82c8d5')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 617b412a-5333-4aaf-b448-92026e82c8d5 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982263' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('924ddacd-bae2-47f0-965e-1b448f3b8f76')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 924ddacd-bae2-47f0-965e-1b448f3b8f76 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982541' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('ce4bf69e-9deb-444f-8e07-9fc6469e9fc8')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request ce4bf69e-9deb-444f-8e07-9fc6469e9fc8 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982343' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('2564e49f-a615-4f8b-8cda-dfe48662d631')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 2564e49f-a615-4f8b-8cda-dfe48662d631 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982272' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('9115d99e-cc3f-4d61-9036-a00c7aa3167e')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 9115d99e-cc3f-4d61-9036-a00c7aa3167e was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982347' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('5888c0d4-8e7f-4ad1-9053-f967069d537b')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 5888c0d4-8e7f-4ad1-9053-f967069d537b was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982279' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('8b7a3b2c-8462-481d-a919-1017c30db004')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 8b7a3b2c-8462-481d-a919-1017c30db004 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982232' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('4571f172-9377-446a-a7e2-f1f0f2465fc5')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 4571f172-9377-446a-a7e2-f1f0f2465fc5 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982365' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('cd2d23c2-4443-4b80-8f26-3ab2786d54b0')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request cd2d23c2-4443-4b80-8f26-3ab2786d54b0 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982288' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('c87d1632-ac06-4901-bcb1-2f642f89f44f')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request c87d1632-ac06-4901-bcb1-2f642f89f44f was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982338' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('1af22756-ff9c-4157-b51e-cdcbe683102b')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 1af22756-ff9c-4157-b51e-cdcbe683102b was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982297' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('bc6ddafa-847e-45fb-9aa3-6bba306a6af6')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request bc6ddafa-847e-45fb-9aa3-6bba306a6af6 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982255' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('91ca7750-a466-44a6-8694-0f116ac2f9de')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 91ca7750-a466-44a6-8694-0f116ac2f9de was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982588' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('7c859384-1771-4b7f-94ec-9e03e5137fcc')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 7c859384-1771-4b7f-94ec-9e03e5137fcc was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982533' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('09491aa1-9531-4901-974d-ecd5156eab02')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 09491aa1-9531-4901-974d-ecd5156eab02 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982581' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('9771dcd8-b411-4097-803f-f54125517723')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 9771dcd8-b411-4097-803f-f54125517723 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982306' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('a637893e-f730-4426-b3ed-ef524f73caf5')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request a637893e-f730-4426-b3ed-ef524f73caf5 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982328' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('ec722a9d-3698-4ba0-9c17-19934ac53700')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request ec722a9d-3698-4ba0-9c17-19934ac53700 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982524' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('fec3e81e-ca85-4e0e-bda2-a87d2370945b')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request fec3e81e-ca85-4e0e-bda2-a87d2370945b was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982373' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('5e87314a-f0e6-4107-bf38-5b146cf79cda')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 5e87314a-f0e6-4107-bf38-5b146cf79cda was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982584' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('35cd2b18-5d4e-4afe-9d9d-6d7482415613')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 35cd2b18-5d4e-4afe-9d9d-6d7482415613 was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982474' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('e2ca1326-d80f-470b-bd0d-4cbfc94e117c')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request e2ca1326-d80f-470b-bd0d-4cbfc94e117c was cancelled.
+[36m(ProxyActor pid=33032)[0m Task exception was never retrieved
+[36m(ProxyActor pid=33032)[0m future: <Task finished name='Task-982281' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('95db2117-f30b-4018-b3d7-2d81c7d7a8ba')>
+[36m(ProxyActor pid=33032)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=33032)[0m     return await self._response
+[36m(ProxyActor pid=33032)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=33032)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=33032)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=33032)[0m ray.serve.exceptions.RequestCancelledError: Request 95db2117-f30b-4018-b3d7-2d81c7d7a8ba was cancelled.
+*** SIGTERM received at time=1777465337 on cpu 112 ***
+PC: @     0x76de4d8c6612  (unknown)  pause
+    @     0x76de4d81e520  463198912  (unknown)
+    @          0x1803759         48  cfunction_vectorcall_NOARGS.llvm.12799217410478811465
+    @          0x181b3c0        576  _PyEval_EvalFrameDefault
+    @          0x18837e8        112  PyEval_EvalCode
+    @          0x18ee27b         80  run_eval_code_obj
+    @          0x18ee18d         96  run_mod.llvm.10863284883542772384
+    @          0x1a63d17         96  pyrun_file
+    @          0x1a638c2         80  _PyRun_SimpleFileObject
+    @          0x1a6449c         64  _PyRun_AnyFileObject
+    @          0x1a64438        208  pymain_run_file_obj
+    @          0x1a6431e         48  pymain_run_file
+    @          0x199f53a        112  Py_RunMain
+    @          0x199f1ee        624  pymain_main.llvm.10509498499233858764
+    @          0x199f006         48  main
+    @     0x76de4d805d90  (unknown)  (unknown)
+[2026-04-29 12:22:17,257 E 31959 31959] logging.cc:474: *** SIGTERM received at time=1777465337 on cpu 112 ***
+[2026-04-29 12:22:17,257 E 31959 31959] logging.cc:474: PC: @     0x76de4d8c6612  (unknown)  pause
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @     0x76de4d81e520  463198912  (unknown)
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x1803759         48  cfunction_vectorcall_NOARGS.llvm.12799217410478811465
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x181b3c0        576  _PyEval_EvalFrameDefault
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x18837e8        112  PyEval_EvalCode
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x18ee27b         80  run_eval_code_obj
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x18ee18d         96  run_mod.llvm.10863284883542772384
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x1a63d17         96  pyrun_file
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x1a638c2         80  _PyRun_SimpleFileObject
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x1a6449c         64  _PyRun_AnyFileObject
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x1a64438        208  pymain_run_file_obj
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x1a6431e         48  pymain_run_file
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x199f53a        112  Py_RunMain
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x199f1ee        624  pymain_main.llvm.10509498499233858764
+[2026-04-29 12:22:17,258 E 31959 31959] logging.cc:474:     @          0x199f006         48  main
+[2026-04-29 12:22:17,259 E 31959 31959] logging.cc:474:     @     0x76de4d805d90  (unknown)  (unknown)
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m [GLiNER2] Attention: requested=None, actual=sdpa
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m ============================================================
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m Model Configuration
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m ============================================================
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m Encoder mode       : uni
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m Text encoder       : bogdanminko/mmBERT-small
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m Counting layer     : count_lstm_v2
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m Token pooling      : first
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33036)[0m ============================================================
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33035)[0m INFO 2026-04-29 12:22:16,636 default_GLiNERGuardGrpcBatched c2qls2cx b0ad4587-fca9-4958-8d48-1cb0f7eb312f -- CALL default OK 471.6ms[32m [repeated 344x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m INFO 2026-04-29 12:22:16,674 default_GLiNERGuardGrpcBatched ve7fxnqe 9771dcd8-b411-4097-803f-f54125517723 -- CALL default CANCELLED 335.2ms[32m [repeated 43x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m [GLiNER2] Attention: requested=None, actual=sdpa[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m ============================================================[32m [repeated 9x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m Model Configuration[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m Encoder mode       : uni[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m Text encoder       : bogdanminko/mmBERT-small[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m Counting layer     : count_lstm_v2[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=33039)[0m Token pooling      : first[32m [repeated 3x across cluster][0m

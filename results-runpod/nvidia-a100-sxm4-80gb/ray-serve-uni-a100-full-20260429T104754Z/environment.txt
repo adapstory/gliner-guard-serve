@@ -1,0 +1,52 @@
+timestamp_utc=2026-04-29T10:47:54Z
+repo_dir=/root/gliner-guard-serve
+env_file=.env.ray-a100-4w.example
+uv_python=3.13
+model_id=hivetrace/gliner-guard-uniencoder
+schema_mode=minimal
+num_replicas=4
+num_gpus_per_replica=0.25
+num_cpus_per_replica=3
+max_ongoing_requests=256
+max_concurrent_batches=1
+batch_configs=16:0.05,32:0.05,64:0.05
+protocols=rest,grpc
+repeats=3
+duration=15m
+users=100
+spawn_rate=1
+user_throughput=5
+dataset=prompts
+warmup_reqs=50
+ray_object_store_memory=2000000000
+ray_work_dir=/tmp/gliner-guard-ray-workdir
+
+uv:
+uv 0.11.8 (x86_64-unknown-linux-gnu)
+
+python:
+Python 3.13.13
+
+git:
+
+gpu:
+Wed Apr 29 10:47:54 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 565.57.01              Driver Version: 565.57.01      CUDA Version: 12.7     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A100-SXM4-80GB          On  |   00000000:47:00.0 Off |                    0 |
+| N/A   29C    P0             65W /  400W |       1MiB /  81920MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+

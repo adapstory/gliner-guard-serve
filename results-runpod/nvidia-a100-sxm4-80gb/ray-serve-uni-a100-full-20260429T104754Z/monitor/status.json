@@ -1,0 +1,77 @@
+{
+  "state": "completed",
+  "checked_at_utc": "2026-04-29T15:34:12+00:00",
+  "result_dir": "/workspace/gliner-guard-results/a100-full-20260429T104754Z",
+  "driver_log": "/workspace/gliner-guard-results/a100-full-20260429T104754Z.driver.log",
+  "pid": 13277,
+  "process_alive": false,
+  "expected_runs": 18,
+  "completed_runs": 18,
+  "remaining_runs": 0,
+  "active_prefix": "ray-grpc-B64-uni-prompts-run3",
+  "active_locust_log": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-locust.log",
+  "latest_activity_utc": "2026-04-29T15:31:58+00:00",
+  "stale_seconds": 130,
+  "latest_aggregated": "Aggregated                                                                            720    800    840    870    960   1100   1400   2000   4700   5100   5700 119009",
+  "latest_gpu_sample": "2026/04/29 15:31:36.557, 37, 11, 5656, 81920, 137.57",
+  "last_completed": {
+    "prefix": "ray-grpc-B64-uni-prompts-run3",
+    "protocol": "grpc",
+    "batch_size": "64",
+    "run": "3",
+    "rps": "132.279038",
+    "p50_ms": "708.5214741162079",
+    "p95_ms": "5690.905258059502",
+    "failures": "0"
+  },
+  "recent_errors": [
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    },
+    {
+      "path": "/workspace/gliner-guard-results/a100-full-20260429T104754Z/logs/ray-grpc-B64-uni-prompts-run3-server.log",
+      "line": "\u001b[36m(ProxyActor pid=77357)\u001b[0m Traceback (most recent call last):"
+    }
+  ]
+}

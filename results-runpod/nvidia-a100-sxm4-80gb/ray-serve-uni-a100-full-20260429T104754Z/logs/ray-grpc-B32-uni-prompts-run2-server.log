@@ -1,0 +1,358 @@
+2026-04-29 13:10:03,219	WARNING utils.py:458 -- Detecting docker specified CPUs. In previous versions of Ray, CPU detection in containers was incorrect. Please ensure that Ray has enough CPUs allocated. As a temporary workaround to revert to the prior behavior, set `RAY_USE_MULTIPROCESSING_CPU_COUNT=1` as an env var before starting Ray. Set the env var: `RAY_DISABLE_DOCKER_CPU_WARNING=1` to mute this warning.
+2026-04-29 13:10:03,220	WARNING utils.py:470 -- Ray currently does not support initializing Ray with fractional cpus. Your num_cpus will be truncated from 13.6 to 13.
+2026-04-29 13:10:06,488	INFO worker.py:2004 -- Started a local Ray instance. View the dashboard at [1m[32mhttp://127.0.0.1:8265 [39m[22m
+/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/_private/worker.py:2052: FutureWarning: Tip: In future versions of Ray, Ray will no longer override accelerator visible devices env var if num_gpus=0 or num_gpus=None (default). To enable this behavior and turn off this error message, set RAY_ACCEL_ENV_VAR_OVERRIDE_ON_ZERO=0
+  warnings.warn(
+[36m(ProxyActor pid=47904)[0m INFO 2026-04-29 13:10:07,858 proxy 172.24.0.2 -- Proxy starting on node 5623487c1b2cdd297af4a32a32e31da029778a8f9ed8a35d4d71c2f3 (HTTP port: 8000, gRPC port: 9000).
+INFO 2026-04-29 13:10:07,958 serve 46839 -- Started Serve in namespace "serve".
+INFO 2026-04-29 13:10:07,966 serve 46839 -- Connecting to existing Serve app in namespace "serve". New http options will not be applied.
+WARNING 2026-04-29 13:10:07,966 serve 46839 -- The new client HTTP config differs from the existing one in the following fields: ['host']. The new HTTP config is ignored.
+[36m(ServeController pid=47903)[0m INFO 2026-04-29 13:10:07,979 controller 47903 -- Deploying new version of Deployment(name='GLiNERGuardGrpcBatched', app='default') (initial target replicas: 4).
+[36m(ProxyActor pid=47904)[0m INFO 2026-04-29 13:10:07,953 proxy 172.24.0.2 -- Got updated endpoints: {}.
+[36m(ProxyActor pid=47904)[0m INFO 2026-04-29 13:10:07,984 proxy 172.24.0.2 -- Got updated endpoints: {Deployment(name='GLiNERGuardGrpcBatched', app='default'): EndpointInfo(route='/predict', app_is_cross_language=False, route_patterns=None)}.
+[36m(ProxyActor pid=47904)[0m INFO 2026-04-29 13:10:07,994 proxy 172.24.0.2 -- Started <ray.serve._private.router.SharedRouterLongPollClient object at 0x7d7b64131fd0>.
+[36m(ServeController pid=47903)[0m INFO 2026-04-29 13:10:08,085 controller 47903 -- Adding 4 replicas to Deployment(name='GLiNERGuardGrpcBatched', app='default').
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-17' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('190db671-1e1e-400d-9da2-d24cab612352')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request 190db671-1e1e-400d-9da2-d24cab612352 was cancelled.
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.[32m [repeated 3x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)[0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:10:23,601 default_GLiNERGuardGrpcBatched 00q1wqz1 8963c021-b540-42d2-845d-49dfe9183f75 -- CALL default OK 610.6ms
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.[32m [repeated 3x across cluster][0m
+INFO 2026-04-29 13:10:24,034 serve 46839 -- Application 'default' is ready at http://0.0.0.0:8000/predict.
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:10:28,735 default_GLiNERGuardGrpcBatched 23s9mbgn 5f406c58-9cbd-4f2f-b5a4-341cbc3f1033 -- CALL default OK 101.4ms[32m [repeated 42x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:10:33,813 default_GLiNERGuardGrpcBatched 23s9mbgn 7f84a594-c1ec-46fa-8477-a4a44fa0b8b7 -- CALL default OK 131.8ms[32m [repeated 35x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:10:38,904 default_GLiNERGuardGrpcBatched 23s9mbgn a1e0af0a-9013-4a4b-8195-178e91dd89e9 -- CALL default OK 113.0ms[32m [repeated 126x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:10:43,847 default_GLiNERGuardGrpcBatched zvd45ovw 9d35f7f0-82dc-4ee5-ba07-cd41689cc9ad -- CALL default OK 89.0ms[32m [repeated 221x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:10:48,911 default_GLiNERGuardGrpcBatched 23s9mbgn c82ec02e-26dd-4fb5-8dea-cdca3a8a1d22 -- CALL default OK 149.3ms[32m [repeated 328x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:10:53,926 default_GLiNERGuardGrpcBatched zvd45ovw 7935a276-7119-48b7-8256-5177fb7f8c63 -- CALL default OK 245.0ms[32m [repeated 428x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:10:58,934 default_GLiNERGuardGrpcBatched 23s9mbgn 0b138534-babf-43be-b0d0-ab67b0d4ed09 -- CALL default OK 157.9ms[32m [repeated 471x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:11:03,883 default_GLiNERGuardGrpcBatched 2qfiy5t8 fa82519a-a013-4eb2-bfe3-30e0ed180a6d -- CALL default OK 229.6ms[32m [repeated 491x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:11:08,968 default_GLiNERGuardGrpcBatched zvd45ovw 5c85aa7f-928a-48b4-8c13-d59eec64ff47 -- CALL default OK 215.4ms[32m [repeated 536x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:11:13,988 default_GLiNERGuardGrpcBatched 23s9mbgn 8bf0e904-9234-4ca5-ae7a-cfe4fd34e02e -- CALL default OK 189.1ms[32m [repeated 570x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:11:18,942 default_GLiNERGuardGrpcBatched 23s9mbgn 3db00cec-f7bd-47b6-8311-79f177f329bb -- CALL default OK 76.8ms[32m [repeated 581x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:11:24,010 default_GLiNERGuardGrpcBatched 23s9mbgn 4dbece87-1878-48aa-a5da-a027c0d6d57c -- CALL default OK 157.7ms[32m [repeated 615x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:11:29,268 default_GLiNERGuardGrpcBatched zvd45ovw 684483a9-75b6-41e1-9dd7-5d77364d6e9a -- CALL default OK 413.8ms[32m [repeated 637x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:11:34,352 default_GLiNERGuardGrpcBatched 2qfiy5t8 0c8e48e6-2c51-42cb-afa2-af995c05c7fe -- CALL default OK 299.9ms[32m [repeated 636x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:11:39,596 default_GLiNERGuardGrpcBatched 2qfiy5t8 0056f5f8-c0fa-44da-ae34-70c5aaa631cd -- CALL default OK 397.9ms[32m [repeated 667x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:11:44,656 default_GLiNERGuardGrpcBatched 00q1wqz1 926e27f9-4c32-483e-ae28-97037334b53d -- CALL default OK 184.7ms[32m [repeated 745x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:11:49,820 default_GLiNERGuardGrpcBatched 2qfiy5t8 0e0f3eaf-4d32-42af-8e20-e09db34cc8b4 -- CALL default OK 133.8ms[32m [repeated 669x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:11:54,935 default_GLiNERGuardGrpcBatched 23s9mbgn fecf891d-2e32-4243-b027-c69079b4270f -- CALL default OK 131.1ms[32m [repeated 699x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:12:00,055 default_GLiNERGuardGrpcBatched 23s9mbgn 66799fff-dbde-424b-ad4a-55dd263e6b56 -- CALL default OK 160.2ms[32m [repeated 708x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:12:05,083 default_GLiNERGuardGrpcBatched 23s9mbgn dcee92cc-f643-412d-8646-00e742631876 -- CALL default OK 271.0ms[32m [repeated 662x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:12:10,188 default_GLiNERGuardGrpcBatched zvd45ovw cf3a43a6-6dd3-4c79-a3d2-58365be0e494 -- CALL default OK 382.6ms[32m [repeated 756x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:12:15,288 default_GLiNERGuardGrpcBatched 2qfiy5t8 538d4682-4d2c-423e-8887-2a5c03e5607f -- CALL default OK 183.3ms[32m [repeated 673x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:12:20,286 default_GLiNERGuardGrpcBatched 2qfiy5t8 7e68d461-7610-474f-a328-bd1f1e6370cf -- CALL default OK 151.4ms[32m [repeated 707x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:12:25,546 default_GLiNERGuardGrpcBatched 23s9mbgn 2297d702-13ba-4985-bc41-ff6272ade902 -- CALL default OK 723.7ms[32m [repeated 671x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:12:30,633 default_GLiNERGuardGrpcBatched 23s9mbgn b4db8a39-d6db-4811-9cb7-ee901b09f736 -- CALL default OK 647.8ms[32m [repeated 762x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:12:35,722 default_GLiNERGuardGrpcBatched 00q1wqz1 431e3925-fb7c-4948-b345-d4a4b9780779 -- CALL default OK 215.4ms[32m [repeated 747x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:12:41,083 default_GLiNERGuardGrpcBatched 23s9mbgn 585f3e7e-3738-4b0b-86dd-f26d140526f2 -- CALL default OK 430.4ms[32m [repeated 771x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:12:46,120 default_GLiNERGuardGrpcBatched 23s9mbgn ea8dc336-298a-4b3b-87a2-de825bb70ca2 -- CALL default OK 581.0ms[32m [repeated 772x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:12:51,173 default_GLiNERGuardGrpcBatched 00q1wqz1 d105bf1a-c2cf-4f52-b450-6ff38c72643b -- CALL default OK 295.2ms[32m [repeated 702x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:12:56,245 default_GLiNERGuardGrpcBatched zvd45ovw be04ff9b-6112-4b8f-b917-7ece77cd4682 -- CALL default OK 303.5ms[32m [repeated 695x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:13:01,361 default_GLiNERGuardGrpcBatched 23s9mbgn 7968eb8e-1042-4353-b624-012e3bcb6f86 -- CALL default OK 339.7ms[32m [repeated 736x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:13:06,423 default_GLiNERGuardGrpcBatched 23s9mbgn e266f845-3e03-47e4-bd7d-00a94ab79b18 -- CALL default OK 478.7ms[32m [repeated 802x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:13:11,620 default_GLiNERGuardGrpcBatched 23s9mbgn 9d894b0b-582b-4103-81c6-e0ef2708b0f9 -- CALL default OK 597.3ms[32m [repeated 711x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:13:16,669 default_GLiNERGuardGrpcBatched 2qfiy5t8 981c9a07-2146-48cb-9e71-a587c9ffe574 -- CALL default OK 333.2ms[32m [repeated 763x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:13:22,032 default_GLiNERGuardGrpcBatched 2qfiy5t8 de4bf5a5-60ca-4925-86fd-a8f08890c61e -- CALL default OK 434.2ms[32m [repeated 767x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:13:27,232 default_GLiNERGuardGrpcBatched 2qfiy5t8 3c495ebc-62c2-4fdd-b3e3-fe38278463a7 -- CALL default OK 347.7ms[32m [repeated 696x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:13:32,272 default_GLiNERGuardGrpcBatched 2qfiy5t8 731da74c-d152-4218-814b-fbf5358ddce4 -- CALL default OK 184.3ms[32m [repeated 752x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:13:37,443 default_GLiNERGuardGrpcBatched 23s9mbgn 12cb7f83-6076-4408-afec-99f75cce38f6 -- CALL default OK 333.6ms[32m [repeated 796x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:13:42,506 default_GLiNERGuardGrpcBatched 23s9mbgn df8a1ca3-0c38-4c9f-b068-67c9748254b0 -- CALL default OK 568.4ms[32m [repeated 734x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:13:47,599 default_GLiNERGuardGrpcBatched zvd45ovw 57bb36e5-40c1-4821-8ff7-8ca8495d964f -- CALL default OK 524.3ms[32m [repeated 761x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:13:52,684 default_GLiNERGuardGrpcBatched 23s9mbgn 3a74e3ff-8290-444e-b6d6-011c57c84f70 -- CALL default OK 334.0ms[32m [repeated 774x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:13:57,844 default_GLiNERGuardGrpcBatched 23s9mbgn b28c2608-68b2-4106-9e51-0a6b3aaa35b1 -- CALL default OK 593.9ms[32m [repeated 675x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:14:02,999 default_GLiNERGuardGrpcBatched 2qfiy5t8 a64d588b-6825-41ec-9fd8-d4458c5fa95f -- CALL default OK 445.5ms[32m [repeated 721x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:14:08,031 default_GLiNERGuardGrpcBatched 2qfiy5t8 3455ab32-a3c4-4af1-b60d-baa3d37e9179 -- CALL default OK 323.2ms[32m [repeated 787x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:14:13,160 default_GLiNERGuardGrpcBatched 2qfiy5t8 024b550a-938e-431c-82fe-0b6ba9dbd362 -- CALL default OK 424.4ms[32m [repeated 725x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:14:18,482 default_GLiNERGuardGrpcBatched 23s9mbgn f768caee-ffd5-418f-bf77-390c6a2a0331 -- CALL default OK 515.1ms[32m [repeated 749x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:14:23,624 default_GLiNERGuardGrpcBatched 2qfiy5t8 55a43a0f-470a-45e1-9d25-1e82aec420dc -- CALL default OK 359.4ms[32m [repeated 743x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:14:28,749 default_GLiNERGuardGrpcBatched 23s9mbgn 359ec557-9737-428b-b7ad-9f104112a9d2 -- CALL default OK 248.2ms[32m [repeated 723x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:14:33,893 default_GLiNERGuardGrpcBatched 2qfiy5t8 911f4240-222a-4cc8-a8af-4f9022905951 -- CALL default OK 672.8ms[32m [repeated 729x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:14:39,034 default_GLiNERGuardGrpcBatched 2qfiy5t8 2ca63dbd-d477-46fe-b485-70445c0749a6 -- CALL default OK 429.7ms[32m [repeated 750x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:14:44,099 default_GLiNERGuardGrpcBatched 2qfiy5t8 4a7f51f9-94b9-4942-92d0-c07824759f22 -- CALL default OK 694.6ms[32m [repeated 740x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:14:49,256 default_GLiNERGuardGrpcBatched 23s9mbgn d2594601-01f6-4996-8bed-1d747d9da7c5 -- CALL default OK 679.4ms[32m [repeated 722x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:14:54,440 default_GLiNERGuardGrpcBatched zvd45ovw 27747cfd-d417-45cc-b169-ddcd655b32b8 -- CALL default OK 321.2ms[32m [repeated 743x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:14:59,551 default_GLiNERGuardGrpcBatched 23s9mbgn e805f279-3571-45aa-80d2-b25aee7c7d5a -- CALL default OK 345.3ms[32m [repeated 734x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:15:04,899 default_GLiNERGuardGrpcBatched 23s9mbgn 61570e0b-ec25-469b-90d2-f3cc168e119a -- CALL default OK 586.6ms[32m [repeated 749x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:15:09,926 default_GLiNERGuardGrpcBatched 23s9mbgn 4d620220-04d1-4d10-976f-5c0e8b05e232 -- CALL default OK 262.0ms[32m [repeated 699x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:15:15,160 default_GLiNERGuardGrpcBatched zvd45ovw 077dd78b-f37e-4f36-a1b8-1fb02a0407bd -- CALL default OK 292.9ms[32m [repeated 765x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:15:20,197 default_GLiNERGuardGrpcBatched 23s9mbgn 5db1a2fe-46ef-4af7-a470-f6b7e941ccc1 -- CALL default OK 501.0ms[32m [repeated 728x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:15:25,296 default_GLiNERGuardGrpcBatched 00q1wqz1 ed2ae7c6-9ce9-4a70-a309-dfe6b8ffa1a8 -- CALL default OK 308.8ms[32m [repeated 710x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:15:30,287 default_GLiNERGuardGrpcBatched 2qfiy5t8 e8af46b0-ae5d-4fcc-afe2-1c87a2daa0a6 -- CALL default OK 199.4ms[32m [repeated 707x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:15:35,415 default_GLiNERGuardGrpcBatched 23s9mbgn 63f0f52d-1cc3-43d3-837b-ba1b7753702f -- CALL default OK 742.5ms[32m [repeated 687x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:15:40,503 default_GLiNERGuardGrpcBatched 2qfiy5t8 8ef1b517-0195-40d7-aa95-9efaee74ce91 -- CALL default OK 558.6ms[32m [repeated 741x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:15:45,603 default_GLiNERGuardGrpcBatched 23s9mbgn ab15b9fb-da82-4a34-814e-fd6c309219ba -- CALL default OK 629.9ms[32m [repeated 690x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:15:50,798 default_GLiNERGuardGrpcBatched 2qfiy5t8 4122102c-e578-4453-8898-f6dfbf6502e7 -- CALL default OK 554.7ms[32m [repeated 791x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:15:55,887 default_GLiNERGuardGrpcBatched 23s9mbgn e7e9d6cd-fa6f-4031-97ba-e714e51debed -- CALL default OK 531.2ms[32m [repeated 762x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:16:00,875 default_GLiNERGuardGrpcBatched 23s9mbgn d550ec83-b796-46aa-84e7-86e094bbbf0a -- CALL default OK 165.8ms[32m [repeated 719x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:16:06,006 default_GLiNERGuardGrpcBatched 2qfiy5t8 202eacba-155c-4c62-a44e-da4e789af850 -- CALL default OK 185.3ms[32m [repeated 736x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:16:11,050 default_GLiNERGuardGrpcBatched 23s9mbgn 9cde827d-e5a2-4616-a69e-ee5f3e0c767f -- CALL default OK 609.1ms[32m [repeated 748x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:16:16,137 default_GLiNERGuardGrpcBatched 23s9mbgn 5fb73dc8-2b34-436f-9069-d7f47d9d9049 -- CALL default OK 178.2ms[32m [repeated 673x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:16:21,210 default_GLiNERGuardGrpcBatched 23s9mbgn 0b257f29-d432-4e7f-a736-07b497c10fdf -- CALL default OK 238.5ms[32m [repeated 713x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:16:26,398 default_GLiNERGuardGrpcBatched zvd45ovw fbd1232e-9dc7-4cca-95ad-ef8fd1df4f72 -- CALL default OK 337.8ms[32m [repeated 668x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:16:31,379 default_GLiNERGuardGrpcBatched 2qfiy5t8 717ceea2-4d2f-49ac-9946-94043662e480 -- CALL default OK 578.7ms[32m [repeated 699x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:16:36,684 default_GLiNERGuardGrpcBatched zvd45ovw 06f02c06-c2d3-4c7f-b746-34e02184d93e -- CALL default OK 352.7ms[32m [repeated 742x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:16:41,788 default_GLiNERGuardGrpcBatched 2qfiy5t8 90b0067b-ec24-4248-87f7-8668dd6f7af0 -- CALL default OK 139.1ms[32m [repeated 755x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:16:47,030 default_GLiNERGuardGrpcBatched 23s9mbgn dcc93771-e33d-47cd-89d0-0d9fb555be9f -- CALL default OK 245.7ms[32m [repeated 786x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:16:52,078 default_GLiNERGuardGrpcBatched 2qfiy5t8 ed84122f-8d93-459a-9593-edf04f551bd2 -- CALL default OK 251.2ms[32m [repeated 739x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:16:57,448 default_GLiNERGuardGrpcBatched 23s9mbgn 4c29e1f6-55b7-48fe-bdf9-74e4c64f2302 -- CALL default OK 511.5ms[32m [repeated 738x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:17:02,721 default_GLiNERGuardGrpcBatched 00q1wqz1 f1ee2770-9aa2-43f1-a125-9f67b1b3c5f7 -- CALL default OK 447.7ms[32m [repeated 710x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:17:07,794 default_GLiNERGuardGrpcBatched 23s9mbgn c07437da-b655-448f-b9d6-d2f1609d5b09 -- CALL default OK 380.7ms[32m [repeated 747x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:17:12,796 default_GLiNERGuardGrpcBatched 00q1wqz1 7abe7db0-03c3-463b-9ab5-1f3a42105655 -- CALL default OK 127.4ms[32m [repeated 731x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:17:17,861 default_GLiNERGuardGrpcBatched 23s9mbgn 72d73b6c-c196-4638-8945-f8d54e1b9112 -- CALL default OK 351.0ms[32m [repeated 720x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:17:23,213 default_GLiNERGuardGrpcBatched 23s9mbgn 7da544eb-57ca-49d2-a018-4c311f9228a1 -- CALL default OK 398.7ms[32m [repeated 712x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:17:28,311 default_GLiNERGuardGrpcBatched 00q1wqz1 6b4befca-d0b7-4797-aa41-1328aa130839 -- CALL default OK 392.4ms[32m [repeated 787x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:17:33,387 default_GLiNERGuardGrpcBatched 23s9mbgn 2b36f6fa-e3bd-47ec-87b2-e442dbc02c8e -- CALL default OK 144.8ms[32m [repeated 743x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:17:38,467 default_GLiNERGuardGrpcBatched 23s9mbgn db67f14b-c525-4b35-9f63-3cabd775f237 -- CALL default OK 255.1ms[32m [repeated 785x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:17:43,554 default_GLiNERGuardGrpcBatched 23s9mbgn a5cddaaa-4edf-49fc-a44d-69b018ad37ce -- CALL default OK 184.9ms[32m [repeated 707x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:17:48,683 default_GLiNERGuardGrpcBatched 2qfiy5t8 ca64110a-76ab-4350-8de8-d5a3095972ae -- CALL default OK 181.4ms[32m [repeated 774x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:17:53,896 default_GLiNERGuardGrpcBatched 00q1wqz1 e3a10238-c4e0-4574-8761-15d91c022140 -- CALL default OK 408.3ms[32m [repeated 759x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:17:58,891 default_GLiNERGuardGrpcBatched zvd45ovw 767ef06d-59d6-4e35-a1db-a6b68afafb9a -- CALL default OK 405.9ms[32m [repeated 781x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:18:04,001 default_GLiNERGuardGrpcBatched 2qfiy5t8 b13642d3-9828-4613-a879-d010a70fd2d8 -- CALL default OK 851.6ms[32m [repeated 687x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:18:09,027 default_GLiNERGuardGrpcBatched 23s9mbgn fddae81d-29da-49e5-9431-fab680ef6700 -- CALL default OK 291.0ms[32m [repeated 770x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:18:14,155 default_GLiNERGuardGrpcBatched 00q1wqz1 56969fe6-6bb0-401c-913f-322c314818e7 -- CALL default OK 489.2ms[32m [repeated 752x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:18:19,244 default_GLiNERGuardGrpcBatched zvd45ovw 9c63f951-6238-49a8-be8e-9a3f15f35e60 -- CALL default OK 648.6ms[32m [repeated 675x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:18:24,304 default_GLiNERGuardGrpcBatched zvd45ovw 96b46b5f-2f96-4565-a0a0-96118b9f94de -- CALL default OK 331.4ms[32m [repeated 734x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:18:29,376 default_GLiNERGuardGrpcBatched 23s9mbgn 7e6dc5a9-c121-43ac-a2ac-c861e4a94f10 -- CALL default OK 332.4ms[32m [repeated 721x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:18:34,398 default_GLiNERGuardGrpcBatched 2qfiy5t8 93e954bb-7f2e-4a55-ae52-2d6c5cc3de79 -- CALL default OK 573.6ms[32m [repeated 747x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:18:39,607 default_GLiNERGuardGrpcBatched 2qfiy5t8 08e472c7-9c2e-4bd2-a3c0-0a2d46818c98 -- CALL default OK 742.3ms[32m [repeated 659x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:18:44,655 default_GLiNERGuardGrpcBatched 2qfiy5t8 14bb752a-c8dc-43fb-b875-92da207fa5e7 -- CALL default OK 300.0ms[32m [repeated 771x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:18:49,762 default_GLiNERGuardGrpcBatched 23s9mbgn e36c9a51-f36e-4acc-844e-492721785f95 -- CALL default OK 604.5ms[32m [repeated 759x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:18:55,011 default_GLiNERGuardGrpcBatched 23s9mbgn 064f608f-c525-44fa-9c53-4d8de3b663a9 -- CALL default OK 461.9ms[32m [repeated 744x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:19:00,021 default_GLiNERGuardGrpcBatched 2qfiy5t8 cc0f4299-5e97-4034-93b8-6712bc02496d -- CALL default OK 495.8ms[32m [repeated 723x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:19:05,170 default_GLiNERGuardGrpcBatched 2qfiy5t8 6373e261-91b2-4518-9444-61a879da7a53 -- CALL default OK 275.8ms[32m [repeated 802x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:19:10,310 default_GLiNERGuardGrpcBatched 2qfiy5t8 0e0110d5-480a-4437-883e-f9844d478b35 -- CALL default OK 507.7ms[32m [repeated 680x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:19:15,410 default_GLiNERGuardGrpcBatched 23s9mbgn 4544031a-e780-4998-85ce-1b20d8108ae6 -- CALL default OK 454.9ms[32m [repeated 757x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:19:20,453 default_GLiNERGuardGrpcBatched 2qfiy5t8 2adb3fd8-dc0d-45de-83c1-d33b553f3d29 -- CALL default OK 303.3ms[32m [repeated 728x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:19:25,583 default_GLiNERGuardGrpcBatched 23s9mbgn 7e9cb7c2-1cc6-471d-833d-afe47564611e -- CALL default OK 275.8ms[32m [repeated 747x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:19:30,717 default_GLiNERGuardGrpcBatched 23s9mbgn daffe507-d170-4a7a-9a0c-90cd56e20e08 -- CALL default OK 608.0ms[32m [repeated 738x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:19:35,996 default_GLiNERGuardGrpcBatched 23s9mbgn dcc82b11-b308-436f-b0d9-4cee5951ea77 -- CALL default OK 562.8ms[32m [repeated 821x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:19:41,137 default_GLiNERGuardGrpcBatched 23s9mbgn faa1cbfc-968f-4b21-a84c-3e859b154333 -- CALL default OK 484.7ms[32m [repeated 791x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:19:46,558 default_GLiNERGuardGrpcBatched 23s9mbgn b3b3dcef-2e73-4589-bfbb-f445f30021b1 -- CALL default OK 534.9ms[32m [repeated 807x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:19:51,622 default_GLiNERGuardGrpcBatched 2qfiy5t8 be3693cc-fa8f-4425-8788-3222022664bf -- CALL default OK 579.0ms[32m [repeated 705x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:19:56,689 default_GLiNERGuardGrpcBatched 00q1wqz1 17d9dee2-1cc9-4099-850b-995d797feafa -- CALL default OK 213.8ms[32m [repeated 792x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:20:01,797 default_GLiNERGuardGrpcBatched 2qfiy5t8 309bb4d4-8e43-4d01-9e94-cb14d7bcf8c3 -- CALL default OK 411.2ms[32m [repeated 749x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:20:07,007 default_GLiNERGuardGrpcBatched zvd45ovw 57fd7285-948e-41be-b92b-38c513c5ba73 -- CALL default OK 435.3ms[32m [repeated 762x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:20:12,089 default_GLiNERGuardGrpcBatched zvd45ovw f506db2b-2014-4d9e-980b-0325c1f7d440 -- CALL default OK 372.3ms[32m [repeated 735x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:20:17,183 default_GLiNERGuardGrpcBatched 00q1wqz1 ac07f4f1-9601-4200-8f9a-f92a3daf9658 -- CALL default OK 691.6ms[32m [repeated 726x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:20:22,213 default_GLiNERGuardGrpcBatched zvd45ovw a9f0352f-2d93-42c2-a0f2-bdcdf90bcaa4 -- CALL default OK 386.8ms[32m [repeated 728x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:20:27,405 default_GLiNERGuardGrpcBatched 23s9mbgn 519b467e-6845-4011-985d-3d5ce4557a79 -- CALL default OK 698.1ms[32m [repeated 808x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:20:32,526 default_GLiNERGuardGrpcBatched 23s9mbgn b1fb821a-863a-43ef-a57f-e26b527238fc -- CALL default OK 527.6ms[32m [repeated 728x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:20:37,910 default_GLiNERGuardGrpcBatched zvd45ovw 3fe26cfc-f53e-41a0-b21f-066d58f211eb -- CALL default OK 635.2ms[32m [repeated 747x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:20:42,926 default_GLiNERGuardGrpcBatched 2qfiy5t8 a9a53d58-0083-4843-abed-5fdfc1f3cb44 -- CALL default OK 409.7ms[32m [repeated 752x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:20:48,109 default_GLiNERGuardGrpcBatched 2qfiy5t8 b4f0f5af-7200-4cd2-a358-515e2d962b80 -- CALL default OK 495.9ms[32m [repeated 787x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:20:53,225 default_GLiNERGuardGrpcBatched 23s9mbgn 2aa93b58-5a37-430a-af23-fa9de08c83c5 -- CALL default OK 713.1ms[32m [repeated 716x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:20:58,258 default_GLiNERGuardGrpcBatched 2qfiy5t8 fafe268f-db78-42f1-a703-5133e5983e3a -- CALL default OK 597.5ms[32m [repeated 734x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:21:03,362 default_GLiNERGuardGrpcBatched 00q1wqz1 823d18c8-7058-4216-a821-21738b0b8253 -- CALL default OK 328.6ms[32m [repeated 759x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:21:08,374 default_GLiNERGuardGrpcBatched zvd45ovw cdde6bd6-0faa-42b6-869f-a29c260915c8 -- CALL default OK 218.4ms[32m [repeated 724x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:21:13,609 default_GLiNERGuardGrpcBatched 23s9mbgn 7601ec1e-4317-4bf1-a4e9-cab4092b1227 -- CALL default OK 384.1ms[32m [repeated 683x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:21:18,665 default_GLiNERGuardGrpcBatched 23s9mbgn fc7c1e1b-f0ec-4bec-9470-0683081be5e9 -- CALL default OK 527.1ms[32m [repeated 766x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:21:23,903 default_GLiNERGuardGrpcBatched 23s9mbgn 6e870e92-7f44-4705-9046-d63f1f9b242e -- CALL default OK 501.0ms[32m [repeated 741x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:21:28,996 default_GLiNERGuardGrpcBatched 2qfiy5t8 a7eceda0-8648-423a-8c97-bab1e6d7c997 -- CALL default OK 179.0ms[32m [repeated 777x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:21:34,094 default_GLiNERGuardGrpcBatched zvd45ovw 36cf9b56-b13f-476c-9e4d-36e33dc0f6c4 -- CALL default OK 382.5ms[32m [repeated 758x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:21:39,135 default_GLiNERGuardGrpcBatched 2qfiy5t8 94924093-f714-4376-b9fb-d78d153aea11 -- CALL default OK 282.1ms[32m [repeated 749x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:21:44,291 default_GLiNERGuardGrpcBatched 23s9mbgn 133bf990-62cc-48a2-95d3-2cbc9947ecab -- CALL default OK 493.3ms[32m [repeated 749x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:21:49,449 default_GLiNERGuardGrpcBatched 23s9mbgn 9ab35137-2e50-40af-89d0-e722442c9427 -- CALL default OK 500.1ms[32m [repeated 764x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:21:54,553 default_GLiNERGuardGrpcBatched 23s9mbgn 0e34572f-bd7c-4e58-8220-587806b23151 -- CALL default OK 351.0ms[32m [repeated 738x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:21:59,655 default_GLiNERGuardGrpcBatched 23s9mbgn c40b081f-ce6a-49c7-bf88-84042b5b423a -- CALL default OK 463.2ms[32m [repeated 755x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:22:04,820 default_GLiNERGuardGrpcBatched zvd45ovw 9045d819-9d0b-44ef-a454-f68644e804aa -- CALL default OK 131.1ms[32m [repeated 713x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:22:09,889 default_GLiNERGuardGrpcBatched 23s9mbgn d389b78e-f01c-4be9-bac5-b014035ec70d -- CALL default OK 96.9ms[32m [repeated 732x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:22:14,961 default_GLiNERGuardGrpcBatched 2qfiy5t8 617f521b-d0b8-40ae-b0ba-3301bd6d6672 -- CALL default OK 206.7ms[32m [repeated 748x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:22:20,002 default_GLiNERGuardGrpcBatched 23s9mbgn 0e83fa18-7d69-4052-8f43-91e9e4d0cf5e -- CALL default OK 196.2ms[32m [repeated 763x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:22:25,161 default_GLiNERGuardGrpcBatched zvd45ovw 1014e6f6-4511-4b73-b868-64f56d2a6ff9 -- CALL default OK 454.8ms[32m [repeated 724x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:22:30,174 default_GLiNERGuardGrpcBatched 23s9mbgn 53f82192-4040-4dcc-836a-ae10fd9fce9f -- CALL default OK 136.3ms[32m [repeated 705x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:22:35,501 default_GLiNERGuardGrpcBatched zvd45ovw efd90e05-a4ad-46fc-a74f-f055db048dd8 -- CALL default OK 261.3ms[32m [repeated 721x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:22:40,565 default_GLiNERGuardGrpcBatched 23s9mbgn fa984b08-722e-41b6-9cbd-ddea16b81c86 -- CALL default OK 194.0ms[32m [repeated 753x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:22:45,629 default_GLiNERGuardGrpcBatched 23s9mbgn bae593d4-a1de-432a-90f2-6896bcfe225f -- CALL default OK 253.1ms[32m [repeated 741x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:22:50,694 default_GLiNERGuardGrpcBatched 2qfiy5t8 8f8566bd-bc60-49f3-ac1b-d4d48fdabc5d -- CALL default OK 355.2ms[32m [repeated 739x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:22:55,823 default_GLiNERGuardGrpcBatched 23s9mbgn 6f738981-adb6-4ef2-b089-a6db7be69442 -- CALL default OK 359.9ms[32m [repeated 803x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:23:00,899 default_GLiNERGuardGrpcBatched 00q1wqz1 d6b21f34-012c-49b1-a9e5-d6dd020e32a2 -- CALL default OK 412.4ms[32m [repeated 728x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:23:05,900 default_GLiNERGuardGrpcBatched 2qfiy5t8 42b5910f-7651-45b8-9efb-12ac5cb881b8 -- CALL default OK 137.3ms[32m [repeated 702x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:23:11,087 default_GLiNERGuardGrpcBatched 23s9mbgn 5f9996c4-7fd8-4c59-92c9-2bdf8d416fad -- CALL default OK 229.3ms[32m [repeated 800x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:23:16,161 default_GLiNERGuardGrpcBatched 2qfiy5t8 9f5027a9-8441-4506-9458-3bb92113aac2 -- CALL default OK 194.6ms[32m [repeated 726x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:23:21,522 default_GLiNERGuardGrpcBatched zvd45ovw cad22ed4-bae9-4832-931c-4807d36c4f6a -- CALL default OK 490.3ms[32m [repeated 778x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:23:26,567 default_GLiNERGuardGrpcBatched zvd45ovw 70a073c7-590b-4314-a1e2-4b8cb52cbc83 -- CALL default OK 521.5ms[32m [repeated 740x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:23:31,747 default_GLiNERGuardGrpcBatched 2qfiy5t8 d3c867b0-d3e4-418e-9e4e-a0c9b4d9272b -- CALL default OK 208.4ms[32m [repeated 724x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:23:36,909 default_GLiNERGuardGrpcBatched 2qfiy5t8 c27a67f5-fe3c-449c-9cad-0b93152d036c -- CALL default OK 610.4ms[32m [repeated 690x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:23:42,002 default_GLiNERGuardGrpcBatched 2qfiy5t8 ac877fc0-2f64-4b07-9e7f-889c788c315a -- CALL default OK 259.7ms[32m [repeated 702x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:23:47,501 default_GLiNERGuardGrpcBatched 2qfiy5t8 411b6ba4-0478-48b6-96f2-e3c40e489fef -- CALL default OK 526.3ms[32m [repeated 810x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:23:52,664 default_GLiNERGuardGrpcBatched 2qfiy5t8 eb366861-fbea-4d0d-8242-436139c1a90e -- CALL default OK 499.9ms[32m [repeated 742x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:23:57,844 default_GLiNERGuardGrpcBatched zvd45ovw fab8f463-8ac7-4392-a0b2-96dd66323e8b -- CALL default OK 549.9ms[32m [repeated 725x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:24:02,959 default_GLiNERGuardGrpcBatched 23s9mbgn a1fc4bc2-3a1c-4bed-9206-262a78022c9e -- CALL default OK 521.4ms[32m [repeated 712x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:24:08,179 default_GLiNERGuardGrpcBatched 23s9mbgn 3db1e260-f3f5-4d67-a6f5-67159432542f -- CALL default OK 341.4ms[32m [repeated 819x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:24:13,296 default_GLiNERGuardGrpcBatched 2qfiy5t8 aef69b0f-af15-497e-99b1-05e7fdf557b3 -- CALL default OK 269.3ms[32m [repeated 774x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:24:18,354 default_GLiNERGuardGrpcBatched 2qfiy5t8 e8752b6a-d81d-4edb-b61b-0ef4894d0aba -- CALL default OK 154.9ms[32m [repeated 698x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:24:23,594 default_GLiNERGuardGrpcBatched 2qfiy5t8 b99c4b3c-9e35-4496-851d-94a987eee643 -- CALL default OK 681.2ms[32m [repeated 719x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:24:28,652 default_GLiNERGuardGrpcBatched zvd45ovw c7f4605e-8d41-41d7-8c7a-6a4db0628ab3 -- CALL default OK 185.8ms[32m [repeated 719x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:24:33,653 default_GLiNERGuardGrpcBatched zvd45ovw c1fa6026-ef63-45fe-8820-74a8a7693c79 -- CALL default OK 313.8ms[32m [repeated 734x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:24:38,872 default_GLiNERGuardGrpcBatched 23s9mbgn e332da71-bc24-4cdc-8852-32d3e417a55a -- CALL default OK 597.3ms[32m [repeated 764x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:24:43,954 default_GLiNERGuardGrpcBatched 23s9mbgn 25d7c2e4-72a9-4b58-a7be-40a9ae51efb1 -- CALL default OK 547.5ms[32m [repeated 672x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:24:48,995 default_GLiNERGuardGrpcBatched zvd45ovw 400fe1f9-e1d1-4e81-ba6e-a49acc3de81e -- CALL default OK 460.5ms[32m [repeated 724x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:24:54,020 default_GLiNERGuardGrpcBatched 2qfiy5t8 515a80a4-1300-4428-a451-8355999b1824 -- CALL default OK 227.9ms[32m [repeated 780x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:24:59,182 default_GLiNERGuardGrpcBatched 2qfiy5t8 cfb549c3-a3a8-4ceb-89f8-16a2579e3814 -- CALL default OK 349.2ms[32m [repeated 740x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:25:04,375 default_GLiNERGuardGrpcBatched 23s9mbgn 94f4e968-05c7-406f-85f1-6f5b296e404a -- CALL default OK 369.0ms[32m [repeated 768x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:25:09,623 default_GLiNERGuardGrpcBatched zvd45ovw 8a79b69c-291e-473e-a55d-cf7e0d3eef34 -- CALL default OK 644.0ms[32m [repeated 810x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:25:14,703 default_GLiNERGuardGrpcBatched 2qfiy5t8 0cd47073-5895-4bcf-a50f-7e900c3f68d2 -- CALL default OK 302.5ms[32m [repeated 714x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:25:19,835 default_GLiNERGuardGrpcBatched 23s9mbgn 2c80fd96-74dc-4a47-8d5d-0da679d87a43 -- CALL default OK 174.6ms[32m [repeated 742x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47907)[0m INFO 2026-04-29 13:25:24,880 default_GLiNERGuardGrpcBatched zvd45ovw 888d66e0-a490-4530-b819-c7dc2ecf0c91 -- CALL default OK 430.4ms[32m [repeated 755x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:25:29,970 default_GLiNERGuardGrpcBatched 23s9mbgn feb71bf6-638f-4b17-bb0c-68dfd25e0dc3 -- CALL default OK 633.0ms[32m [repeated 795x across cluster][0m
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879292' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('666cd1ab-5ecf-49a9-82c8-64dfa358d17f')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request 666cd1ab-5ecf-49a9-82c8-64dfa358d17f was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-878900' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('50b75d8a-26b4-4ca9-8802-0785c50ba1aa')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request 50b75d8a-26b4-4ca9-8802-0785c50ba1aa was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879282' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('bb6095cb-ee79-4a95-be53-572e77261dd4')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request bb6095cb-ee79-4a95-be53-572e77261dd4 was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879181' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('4dd5057a-0942-4f56-b981-f0594c482a7e')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request 4dd5057a-0942-4f56-b981-f0594c482a7e was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879240' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('22d4604f-deab-4793-821d-b0d3854b0cda')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request 22d4604f-deab-4793-821d-b0d3854b0cda was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879175' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('97fc8e91-2dd0-4685-b009-d0cf61f8707f')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request 97fc8e91-2dd0-4685-b009-d0cf61f8707f was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879247' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('ecfa7d61-9c00-4627-abd9-fe754c861597')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request ecfa7d61-9c00-4627-abd9-fe754c861597 was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879125' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('ddfa7750-8ce2-44d7-aad9-3e84ceb07364')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request ddfa7750-8ce2-44d7-aad9-3e84ceb07364 was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879287' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('1e734233-ecf2-4939-968e-d8fde139c4fd')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request 1e734233-ecf2-4939-968e-d8fde139c4fd was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879160' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('ec384007-f41c-424a-b82a-79d98a6932ed')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request ec384007-f41c-424a-b82a-79d98a6932ed was cancelled.
+[36m(ProxyActor pid=47904)[0m Task exception was never retrieved
+[36m(ProxyActor pid=47904)[0m future: <Task finished name='Task-879262' coro=<ProxyResponseGenerator._await_response() done, defined at /root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py:162> exception=RequestCancelledError('374795ca-d962-45cf-8b13-52756924d442')>
+[36m(ProxyActor pid=47904)[0m Traceback (most recent call last):
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/_private/proxy_response_generator.py", line 163, in _await_response
+[36m(ProxyActor pid=47904)[0m     return await self._response
+[36m(ProxyActor pid=47904)[0m            ^^^^^^^^^^^^^^^^^^^^
+[36m(ProxyActor pid=47904)[0m   File "/root/gliner-guard-serve/ray-serve/.venv/lib/python3.13/site-packages/ray/serve/handle.py", line 493, in __await__
+[36m(ProxyActor pid=47904)[0m     raise RequestCancelledError(self.request_id) from None
+[36m(ProxyActor pid=47904)[0m ray.serve.exceptions.RequestCancelledError: Request 374795ca-d962-45cf-8b13-52756924d442 was cancelled.
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m INFO 2026-04-29 13:25:30,050 default_GLiNERGuardGrpcBatched 2qfiy5t8 666cd1ab-5ecf-49a9-82c8-64dfa358d17f -- CALL default CANCELLED 101.3ms
+*** SIGTERM received at time=1777469130 on cpu 96 ***
+PC: @     0x7e64ea0cc612  (unknown)  pause
+    @     0x7e64ea024520  1832283776  (unknown)
+    @          0x1803759         48  cfunction_vectorcall_NOARGS.llvm.12799217410478811465
+    @          0x181b3c0        576  _PyEval_EvalFrameDefault
+    @          0x18837e8        112  PyEval_EvalCode
+    @          0x18ee27b         80  run_eval_code_obj
+    @          0x18ee18d         96  run_mod.llvm.10863284883542772384
+    @          0x1a63d17         96  pyrun_file
+    @          0x1a638c2         80  _PyRun_SimpleFileObject
+    @          0x1a6449c         64  _PyRun_AnyFileObject
+    @          0x1a64438        208  pymain_run_file_obj
+    @          0x1a6431e         48  pymain_run_file
+    @          0x199f53a        112  Py_RunMain
+    @          0x199f1ee        624  pymain_main.llvm.10509498499233858764
+    @          0x199f006         48  main
+    @     0x7e64ea00bd90  (unknown)  (unknown)
+[2026-04-29 13:25:30,946 E 46839 46839] logging.cc:474: *** SIGTERM received at time=1777469130 on cpu 96 ***
+[2026-04-29 13:25:30,946 E 46839 46839] logging.cc:474: PC: @     0x7e64ea0cc612  (unknown)  pause
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @     0x7e64ea024520  1832283776  (unknown)
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x1803759         48  cfunction_vectorcall_NOARGS.llvm.12799217410478811465
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x181b3c0        576  _PyEval_EvalFrameDefault
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x18837e8        112  PyEval_EvalCode
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x18ee27b         80  run_eval_code_obj
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x18ee18d         96  run_mod.llvm.10863284883542772384
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x1a63d17         96  pyrun_file
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x1a638c2         80  _PyRun_SimpleFileObject
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x1a6449c         64  _PyRun_AnyFileObject
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x1a64438        208  pymain_run_file_obj
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x1a6431e         48  pymain_run_file
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x199f53a        112  Py_RunMain
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x199f1ee        624  pymain_main.llvm.10509498499233858764
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @          0x199f006         48  main
+[2026-04-29 13:25:30,947 E 46839 46839] logging.cc:474:     @     0x7e64ea00bd90  (unknown)  (unknown)
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m [GLiNER2] Attention: requested=None, actual=sdpa
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m ============================================================
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m Model Configuration
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m ============================================================
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m Encoder mode       : uni
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m Text encoder       : bogdanminko/mmBERT-small
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m Counting layer     : count_lstm_v2
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m Token pooling      : first
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m ============================================================
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47905)[0m INFO 2026-04-29 13:25:30,051 default_GLiNERGuardGrpcBatched 23s9mbgn 50b75d8a-26b4-4ca9-8802-0785c50ba1aa -- CALL default OK 708.0ms[32m [repeated 15x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m INFO 2026-04-29 13:25:30,061 default_GLiNERGuardGrpcBatched 00q1wqz1 ec384007-f41c-424a-b82a-79d98a6932ed -- CALL default CANCELLED 513.7ms[32m [repeated 9x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47908)[0m [GLiNER2] Attention: requested=None, actual=sdpa[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m ============================================================[32m [repeated 9x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m Model Configuration[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m Encoder mode       : uni[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m Text encoder       : bogdanminko/mmBERT-small[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m Counting layer     : count_lstm_v2[32m [repeated 3x across cluster][0m
+[36m(ServeReplica:default:GLiNERGuardGrpcBatched pid=47906)[0m Token pooling      : first[32m [repeated 3x across cluster][0m
