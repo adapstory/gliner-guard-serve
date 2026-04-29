@@ -12,6 +12,17 @@ import torch
 
 PII_LABELS = ["person", "address", "email", "phone"]
 SAFETY_LABELS = ["safe", "unsafe"]
+MODEL_ID = os.environ.get(
+    "MODEL_ID", os.environ.get("TORCH_MODEL_NAME", "hivetrace/gliner-guard-uniencoder")
+)
+TORCH_DTYPE = os.environ.get("TORCH_DTYPE", "bfloat16")
+MAX_BATCH_SIZE = int(os.environ.get(
+    "LITSERVE_MAX_BATCH_SIZE", os.environ.get("MAX_BATCH_SIZE", "64")
+))
+BATCH_TIMEOUT = float(os.environ.get(
+    "LITSERVE_BATCH_TIMEOUT", os.environ.get("BATCH_WAIT_TIMEOUT", "0.05")
+))
+WORKERS_PER_DEVICE = int(os.environ.get("LITSERVE_WORKERS_PER_DEVICE", "4"))
 
 
 class GuardRequest(BaseModel):
@@ -20,8 +31,8 @@ class GuardRequest(BaseModel):
 
 class GLiNERGuardAPI(ls.LitAPI):
     def setup(self, device):
-        self.model = GLiNER2.from_pretrained("hivetrace/gliner-guard-uniencoder")
-        self.model.to(device).to(torch.bfloat16)
+        self.model = GLiNER2.from_pretrained(MODEL_ID)
+        self.model.to(device).to(getattr(torch, TORCH_DTYPE))
         self.schema = (
             self.model.create_schema()
             .entities(entity_types=PII_LABELS, threshold=0.4)
@@ -52,12 +63,12 @@ class GLiNERGuardAPI(ls.LitAPI):
 
 
 if __name__ == "__main__":
-    api = GLiNERGuardAPI(max_batch_size=64, batch_timeout=0.05)
+    api = GLiNERGuardAPI(max_batch_size=MAX_BATCH_SIZE, batch_timeout=BATCH_TIMEOUT)
     server = ls.LitServer(
         api,
         accelerator="auto",
         timeout=30,
-        workers_per_device=4,
+        workers_per_device=WORKERS_PER_DEVICE,
         fast_queue=True,
     )
     server.run(port=8000, generate_client_file=False)

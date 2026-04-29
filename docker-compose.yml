@@ -4,12 +4,14 @@ x-gpu: &gpu
       reservations:
         devices:
           - driver: nvidia
-            count: 1
+            count: ${GPU_COUNT:-1}
             capabilities: [gpu]
 
 x-server: &server
   <<: *gpu
-  env_file: .env
+  env_file:
+    - path: ${ENV_FILE:-.env}
+      required: false
   volumes:
     - hf-cache:/app/.cache/huggingface
   networks:
@@ -32,6 +34,11 @@ services:
     image: ${REGISTRY:-harbor.adapstory.com/adapstory}/gliner-guard-litserve:${TAG:-dev}
     ports:
       - "8000:8000"
+    environment:
+      - MODEL_ID=${MODEL_ID:-hivetrace/gliner-guard-uniencoder}
+      - LITSERVE_MAX_BATCH_SIZE=${LITSERVE_MAX_BATCH_SIZE:-64}
+      - LITSERVE_BATCH_TIMEOUT=${LITSERVE_BATCH_TIMEOUT:-0.05}
+      - LITSERVE_WORKERS_PER_DEVICE=${LITSERVE_WORKERS_PER_DEVICE:-4}
     profiles: [litserve]
 
   ray-serve:
@@ -49,8 +56,14 @@ services:
       - RAY_memory_monitor_refresh_ms=0
       - MAX_BATCH_SIZE=${MAX_BATCH_SIZE:-0}
       - BATCH_WAIT_TIMEOUT=${BATCH_WAIT_TIMEOUT:-0.05}
+      - MAX_CONCURRENT_BATCHES=${MAX_CONCURRENT_BATCHES:-1}
       - MODEL_ID=${MODEL_ID:-hivetrace/gliner-guard-uniencoder}
       - MAX_ONGOING_REQUESTS=${MAX_ONGOING_REQUESTS:-200}
+      - NUM_REPLICAS=${NUM_REPLICAS:-1}
+      - NUM_GPUS_PER_REPLICA=${NUM_GPUS_PER_REPLICA:-1}
+      - NUM_CPUS_PER_REPLICA=${NUM_CPUS_PER_REPLICA:-1}
+      - SCHEMA_MODE=${SCHEMA_MODE:-minimal}
+      - RAY_SERVE_THROUGHPUT_OPTIMIZED=${RAY_SERVE_THROUGHPUT_OPTIMIZED:-0}
     profiles: [ray-serve]
 
   ray-serve-grpc:
@@ -69,8 +82,13 @@ services:
       - RAY_memory_monitor_refresh_ms=0
       - MAX_BATCH_SIZE=${MAX_BATCH_SIZE:-0}
       - BATCH_WAIT_TIMEOUT=${BATCH_WAIT_TIMEOUT:-0.05}
+      - MAX_CONCURRENT_BATCHES=${MAX_CONCURRENT_BATCHES:-1}
       - MODEL_ID=${MODEL_ID:-hivetrace/gliner-guard-uniencoder}
       - MAX_ONGOING_REQUESTS=${MAX_ONGOING_REQUESTS:-200}
+      - NUM_REPLICAS=${NUM_REPLICAS:-1}
+      - NUM_GPUS_PER_REPLICA=${NUM_GPUS_PER_REPLICA:-1}
+      - NUM_CPUS_PER_REPLICA=${NUM_CPUS_PER_REPLICA:-1}
+      - RAY_SERVE_THROUGHPUT_OPTIMIZED=${RAY_SERVE_THROUGHPUT_OPTIMIZED:-0}
     profiles: [ray-serve-grpc]
 
   locust:
@@ -86,6 +104,7 @@ services:
       - LOCUST_USERS=${LOCUST_USERS:-100}
       - LOCUST_SPAWN_RATE=${LOCUST_SPAWN_RATE:-1}
       - LOCUST_RUN_TIME=${LOCUST_RUN_TIME:-15m}
+      - LOCUST_USER_THROUGHPUT=${LOCUST_USER_THROUGHPUT:-5}
       - DATASET=${DATASET:-prompts}
     ports:
       - "8089:8089"
@@ -96,6 +115,9 @@ services:
         condition: service_healthy
         required: false
       ray-serve:
+        condition: service_healthy
+        required: false
+      ray-serve-grpc:
         condition: service_healthy
         required: false
 

@@ -115,8 +115,10 @@ run_bench() {
     echo "  Running Locust: ${USERS} users, ${SPAWN_RATE}/s, ${DURATION}..."
     cd test-script
     DATASET="${DATASET}" GLINER_HOST=http://localhost:8000 \
+        LOCUST_USER_THROUGHPUT="${LOCUST_USER_THROUGHPUT:-5}" \
         uv run locust -f test-gliner.py \
         --headless -u "${USERS}" -r "${SPAWN_RATE}" --run-time "${DURATION}" \
+        --csv-full-history \
         --csv="../results/${prefix}" \
         --html="../results/${prefix}.html" 2>&1 | tail -20
     cd ..

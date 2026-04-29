@@ -8,9 +8,21 @@ export PATH="$HOME/.local/bin:$PATH"
 
 cd "$(dirname "$0")/.."
 
+ENV_FILE="${ENV_FILE:-.env}"
+COMPOSE=(docker compose)
+if [[ -f "${ENV_FILE}" ]]; then
+    export ENV_FILE
+    set -a
+    # shellcheck source=/dev/null
+    . "${ENV_FILE}"
+    set +a
+    COMPOSE=(docker compose --env-file "${ENV_FILE}")
+fi
+
 DURATION="${DURATION:-15m}"
 USERS="${USERS:-20}"
 SPAWN_RATE="${SPAWN_RATE:-1}"
+USER_THROUGHPUT="${USER_THROUGHPUT:-${LOCUST_USER_THROUGHPUT:-5}}"
 WARMUP_REQS="${WARMUP_REQS:-50}"
 DATASET="${DATASET:-prompts}"
 REPEATS="${REPEATS:-1}"
@@ -99,7 +111,7 @@ run_rest_bench() {
 
     MODEL_ID="${MODEL_ID}" MAX_BATCH_SIZE="${MAX_BATCH_SIZE}" \
         BATCH_WAIT_TIMEOUT="${BATCH_WAIT_TIMEOUT}" \
-        docker compose --profile ray-serve up -d ray-serve 2>&1 | tail -2
+        "${COMPOSE[@]}" --profile ray-serve up -d ray-serve 2>&1 | tail -2
     wait_ready_rest || return 1
     warmup_rest
 
@@ -111,14 +123,16 @@ run_rest_bench() {
 
     cd test-script
     DATASET="${DATASET}" GLINER_HOST=http://localhost:8000 \
+        LOCUST_USER_THROUGHPUT="${USER_THROUGHPUT}" \
         uv run locust -f test-gliner.py \
         --headless -u "${USERS}" -r "${SPAWN_RATE}" --run-time "${DURATION}" \
+        --csv-full-history \
         --csv="../results/${prefix}" \
         --html="../results/${prefix}.html" 2>&1 | tail -20
     cd ..
 
     wait "${gpu_pid}" 2>/dev/null || true
-    docker compose --profile ray-serve down 2>&1 | tail -2
+    "${COMPOSE[@]}" --profile ray-serve down 2>&1 | tail -2
 
     local stats_file="results/${prefix}_stats.csv"
     if [ -f "${stats_file}" ]; then
@@ -143,7 +157,7 @@ run_grpc_bench() {
 
     MODEL_ID="${MODEL_ID}" MAX_BATCH_SIZE="${MAX_BATCH_SIZE}" \
         BATCH_WAIT_TIMEOUT="${BATCH_WAIT_TIMEOUT}" \
-        docker compose --profile ray-serve-grpc up -d ray-serve-grpc 2>&1 | tail -2
+        "${COMPOSE[@]}" --profile ray-serve-grpc up -d ray-serve-grpc 2>&1 | tail -2
     wait_ready_rest || return 1  # gRPC app also serves REST on 8000
     sleep 5  # extra time for gRPC proxy to start
     warmup_grpc
@@ -156,14 +170,16 @@ run_grpc_bench() {
 
     cd test-script
     DATASET="${DATASET}" GLINER_HOST=localhost:9000 \
+        LOCUST_USER_THROUGHPUT="${USER_THROUGHPUT}" \
         uv run locust -f test-gliner-grpc.py \
         --headless -u "${USERS}" -r "${SPAWN_RATE}" --run-time "${DURATION}" \
+        --csv-full-history \
         --csv="../results/${prefix}" \
         --html="../results/${prefix}.html" 2>&1 | tail -20
     cd ..
 
     wait "${gpu_pid}" 2>/dev/null || true
-    docker compose --profile ray-serve-grpc down 2>&1 | tail -2
+    "${COMPOSE[@]}" --profile ray-serve-grpc down 2>&1 | tail -2
 
     local stats_file="results/${prefix}_stats.csv"
     if [ -f "${stats_file}" ]; then
@@ -183,6 +199,7 @@ echo "  Repeats: ${REPEATS} per protocol"
 echo "  Total runs: ${total_runs} (${REPEATS} REST + ${REPEATS} gRPC)"
 echo "  Duration: ${DURATION} per run"
 echo "  Users: ${USERS}"
+echo "  Per-user throughput target: ${USER_THROUGHPUT}"
 echo "  Started: $(date '+%Y-%m-%d %H:%M:%S')"
 echo "======================================================"
 

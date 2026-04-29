@@ -11,6 +11,15 @@
 - **Workers:** 4 воркера на устройство (`workers_per_device=4`)
 - **Fast queue:** включён
 
+Для воспроизводимых сравнений эти параметры можно переопределить через env:
+
+| Variable | Default |
+|----------|---------|
+| `MODEL_ID` | `hivetrace/gliner-guard-uniencoder` |
+| `LITSERVE_MAX_BATCH_SIZE` | `64` |
+| `LITSERVE_BATCH_TIMEOUT` | `0.05` |
+| `LITSERVE_WORKERS_PER_DEVICE` | `4` |
+
 ### Схема модели
 
 - **PII-сущности:** person, address, email, phone (threshold 0.4)

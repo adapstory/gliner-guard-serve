@@ -7,8 +7,9 @@ from locust import FastHttpUser, constant_throughput, task
 load_dotenv()
 
 DATASET = os.getenv("DATASET", "prompts")
+USER_THROUGHPUT = float(os.getenv("LOCUST_USER_THROUGHPUT", "5"))
 PROMPTS_FILE = f"{DATASET}.csv"
-# Match responses file to dataset (prompts-short → responses-short, etc.)
+# Match responses file to dataset (prompts-short -> responses-short, etc.)
 RESPONSES_FILE = (
     DATASET.replace("prompts", "responses") + ".csv"
     if DATASET.startswith("prompts")
@@ -28,7 +29,7 @@ ENTITY_TYPES = [
 
 class MLServiceUser(FastHttpUser):
     host = os.getenv("GLINER_HOST", "http://localhost:8000")
-    wait_time = constant_throughput(5)
+    wait_time = constant_throughput(USER_THROUGHPUT)
 
     @task
     def predict_prompt(self):

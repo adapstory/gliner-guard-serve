@@ -25,6 +25,8 @@
 - `grpc.insecure_channel` + `GLiNERGuardServiceStub`
 - Same dataset loading as REST test
 - `events.request.fire()` for Locust metric tracking
+- `grpc.experimental.gevent.init_gevent()` is enabled before channel creation
+  so grpcio cooperates with Locust's gevent workers
 
 ### Key challenges resolved
 1. **Ray serialization**: Proto pb2 module can't be pickled. Solution: lazy import inside `_to_response()`, untyped signatures
@@ -53,6 +55,20 @@ The gRPC P50 (200ms) vs REST P50 (4124ms) is a **20x difference** that requires 
 - **This is not a fair comparison** — the REST baseline ran 15 min with 3 repeats, gRPC ran 5 min with 1 run
 - Full comparison on cloud VM with identical load profiles needed
 
+### Updated hypothesis
+
+The first thing to rule out is the load generator, not the Ray Serve gRPC
+server. Locust runs users in gevent greenlets, while grpcio's C-core I/O is not
+gevent-cooperative unless initialized explicitly. Without the gevent patch, a
+synchronous gRPC stub can cap the effective client concurrency and produce the
+misleading combination of low measured latency and flat RPS.
+
+Ray Serve's public `gRPCOptions` exposes port, servicer functions, and request
+timeout. It does not expose a general worker-thread/concurrency knob for the
+external gRPC proxy, and the Ray source starts the gRPC server with
+`maximum_concurrent_rpcs=None`. Re-run after the Locust client patch before
+changing server-side settings.
+
 ---
 
 ## Files
@@ -72,4 +88,4 @@ The gRPC P50 (200ms) vs REST P50 (4124ms) is a **20x difference** that requires 
 - [ ] Run `scripts/run-grpc-benchmarks.sh` with `REPEATS=3 USERS=100 DURATION=15m`
 - [ ] Compare REST vs gRPC with identical Locust config (same `wait_time`, same users)
 - [ ] Test gRPC + batching (MAX_BATCH_SIZE=16)
-- [ ] Investigate latency difference root cause
+- [ ] If RPS is still flat, compare with a grpc.aio microbench outside Locust

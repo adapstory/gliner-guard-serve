@@ -74,8 +74,10 @@ define run-bench
 	@$(MAKE) warmup
 	@bash scripts/collect_gpu_metrics.sh results/gpu-$(RESULT_PREFIX).csv $$(echo $(DURATION) | sed 's/m//' | awk '{print $$1*60}') &
 	cd test-script && DATASET=$(DATASET) GLINER_HOST=http://localhost:8000 \
+		LOCUST_USER_THROUGHPUT=$${LOCUST_USER_THROUGHPUT:-5} \
 		uv run locust -f test-gliner.py \
 		--headless -u $(USERS) -r $(SPAWN_RATE) --run-time $(DURATION) \
+		--csv-full-history \
 		--csv=../results/$(RESULT_PREFIX) \
 		--html=../results/$(RESULT_PREFIX).html
 	@echo "=== Done: results/$(RESULT_PREFIX) ==="
@@ -160,7 +162,7 @@ $(eval $(call ray-batch-target,B7,64,0.05))
 $(eval $(call ray-batch-target,B8,64,0.10))
 
 # ── Batch Runners ───────────────────────────────────────────────────────────
-.PHONY: bench-all-litserve bench-all-ray-nobatch bench-all-ray-batch
+.PHONY: bench-all-litserve bench-all-ray-nobatch bench-all-ray-batch bench-a100-4worker-rest
 
 bench-all-litserve: ## Run all LitServe benchmarks (3 repeats × 2 models)
 	@for run in 1 2 3; do \
@@ -180,6 +182,10 @@ bench-all-ray-batch-uni: ## Run all batch configs for uniencoder (3 repeats × 8
 			$(MAKE) bench-ray-$$cfg-uni RUN=$$run; \
 		done; \
 	done
+
+bench-a100-4worker-rest: ## Reproducible LitServe vs Ray Serve REST A100 4-worker sweep
+	ENV_FILE=$${ENV_FILE:-.env.ray-a100-4w.example} \
+		bash scripts/run-a100-4worker-rest-benchmarks.sh
 
 # ── Data Generation ─────────────────────────────────────────────────────────
 .PHONY: generate-data generate-data-short generate-data-long generate-data-external

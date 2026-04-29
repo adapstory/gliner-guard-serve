@@ -5,9 +5,14 @@ import sys
 import time
 
 import grpc
+import grpc.experimental.gevent as grpc_gevent
 import pandas as pd
 from dotenv import load_dotenv
 from locust import User, constant_throughput, events, task
+
+# Locust runs users as gevent greenlets. Without this grpcio can block the whole
+# worker process, which makes RPS plateau while per-call latency looks low.
+grpc_gevent.init_gevent()
 
 # Add ray-serve/ to path so generated stubs (flat) are importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "ray-serve"))
@@ -18,6 +23,7 @@ import gliner_guard_pb2_grpc  # noqa: E402
 load_dotenv()
 
 DATASET = os.getenv("DATASET", "prompts")
+USER_THROUGHPUT = float(os.getenv("LOCUST_USER_THROUGHPUT", "5"))
 PROMPTS_FILE = f"{DATASET}.csv"
 RESPONSES_FILE = (
     DATASET.replace("prompts", "responses") + ".csv"
@@ -33,7 +39,7 @@ RESPONSE_COL = "assistant_msg" if _has_responses else "user_msg"
 
 class GrpcUser(User):
     host = os.getenv("GLINER_HOST", "localhost:9000")
-    wait_time = constant_throughput(5)
+    wait_time = constant_throughput(USER_THROUGHPUT)
 
     def on_start(self):
         self.channel = grpc.insecure_channel(
