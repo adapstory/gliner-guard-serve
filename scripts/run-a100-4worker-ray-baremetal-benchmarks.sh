@@ -495,6 +495,10 @@ generate_plots
 
 echo ""
 echo "Summary CSV: ${RESULT_DIR}/summary.csv"
-column -s, -t "${RESULT_DIR}/summary.csv" || cat "${RESULT_DIR}/summary.csv"
+if command -v column >/dev/null 2>&1; then
+    column -s, -t "${RESULT_DIR}/summary.csv"
+else
+    cat "${RESULT_DIR}/summary.csv"
+fi
 echo ""
 echo "Done: ${RESULT_DIR}"
