@@ -244,13 +244,19 @@ PY
 }
 
 warmup_rest() {
+    local pids=()
+    local pid
+
     echo "  Warmup REST: ${WARMUP_REQS} requests..."
     for i in $(seq 1 "${WARMUP_REQS}"); do
         curl -sf -o /dev/null http://localhost:8000/predict \
             -H "Content-Type: application/json" \
             -d '{"text":"warmup request '"${i}"'"}' &
+        pids+=("$!")
     done
-    wait
+    for pid in "${pids[@]}"; do
+        wait "${pid}"
+    done
 }
 
 warmup_grpc() {
