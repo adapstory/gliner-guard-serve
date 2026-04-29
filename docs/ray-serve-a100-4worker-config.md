@@ -35,6 +35,9 @@ is still the application's responsibility.
 - `.env.ray-a100-4w.example` is the reproducible A100 profile.
 - `scripts/run-a100-4worker-rest-benchmarks.sh` runs LitServe REST and Ray
   Serve REST with the same batch sizes and Locust profile.
+- `scripts/setup-a100-baremetal.sh` prepares a Runpod/A100 host without Docker.
+- `scripts/run-a100-4worker-ray-baremetal-benchmarks.sh` runs only Ray Serve
+  REST and Ray Serve gRPC without Docker Compose and without LitServe.
 
 The sweep intentionally focuses on the PR-critical configs:
 
@@ -63,6 +66,38 @@ Equivalent Make target:
 ```bash
 ENV_FILE=.env.ray-a100-4w make bench-a100-4worker-rest
 ```
+
+## Bare-Metal Runpod Run
+
+Use this path when Docker Compose is unavailable or intentionally excluded:
+
+```bash
+cd /workspace/gliner-guard-serve
+bash scripts/setup-a100-baremetal.sh
+
+ENV_FILE=.env.ray-a100-4w.example \
+  bash scripts/run-a100-4worker-ray-baremetal-benchmarks.sh
+```
+
+Quick smoke before the full run:
+
+```bash
+SMOKE=1 \
+ENV_FILE=.env.ray-a100-4w.example \
+  bash scripts/run-a100-4worker-ray-baremetal-benchmarks.sh
+```
+
+The bare-metal runner starts `ray-serve/serve_app.py` and
+`ray-serve/serve_app_grpc.py` directly with uv, tears Ray down between runs, and
+writes each benchmark into an isolated timestamped directory under
+`results-runpod/a100-baremetal-*`.
+
+Expected Ray-only full run count:
+
+- `3` batch sizes
+- `2` protocols: Ray Serve REST and Ray Serve gRPC
+- `3` repeats
+- total: `18` benchmark runs
 
 For a quick smoke run before the full A100 benchmark:
 
