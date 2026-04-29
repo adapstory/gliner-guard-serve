@@ -133,6 +133,34 @@ Each run writes:
 - generated history plots:
   `results/{litserve,ray}-rest-B{16,32,64}-uni-prompts-history.png`
 
+## Monitoring
+
+For a long Runpod run, keep a status snapshot next to the result artifacts:
+
+```bash
+RESULT_DIR=/workspace/gliner-guard-results/a100-full-YYYYMMDDTHHMMSSZ \
+EXPERIMENT_PID=<runner-pid> \
+INTERVAL_SECONDS=300 \
+  nohup bash scripts/watch-a100-experiment.sh \
+  > "$RESULT_DIR/monitor/watchdog.out" 2>&1 &
+```
+
+The watchdog writes:
+
+- `$RESULT_DIR/monitor/status.json`
+- `$RESULT_DIR/monitor/status.md`
+- `$RESULT_DIR/monitor/status-history.jsonl`
+- `$RESULT_DIR/monitor/watchdog.log`
+
+One-shot status check:
+
+```bash
+python3 scripts/monitor_a100_experiment.py \
+  --result-dir /workspace/gliner-guard-results/a100-full-YYYYMMDDTHHMMSSZ \
+  --pid <runner-pid> \
+  --write-status
+```
+
 The PR should include the generated result CSV/HTML only when they are intended
 as evidence for the benchmark result. Otherwise, keep this as a runnable
 benchmark config PR.
