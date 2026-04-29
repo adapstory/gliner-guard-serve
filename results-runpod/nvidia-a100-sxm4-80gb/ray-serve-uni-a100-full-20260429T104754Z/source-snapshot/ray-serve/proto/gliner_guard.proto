@@ -1,0 +1,19 @@
+syntax = "proto3";
+package gliner_guard;
+
+service GLiNERGuardService {
+    rpc Predict (PredictRequest) returns (PredictResponse);
+}
+
+message PredictRequest {
+    string text = 1;
+}
+
+message EntityList {
+    repeated string values = 1;
+}
+
+message PredictResponse {
+    map<string, EntityList> entities = 1;
+    string safety = 2;
+}

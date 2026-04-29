@@ -33,12 +33,24 @@ Original VM result directory:
 /workspace/gliner-guard-results/a100-full-20260429T104754Z
 ```
 
+Sibling VM files also copied into the result directory:
+
+```text
+/workspace/gliner-guard-results/a100-full-20260429T104754Z.driver.log
+/workspace/gliner-guard-results/a100-full-20260429T104754Z.pid
+```
+
 ## Artifact Inventory
 
 | Artifact type | Count |
 |---|---:|
-| Total files | 194 |
+| Total files committed in this result directory | 226 |
 | `summary.csv` | 1 |
+| `MANIFEST.sha256` checksum manifest | 1 |
+| `FILE_INVENTORY.txt` byte-size inventory | 1 |
+| Driver log copied from VM sibling path | 1 |
+| Runner PID copied from VM sibling path | 1 |
+| VM source snapshot files | 28 |
 | Locust `*_stats.csv` | 18 |
 | Locust `*_stats_history.csv` | 18 |
 | Locust `*_failures.csv` | 18 |
@@ -46,9 +58,16 @@ Original VM result directory:
 | Locust HTML reports | 18 |
 | GPU CSV samples | 18 |
 | History plots | 6 |
-| Run logs | 54 |
-| Server PID files | 18 |
+| Benchmark run logs | 54 |
+| Benchmark server PID files | 18 |
 | Monitor status/history files | 6 |
+
+`source-snapshot/` preserves the compact VM source state for the runner, Ray
+Serve apps, gRPC proto/stub files, and benchmark scripts. This includes the
+generated `ray-serve/gliner_guard_pb2*.py` files that were present on the VM.
+
+`MANIFEST.sha256` contains checksums for the 224 copied run/source evidence
+files, excluding only `MANIFEST.sha256` and `FILE_INVENTORY.txt` themselves.
 
 History plots:
 
@@ -106,4 +125,3 @@ All runs completed with `0` Locust failures.
 - Because this run is `uni` only, do not use it as evidence for `bi`.
 - Because LitServe was intentionally not run here, this PR evidence is for the
   Ray Serve REST vs gRPC A100 sweep only.
-

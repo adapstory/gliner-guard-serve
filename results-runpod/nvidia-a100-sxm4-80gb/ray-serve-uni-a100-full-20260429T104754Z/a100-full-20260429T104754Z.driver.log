@@ -1,0 +1,787 @@
+======================================================
+  Ray Serve A100 bare-metal REST/gRPC benchmark
+  Result dir: /workspace/gliner-guard-results/a100-full-20260429T104754Z
+  Model: hivetrace/gliner-guard-uniencoder
+  Dataset: prompts
+  Batches: 16:0.05,32:0.05,64:0.05
+  Protocols: rest,grpc
+  Repeats: 3
+  Total runs: 18
+  Load: users=100, spawn_rate=1, duration=15m (900s), per_user_throughput=5
+  Ray: replicas=4, gpu_per_replica=0.25, max_ongoing=256
+======================================================
+
+==========================================
+  Ray Serve rest: ray-rest-B16-uni-prompts-run1
+  replicas=4 gpu_per_replica=0.25 batch=16 timeout=0.05
+==========================================
+  Starting Ray Serve rest server...
+  Waiting for REST server on :8000...
+  REST server ready.
+  Warmup REST: 50 requests...
+         Aggregated                                                                    131505     0(0.00%) |    638      72    1356    640 |  156.10        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      131791     0(0.00%) |    638      72    1356    640 |  159.00        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    131791     0(0.00%) |    638      72    1356    640 |  159.00        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      132106     0(0.00%) |    638      72    1356    640 |  161.40        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    132106     0(0.00%) |    638      72    1356    640 |  161.40        0.00
+
+[2026-04-29 11:03:24,518] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 11:03:24,647] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B16-uni-prompts-run1.html
+[2026-04-29 11:03:24,669] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      132239     0(0.00%) |    638      72    1356    640 |  147.04        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    132239     0(0.00%) |    638      72    1356    640 |  147.04        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              640    700    750    780    860    920    980   1000   1100   1300   1400 132239
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            640    700    750    780    860    920    980   1000   1100   1300   1400 132239
+
+    RPS=147.03  P50=638.5170308183143ms  P95=1356.6495403647423ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 13445 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve grpc: ray-grpc-B16-uni-prompts-run1
+  replicas=4 gpu_per_replica=0.25 batch=16 timeout=0.05
+==========================================
+  Starting Ray Serve grpc server...
+  Waiting for gRPC server on :9000...
+  gRPC server ready.
+  Warmup gRPC: 50 requests...
+gRPC     predict_prompt                                                                 69728     0(0.00%) |    605      49    2803    610 |   80.70        0.00
+gRPC     predict_response                                                               69807     0(0.00%) |    605      60    2804    610 |   80.20        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    139535     0(0.00%) |    605      49    2804    610 |  160.90        0.00
+
+[2026-04-29 11:19:10,867] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 69751     0(0.00%) |    605      49    2803    610 |   78.00        0.00
+gRPC     predict_response                                                               69827     0(0.00%) |    605      60    2804    610 |   82.30        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    139578     0(0.00%) |    605      49    2804    610 |  160.30        0.00
+
+[2026-04-29 11:19:11,015] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B16-uni-prompts-run1.html
+[2026-04-29 11:19:11,256] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 69751     0(0.00%) |    605      49    2803    610 |   77.53        0.00
+gRPC     predict_response                                                               69837     0(0.00%) |    605      60    2804    610 |   77.63        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    139588     0(0.00%) |    605      49    2804    610 |  155.16        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+gRPC     predict_prompt                                                                        610    660    680    700    750    800    880    960   2200   2800   2800  69751
+gRPC     predict_response                                                                      610    660    680    700    750    800    880    960   2200   2700   2800  69837
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            610    660    680    700    750    800    880    960   2200   2800   2800 139588
+
+    RPS=155.45  P50=605.1489523260212ms  P95=2804.1777685284615ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 17232 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve rest: ray-rest-B16-uni-prompts-run2
+  replicas=4 gpu_per_replica=0.25 batch=16 timeout=0.05
+==========================================
+  Starting Ray Serve rest server...
+  Waiting for REST server on :8000...
+  REST server ready.
+  Warmup REST: 50 requests...
+         Aggregated                                                                    132106     0(0.00%) |    634      59    2089    630 |  156.80        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      132389     0(0.00%) |    634      59    2089    630 |  155.80        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    132389     0(0.00%) |    634      59    2089    630 |  155.80        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      132721     0(0.00%) |    634      59    2089    630 |  151.10        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    132721     0(0.00%) |    634      59    2089    630 |  151.10        0.00
+
+[2026-04-29 11:34:54,606] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 11:34:54,741] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B16-uni-prompts-run2.html
+[2026-04-29 11:34:54,840] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      132841     0(0.00%) |    634      59    2089    630 |  147.68        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    132841     0(0.00%) |    634      59    2089    630 |  147.68        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              630    700    750    780    860    920    990   1000   1600   2000   2100 132841
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            630    700    750    780    860    920    990   1000   1600   2000   2100 132841
+
+    RPS=147.68  P50=634.2815197023995ms  P95=2089.427627623081ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 20986 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve grpc: ray-grpc-B16-uni-prompts-run2
+  replicas=4 gpu_per_replica=0.25 batch=16 timeout=0.05
+==========================================
+  Starting Ray Serve grpc server...
+  Waiting for gRPC server on :9000...
+  gRPC server ready.
+  Warmup gRPC: 50 requests...
+gRPC     predict_prompt                                                                 70511     0(0.00%) |    593      52    1264    610 |   80.00        0.00
+gRPC     predict_response                                                               71000     0(0.00%) |    594      55    1265    610 |   78.00        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    141511     0(0.00%) |    594      52    1265    610 |  158.00        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 70682     0(0.00%) |    593      52    1264    610 |   80.80        0.00
+gRPC     predict_response                                                               71165     0(0.00%) |    594      55    1265    610 |   76.80        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    141847     0(0.00%) |    594      52    1265    610 |  157.60        0.00
+
+[2026-04-29 11:50:42,949] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 11:50:43,100] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B16-uni-prompts-run2.html
+[2026-04-29 11:50:43,254] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 70750     0(0.00%) |    593      52    1264    610 |   78.67        0.00
+gRPC     predict_response                                                               71222     0(0.00%) |    594      55    1265    610 |   79.19        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    141972     0(0.00%) |    594      52    1265    610 |  157.86        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+gRPC     predict_prompt                                                                        610    650    680    690    740    800    850    900   1000   1200   1300  70750
+gRPC     predict_response                                                                      610    650    680    690    740    800    860    900   1000   1200   1300  71222
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            610    650    680    690    740    800    860    900   1000   1200   1300 141972
+
+    RPS=157.90  P50=594.141225899605ms  P95=1265.3770446777344ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 24596 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve rest: ray-rest-B16-uni-prompts-run3
+  replicas=4 gpu_per_replica=0.25 batch=16 timeout=0.05
+==========================================
+  Starting Ray Serve rest server...
+  Waiting for REST server on :8000...
+  REST server ready.
+  Warmup REST: 50 requests...
+         Aggregated                                                                    131443     0(0.00%) |    636      76    2106    640 |  153.70        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      131761     0(0.00%) |    636      76    2106    640 |  155.00        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    131761     0(0.00%) |    636      76    2106    640 |  155.00        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      132068     0(0.00%) |    636      76    2106    640 |  155.50        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    132068     0(0.00%) |    636      76    2106    640 |  155.50        0.00
+
+[2026-04-29 12:06:26,627] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 12:06:26,762] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B16-uni-prompts-run3.html
+[2026-04-29 12:06:26,877] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      132183     0(0.00%) |    636      76    2106    640 |  146.95        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    132183     0(0.00%) |    636      76    2106    640 |  146.95        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              640    700    750    780    860    910    970   1000   1200   2000   2100 132183
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            640    700    750    780    860    910    970   1000   1200   2000   2100 132183
+
+    RPS=146.97  P50=636.1030951658478ms  P95=2106.4202040433884ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 28324 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve grpc: ray-grpc-B16-uni-prompts-run3
+  replicas=4 gpu_per_replica=0.25 batch=16 timeout=0.05
+==========================================
+  Starting Ray Serve grpc server...
+  Waiting for gRPC server on :9000...
+  gRPC server ready.
+  Warmup gRPC: 50 requests...
+gRPC     predict_prompt                                                                 69984     0(0.00%) |    601      58    1940    610 |   82.80        0.00
+gRPC     predict_response                                                               69926     0(0.00%) |    601      67    1947    610 |   80.20        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    139910     0(0.00%) |    601      58    1947    610 |  163.00        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 70140     0(0.00%) |    601      58    1940    610 |   82.60        0.00
+gRPC     predict_response                                                               70081     0(0.00%) |    601      67    1947    610 |   78.00        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    140221     0(0.00%) |    601      58    1947    610 |  160.60        0.00
+
+[2026-04-29 12:22:16,513] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 12:22:16,674] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B16-uni-prompts-run3.html
+[2026-04-29 12:22:16,745] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 70210     0(0.00%) |    601      58    1940    610 |   78.06        0.00
+gRPC     predict_response                                                               70140     0(0.00%) |    601      67    1947    610 |   77.98        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    140350     0(0.00%) |    601      58    1947    610 |  156.04        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+gRPC     predict_prompt                                                                        610    650    680    700    750    810    870    930   1300   1700   1900  70210
+gRPC     predict_response                                                                      610    660    680    700    750    810    880    930   1400   1700   1900  70140
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            610    650    680    700    750    810    870    930   1400   1700   1900 140350
+
+    RPS=156.08  P50=601.2868858816087ms  P95=1947.6058036088943ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 31959 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve rest: ray-rest-B32-uni-prompts-run1
+  replicas=4 gpu_per_replica=0.25 batch=32 timeout=0.05
+==========================================
+  Starting Ray Serve rest server...
+  Waiting for REST server on :8000...
+  REST server ready.
+  Warmup REST: 50 requests...
+         Aggregated                                                                    123769     0(0.00%) |    675      67    1802    690 |  145.10        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      124069     0(0.00%) |    675      67    1802    690 |  140.10        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    124069     0(0.00%) |    675      67    1802    690 |  140.10        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      124352     0(0.00%) |    675      67    1802    690 |  141.20        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    124352     0(0.00%) |    675      67    1802    690 |  141.20        0.00
+
+[2026-04-29 12:37:59,693] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 12:37:59,830] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B32-uni-prompts-run1.html
+[2026-04-29 12:37:59,890] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      124587     0(0.00%) |    675      67    1802    690 |  138.51        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    124587     0(0.00%) |    675      67    1802    690 |  138.51        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              690    770    820    850    940   1000   1100   1200   1400   1800   1800 124587
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            690    770    820    850    940   1000   1100   1200   1400   1800   1800 124587
+
+    RPS=138.46  P50=675.3324555509816ms  P95=1802.0501658320427ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 35692 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve grpc: ray-grpc-B32-uni-prompts-run1
+  replicas=4 gpu_per_replica=0.25 batch=32 timeout=0.05
+==========================================
+  Starting Ray Serve grpc server...
+  Waiting for gRPC server on :9000...
+  gRPC server ready.
+  Warmup gRPC: 50 requests...
+gRPC     predict_prompt                                                                 62879     0(0.00%) |    668      64    2685    710 |   74.00        0.00
+gRPC     predict_response                                                               62624     0(0.00%) |    668      53    2692    710 |   78.00        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    125503     0(0.00%) |    668      53    2692    710 |  152.00        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 63034     0(0.00%) |    668      64    2685    710 |   71.90        0.00
+gRPC     predict_response                                                               62791     0(0.00%) |    668      53    2692    710 |   76.00        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    125825     0(0.00%) |    668      53    2692    710 |  147.90        0.00
+
+[2026-04-29 12:53:50,146] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 12:53:50,289] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B32-uni-prompts-run1.html
+[2026-04-29 12:53:50,398] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 63052     0(0.00%) |    668      64    2685    710 |   70.16        0.00
+gRPC     predict_response                                                               62805     0(0.00%) |    668      53    2692    710 |   69.89        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    125857     0(0.00%) |    668      53    2692    710 |  140.05        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+gRPC     predict_prompt                                                                        710    770    800    820    880    920    990   1000   1300   2600   2700  63052
+gRPC     predict_response                                                                      710    770    800    820    880    920    990   1000   1300   2700   2700  62805
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            710    770    800    820    880    920    990   1000   1300   2700   2700 125857
+
+    RPS=140.05  P50=668.519655331464ms  P95=2692.8195133805275ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 39312 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve rest: ray-rest-B32-uni-prompts-run2
+  replicas=4 gpu_per_replica=0.25 batch=32 timeout=0.05
+==========================================
+  Starting Ray Serve rest server...
+  Waiting for REST server on :8000...
+  REST server ready.
+  Warmup REST: 50 requests...
+         Aggregated                                                                    123206     0(0.00%) |    678      66    2550    690 |  140.70        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      123481     0(0.00%) |    678      66    2550    690 |  137.30        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    123481     0(0.00%) |    678      66    2550    690 |  137.30        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      123771     0(0.00%) |    678      66    2550    690 |  141.30        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    123771     0(0.00%) |    678      66    2550    690 |  141.30        0.00
+
+[2026-04-29 13:09:36,622] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 13:09:36,793] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B32-uni-prompts-run2.html
+[2026-04-29 13:09:36,983] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      123987     0(0.00%) |    678      66    2550    690 |  137.86        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    123987     0(0.00%) |    678      66    2550    690 |  137.86        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              690    770    820    850    950   1000   1100   1200   1900   2500   2600 123987
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            690    770    820    850    950   1000   1100   1200   1900   2500   2600 123987
+
+    RPS=137.85  P50=678.320932872191ms  P95=2550.714187324047ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 43103 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve grpc: ray-grpc-B32-uni-prompts-run2
+  replicas=4 gpu_per_replica=0.25 batch=32 timeout=0.05
+==========================================
+  Starting Ray Serve grpc server...
+  Waiting for gRPC server on :9000...
+  gRPC server ready.
+  Warmup gRPC: 50 requests...
+gRPC     predict_prompt                                                                 62878     0(0.00%) |    666      62    1267    700 |   72.50        0.00
+gRPC     predict_response                                                               62888     0(0.00%) |    666      57    1268    710 |   73.70        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    125766     0(0.00%) |    666      57    1268    700 |  146.20        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 63007     0(0.00%) |    666      62    1267    700 |   73.50        0.00
+gRPC     predict_response                                                               63014     0(0.00%) |    666      57    1268    710 |   70.20        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126021     0(0.00%) |    666      57    1268    700 |  143.70        0.00
+
+[2026-04-29 13:25:29,951] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 13:25:30,103] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B32-uni-prompts-run2.html
+[2026-04-29 13:25:30,254] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 63011     0(0.00%) |    666      62    1267    700 |   70.08        0.00
+gRPC     predict_response                                                               63024     0(0.00%) |    666      57    1268    710 |   70.09        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126035     0(0.00%) |    666      57    1268    700 |  140.17        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+gRPC     predict_prompt                                                                        700    770    800    820    870    920    990   1000   1200   1300   1300  63011
+gRPC     predict_response                                                                      710    770    800    820    870    920    980   1000   1200   1300   1300  63024
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            700    770    800    820    870    920    980   1000   1200   1300   1300 126035
+
+    RPS=140.20  P50=666.2250851310431ms  P95=1268.1239917874336ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 46839 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve rest: ray-rest-B32-uni-prompts-run3
+  replicas=4 gpu_per_replica=0.25 batch=32 timeout=0.05
+==========================================
+  Starting Ray Serve rest server...
+  Waiting for REST server on :8000...
+  REST server ready.
+  Warmup REST: 50 requests...
+         Aggregated                                                                    121486     0(0.00%) |    687      71    5729    680 |  147.80        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      121783     0(0.00%) |    687      71    5729    680 |  142.10        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    121783     0(0.00%) |    687      71    5729    680 |  142.10        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      122073     0(0.00%) |    687      71    5729    680 |  143.10        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    122073     0(0.00%) |    687      71    5729    680 |  143.10        0.00
+
+[2026-04-29 13:41:16,325] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 13:41:16,535] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B32-uni-prompts-run3.html
+[2026-04-29 13:41:16,646] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      122173     0(0.00%) |    687      71    5729    680 |  135.93        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    122173     0(0.00%) |    687      71    5729    680 |  135.93        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              680    760    820    850    940   1000   1200   1400   4900   5700   5700 122173
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            680    760    820    850    940   1000   1200   1400   4900   5700   5700 122173
+
+    RPS=135.93  P50=687.6280820830002ms  P95=5729.990042746067ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 50598 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve grpc: ray-grpc-B32-uni-prompts-run3
+  replicas=4 gpu_per_replica=0.25 batch=32 timeout=0.05
+==========================================
+  Starting Ray Serve grpc server...
+  Waiting for gRPC server on :9000...
+  gRPC server ready.
+  Warmup gRPC: 50 requests...
+gRPC     predict_prompt                                                                 61368     0(0.00%) |    681      59    5462    700 |   74.30        0.00
+gRPC     predict_response                                                               61274     0(0.00%) |    682      58    5530    700 |   74.30        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    122642     0(0.00%) |    682      58    5530    700 |  148.60        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 61534     0(0.00%) |    681      59    5462    700 |   72.10        0.00
+gRPC     predict_response                                                               61454     0(0.00%) |    682      58    5530    700 |   72.40        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    122988     0(0.00%) |    682      58    5530    700 |  144.50        0.00
+
+[2026-04-29 13:57:08,312] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 13:57:08,465] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B32-uni-prompts-run3.html
+[2026-04-29 13:57:08,601] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 61543     0(0.00%) |    681      59    5462    700 |   68.44        0.00
+gRPC     predict_response                                                               61463     0(0.00%) |    682      58    5530    700 |   68.35        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    123006     0(0.00%) |    682      58    5530    700 |  136.79        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+gRPC     predict_prompt                                                                        700    770    810    830    890    950   1100   1700   4600   5300   5500  61543
+gRPC     predict_response                                                                      700    770    810    830    890    950   1100   1700   4600   5300   5500  61463
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            700    770    810    830    890    950   1100   1700   4600   5300   5500 123006
+
+    RPS=136.82  P50=682.4023270805114ms  P95=5530.3444638848305ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 54220 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve rest: ray-rest-B64-uni-prompts-run1
+  replicas=4 gpu_per_replica=0.25 batch=64 timeout=0.05
+==========================================
+  Starting Ray Serve rest server...
+  Waiting for REST server on :8000...
+  REST server ready.
+  Warmup REST: 50 requests...
+         Aggregated                                                                    125737     0(0.00%) |    663      67    5965    670 |  154.00        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      126070     0(0.00%) |    663      67    5965    670 |  153.40        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126070     0(0.00%) |    663      67    5965    670 |  153.40        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      126401     0(0.00%) |    663      67    5965    670 |  157.50        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126401     0(0.00%) |    663      67    5965    670 |  157.50        0.00
+
+[2026-04-29 14:12:52,509] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 14:12:52,623] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B64-uni-prompts-run1.html
+[2026-04-29 14:12:52,758] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      126544     0(0.00%) |    663      67    5965    670 |  140.69        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126544     0(0.00%) |    663      67    5965    670 |  140.69        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              670    750    790    820    910   1000   1100   1300   4400   5900   6000 126544
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            670    750    790    820    910   1000   1100   1300   4400   5900   6000 126544
+
+    RPS=140.73  P50=663.5371778552ms  P95=5965.388365089893ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 57957 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve grpc: ray-grpc-B64-uni-prompts-run1
+  replicas=4 gpu_per_replica=0.25 batch=64 timeout=0.05
+==========================================
+  Starting Ray Serve grpc server...
+  Waiting for gRPC server on :9000...
+  gRPC server ready.
+  Warmup gRPC: 50 requests...
+gRPC     predict_prompt                                                                 63652     0(0.00%) |    667      58    5002    710 |   72.40        0.00
+gRPC     predict_response                                                               62575     0(0.00%) |    666      55    5004    700 |   69.70        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126227     0(0.00%) |    666      55    5004    700 |  142.10        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 63787     0(0.00%) |    667      58    5002    710 |   78.60        0.00
+gRPC     predict_response                                                               62701     0(0.00%) |    666      55    5004    700 |   75.90        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126488     0(0.00%) |    666      55    5004    700 |  154.50        0.00
+
+[2026-04-29 14:28:39,319] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 14:28:39,459] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B64-uni-prompts-run1.html
+[2026-04-29 14:28:39,490] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 63846     0(0.00%) |    667      58    5002    710 |   71.01        0.00
+gRPC     predict_response                                                               62744     0(0.00%) |    666      55    5004    700 |   69.78        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126590     0(0.00%) |    666      55    5004    700 |  140.79        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+gRPC     predict_prompt                                                                        710    780    810    830    890    940   1000   1100   2000   5000   5000  63846
+gRPC     predict_response                                                                      700    770    810    830    890    940   1000   1100   2000   5000   5000  62744
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            700    780    810    830    890    940   1000   1100   2000   5000   5000 126590
+
+    RPS=140.79  P50=666.7640471542717ms  P95=5004.815220832825ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 61598 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve rest: ray-rest-B64-uni-prompts-run2
+  replicas=4 gpu_per_replica=0.25 batch=64 timeout=0.05
+==========================================
+  Starting Ray Serve rest server...
+  Waiting for REST server on :8000...
+  REST server ready.
+  Warmup REST: 50 requests...
+         Aggregated                                                                    125792     0(0.00%) |    665      57    2838    680 |  150.50        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      126116     0(0.00%) |    665      57    2838    680 |  152.80        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126116     0(0.00%) |    665      57    2838    680 |  152.80        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      126455     0(0.00%) |    665      57    2838    680 |  153.70        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126455     0(0.00%) |    665      57    2838    680 |  153.70        0.00
+
+[2026-04-29 14:44:21,727] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 14:44:21,841] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B64-uni-prompts-run2.html
+[2026-04-29 14:44:21,872] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      126677     0(0.00%) |    665      57    2838    680 |  140.85        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    126677     0(0.00%) |    665      57    2838    680 |  140.85        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              680    760    810    840    930   1000   1100   1200   2000   2800   2800 126677
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            680    760    810    840    930   1000   1100   1200   2000   2800   2800 126677
+
+    RPS=140.86  P50=665.162601269844ms  P95=2838.529832661152ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 65339 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve grpc: ray-grpc-B64-uni-prompts-run2
+  replicas=4 gpu_per_replica=0.25 batch=64 timeout=0.05
+==========================================
+  Starting Ray Serve grpc server...
+  Waiting for gRPC server on :9000...
+  gRPC server ready.
+  Warmup gRPC: 50 requests...
+gRPC     predict_prompt                                                                 63490     0(0.00%) |    659      49    1426    710 |   70.40        0.00
+gRPC     predict_response                                                               63980     0(0.00%) |    661      57    1418    710 |   66.00        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    127470     0(0.00%) |    660      49    1426    710 |  136.40        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 63667     0(0.00%) |    658      49    1426    710 |   68.50        0.00
+gRPC     predict_response                                                               64141     0(0.00%) |    661      57    1418    710 |   66.90        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    127808     0(0.00%) |    660      49    1426    710 |  135.40        0.00
+
+[2026-04-29 15:00:06,861] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 15:00:06,989] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B64-uni-prompts-run2.html
+[2026-04-29 15:00:07,022] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 63808     0(0.00%) |    658      49    1426    710 |   70.94        0.00
+gRPC     predict_response                                                               64256     0(0.00%) |    661      57    1418    710 |   71.44        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    128064     0(0.00%) |    660      49    1426    710 |  142.38        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+gRPC     predict_prompt                                                                        710    780    810    830    890    930   1000   1000   1200   1400   1400  63808
+gRPC     predict_response                                                                      710    780    810    840    890    930   1000   1000   1200   1400   1400  64256
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            710    780    810    840    890    930   1000   1000   1200   1400   1400 128064
+
+    RPS=142.38  P50=660.1225177276932ms  P95=1426.2747466564178ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 68963 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve rest: ray-rest-B64-uni-prompts-run3
+  replicas=4 gpu_per_replica=0.25 batch=64 timeout=0.05
+==========================================
+  Starting Ray Serve rest server...
+  Waiting for REST server on :8000...
+  REST server ready.
+  Warmup REST: 50 requests...
+         Aggregated                                                                    127752     0(0.00%) |    659      65    1589    670 |  148.80        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      128057     0(0.00%) |    659      65    1589    670 |  146.40        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    128057     0(0.00%) |    659      65    1589    670 |  146.40        0.00
+
+[2026-04-29 15:15:51,557] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      128310     0(0.00%) |    659      65    1589    670 |  148.70        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    128310     0(0.00%) |    659      65    1589    670 |  148.70        0.00
+
+[2026-04-29 15:15:51,670] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B64-uni-prompts-run3.html
+[2026-04-29 15:15:51,756] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     /predict                                                                      128349     0(0.00%) |    659      65    1589    670 |  142.69        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    128349     0(0.00%) |    659      65    1589    670 |  142.69        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     /predict                                                                              670    750    800    830    930   1000   1100   1200   1400   1500   1600 128349
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            670    750    800    830    930   1000   1100   1200   1400   1500   1600 128349
+
+    RPS=142.70  P50=659.1132856642345ms  P95=1589.6912068128586ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 72662 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+==========================================
+  Ray Serve grpc: ray-grpc-B64-uni-prompts-run3
+  replicas=4 gpu_per_replica=0.25 batch=64 timeout=0.05
+==========================================
+  Starting Ray Serve grpc server...
+  Waiting for gRPC server on :9000...
+  gRPC server ready.
+  Warmup gRPC: 50 requests...
+gRPC     predict_prompt                                                                 59106     0(0.00%) |    707      54    5661    720 |   77.20        0.00
+gRPC     predict_response                                                               59348     0(0.00%) |    709      60    5690    720 |   77.40        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    118454     0(0.00%) |    708      54    5690    720 |  154.60        0.00
+
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 59263     0(0.00%) |    707      54    5661    720 |   71.20        0.00
+gRPC     predict_response                                                               59487     0(0.00%) |    709      60    5690    720 |   74.80        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    118750     0(0.00%) |    708      54    5690    720 |  146.00        0.00
+
+[2026-04-29 15:31:37,050] e4901412300e/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-29 15:31:37,200] e4901412300e/INFO/locust.main: writing html report to file: /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B64-uni-prompts-run3.html
+[2026-04-29 15:31:37,269] e4901412300e/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+gRPC     predict_prompt                                                                 59402     0(0.00%) |    707      54    5661    720 |   66.04        0.00
+gRPC     predict_response                                                               59607     0(0.00%) |    709      60    5690    720 |   66.27        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                    119009     0(0.00%) |    708      54    5690    720 |  132.31        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+gRPC     predict_prompt                                                                        720    800    840    870    960   1100   1400   2000   4700   5100   5700  59402
+gRPC     predict_response                                                                      720    800    840    870    960   1100   1400   2000   4700   5100   5700  59607
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                            720    800    840    870    960   1100   1400   2000   4700   5100   5700 119009
+
+    RPS=132.28  P50=708.5214741162079ms  P95=5690.905258059502ms  Failures=0
+scripts/run-a100-4worker-ray-baremetal-benchmarks.sh: line 100: 76289 Aborted                 (core dumped) ( cd "${RAY_WORK_DIR}"; export PYTHONPATH="${REPO_DIR}/ray-serve:${PYTHONPATH:-}"; export UV_PYTHON; export MODEL_ID; export SCHEMA_MODE; export NUM_REPLICAS; export NUM_GPUS_PER_REPLICA; export NUM_CPUS_PER_REPLICA; export MAX_ONGOING_REQUESTS; export MAX_CONCURRENT_BATCHES; export RAY_OBJECT_STORE_MEMORY; export RAY_memory_monitor_refresh_ms; export HF_HOME; export HF_HUB_CACHE; export TRANSFORMERS_CACHE; export MAX_BATCH_SIZE="${batch_size}"; export BATCH_WAIT_TIMEOUT="${timeout}"; exec "${REPO_DIR}/ray-serve/.venv/bin/python" "${REPO_DIR}/ray-serve/${app}" ) > "${server_log}" 2>&1
+
+Generating history plots...
+Wrote /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B16-uni-prompts-history.png
+Optimal users=29, throughput=89.10 rps, latency=360.00 ms
+Wrote /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B16-uni-prompts-history.png
+Optimal users=30, throughput=103.60 rps, latency=343.33 ms
+Wrote /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B32-uni-prompts-history.png
+Optimal users=26, throughput=83.73 rps, latency=320.00 ms
+Wrote /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B32-uni-prompts-history.png
+Optimal users=24, throughput=80.60 rps, latency=280.00 ms
+Wrote /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-rest-B64-uni-prompts-history.png
+Optimal users=27, throughput=90.50 rps, latency=306.67 ms
+Wrote /workspace/gliner-guard-results/a100-full-20260429T104754Z/ray-grpc-B64-uni-prompts-history.png
+Optimal users=31, throughput=105.00 rps, latency=323.33 ms
+
+Summary CSV: /workspace/gliner-guard-results/a100-full-20260429T104754Z/summary.csv
+prefix,protocol,batch_size,run,rps,p50_ms,p95_ms,failures
+ray-rest-B16-uni-prompts-run1,rest,16,1,147.027833,638.5170308183143,1356.6495403647423,0
+ray-grpc-B16-uni-prompts-run1,grpc,16,1,155.446806,605.1489523260212,2804.1777685284615,0
+ray-rest-B16-uni-prompts-run2,rest,16,2,147.679721,634.2815197023995,2089.427627623081,0
+ray-grpc-B16-uni-prompts-run2,grpc,16,2,157.898824,594.141225899605,1265.3770446777344,0
+ray-rest-B16-uni-prompts-run3,rest,16,3,146.965430,636.1030951658478,2106.4202040433884,0
+ray-grpc-B16-uni-prompts-run3,grpc,16,3,156.076859,601.2868858816087,1947.6058036088943,0
+ray-rest-B32-uni-prompts-run1,rest,32,1,138.457266,675.3324555509816,1802.0501658320427,0
+ray-grpc-B32-uni-prompts-run1,grpc,32,1,140.054020,668.519655331464,2692.8195133805275,0
+ray-rest-B32-uni-prompts-run2,rest,32,2,137.853398,678.320932872191,2550.714187324047,0
+ray-grpc-B32-uni-prompts-run2,grpc,32,2,140.204377,666.2250851310431,1268.1239917874336,0
+ray-rest-B32-uni-prompts-run3,rest,32,3,135.934939,687.6280820830002,5729.990042746067,0
+ray-grpc-B32-uni-prompts-run3,grpc,32,3,136.817392,682.4023270805114,5530.3444638848305,0
+ray-rest-B64-uni-prompts-run1,rest,64,1,140.725290,663.5371778552,5965.388365089893,0
+ray-grpc-B64-uni-prompts-run1,grpc,64,1,140.793747,666.7640471542717,5004.815220832825,0
+ray-rest-B64-uni-prompts-run2,rest,64,2,140.856045,665.162601269844,2838.529832661152,0
+ray-grpc-B64-uni-prompts-run2,grpc,64,2,142.379331,660.1225177276932,1426.2747466564178,0
+ray-rest-B64-uni-prompts-run3,rest,64,3,142.698508,659.1132856642345,1589.6912068128586,0
+ray-grpc-B64-uni-prompts-run3,grpc,64,3,132.279038,708.5214741162079,5690.905258059502,0
+
+Done: /workspace/gliner-guard-results/a100-full-20260429T104754Z
